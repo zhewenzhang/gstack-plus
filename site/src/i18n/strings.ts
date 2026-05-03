@@ -15,13 +15,13 @@ export const STRINGS = {
   // ─── Hero ───
   hero: {
     pill: {
-      zh: 'v0.2.0 已上 npm',
-      en: 'v0.2.0 live on npm',
+      zh: 'v0.3.0 已上 npm',
+      en: 'v0.3.0 live on npm',
     },
-    pillUrl: 'https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.2.0',
+    pillUrl: 'https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.3.0',
     headlineHtml: {
       zh: '別讓一個模型<em class="italic" style="color:#6F6F6F">扛下所有事</em>。<br/>讓對的層級做<em class="italic" style="color:#6F6F6F">對的事。</em>',
-      en: 'Beyond <em class="italic" style="color:#6F6F6F">silos,</em> we orchestrate <em class="italic" style="color:#6F6F6F">the eternal.</em>',
+      en: 'Stop sending <em class="italic" style="color:#6F6F6F">every task</em> to the<br/>same model. Route to the <em class="italic" style="color:#6F6F6F">right tier.</em>',
     },
     sub: {
       zh: '多層 AI 模型編排框架。把每個任務按 5 維評分路由到對應 Tier — Opus 做判斷、Sonnet 做審查、Exec 做執行。質量不打折，成本砍一半。',
@@ -34,7 +34,7 @@ export const STRINGS = {
 
   // ─── QuickTry ───
   quickTry: {
-    eyebrow: { zh: 'v0.1.0 · 已上線 npm', en: 'v0.1.0 · live on npm' },
+    eyebrow: { zh: 'v0.3.0 · 已上線 npm', en: 'v0.3.0 · live on npm' },
     title:   { zh: '30 秒就能試一下。',  en: 'Try it in 30 seconds.' },
     body: {
       zh: '對任何任務做 5 維評分，立刻得到路由決策與一份預填好的 handoff 文件。基本流程不需要安裝、不需要 API key。',

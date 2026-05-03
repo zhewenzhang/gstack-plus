@@ -10,7 +10,9 @@ export type Item = {
 export type Section = {
   id: string;
   title: string;
-  intro?: string;          // 新增：分類介紹（顯示在側邊欄分類標題下）
+  titleEn?: string;
+  intro?: string;
+  introEn?: string;
   items: Item[];
 };
 
@@ -18,7 +20,9 @@ export const NAV: Section[] = [
   {
     id: "overview",
     title: "概覽",
+    titleEn: "Overview",
     intro: "從哪裡開始：項目地圖、核心洞察與學習計劃。",
+    introEn: "Where to start: project map, core insights, and learning plan.",
     items: [
       { order: 101, slug: "roadmap", title: "項目路線圖", source: "PROJECT_ROADMAP.md" },
       { order: 102, slug: "key-insights", title: "核心洞察", source: "docs/learning-notes/key-insights.md" },
@@ -32,7 +36,9 @@ export const NAV: Section[] = [
   {
     id: "learning-notes",
     title: "學習筆記",
+    titleEn: "Learning Notes",
     intro: "我們怎麼從 gstack 與 superpowers 學到「分層」與「紀律」這兩件事。",
+    introEn: "What we learned from gstack and superpowers — layering and discipline.",
     items: [
       { order: 201, slug: "gstack-overview", title: "gstack：系統概覽", source: "docs/learning-notes/gstack-overview.md" },
       { order: 202, slug: "gstack-planning", title: "gstack：規劃技能", source: "docs/learning-notes/gstack-planning-skills.md" },
@@ -49,7 +55,9 @@ export const NAV: Section[] = [
   {
     id: 'manual',
     title: '開發手冊',
+    titleEn: 'Manual',
     intro: '從架構到細節：三層模型協作的可執行規範。',
+    introEn: 'From architecture to details: the executable spec for 3-tier model collaboration.',
     items: [
       { order: 300, slug: 'getting-started', title: 'Getting Started', source: 'docs/getting-started.md' },
       { order: 301, slug: 'architecture', title: '三層架構設計', source: 'docs/architecture.md',
@@ -88,7 +96,9 @@ export const NAV: Section[] = [
   {
     id: 'examples',
     title: '範例庫',
+    titleEn: 'Examples',
     intro: '5 個真實任務的完整評分過程，看別人怎麼用。',
+    introEn: '5 real tasks fully scored — see how routing decisions are made.',
     items: [
       { order: 351, slug: 'ex-tier-exec-eslint', title: 'Tier-Exec：加 ESLint 配置', source: 'examples/01-tier-exec-eslint.md',
         description: '機械配置任務的典型路由', subgroup: 'Tier-Exec' },
@@ -105,7 +115,9 @@ export const NAV: Section[] = [
   {
     id: 'experiments',
     title: "實驗記錄",
+    titleEn: "Experiments",
     intro: "用真實任務驗證三層協作 vs 單模型 / 人工的差異。",
+    introEn: "Validating 3-tier vs single-model collaboration with real tasks.",
     items: [
       { order: 401, slug: "experiments-readme", title: "實驗概述", source: "experiments/README.md" },
       { order: 402, slug: "methodology", title: "方法論", source: "experiments/methodology.md" },
@@ -117,7 +129,9 @@ export const NAV: Section[] = [
   {
     id: "strategy",
     title: "戰略思考",
+    titleEn: "Strategy",
     intro: "把這套東西當作產品來思考：護城河、用戶、命名與商業化盲點。",
+    introEn: "Thinking about this as a product: moats, users, naming, and blind spots.",
     items: [
       { order: 501, slug: "yc-blindspots", title: "YC 盲點清單", source: "YC_BLINDSPOTS.md" },
     ],

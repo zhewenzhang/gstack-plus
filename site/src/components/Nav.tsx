@@ -16,7 +16,7 @@ export default function Nav() {
   const items = [
     { label: t.home[lang],        to: '/' },
     { label: t.playground[lang],  to: '/playground' },
-    { label: t.manual[lang],      to: '/doc/architecture' },
+    { label: t.manual[lang],      to: '/doc/getting-started' },
     { label: t.notes[lang],       to: '/doc/gstack-overview' },
     { label: t.experiments[lang], to: '/doc/experiments-readme' },
     { label: t.strategy[lang],    to: '/doc/yc-blindspots' },

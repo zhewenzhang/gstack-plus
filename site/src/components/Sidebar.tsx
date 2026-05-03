@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import { NAV, type Item } from '@/content/manifest';
+import { useLang } from '@/i18n/useLang';
 
 function groupBySubgroup(items: Item[]): { name: string | null; items: Item[] }[] {
   const result: { name: string | null; items: Item[] }[] = [];
@@ -17,6 +18,7 @@ function groupBySubgroup(items: Item[]): { name: string | null; items: Item[] }[
 }
 
 export default function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
+  const [lang] = useLang();
   return (
     <aside className="h-full w-full overflow-y-auto px-6 py-8 lg:py-10">
       {NAV.map(section => {
@@ -24,9 +26,13 @@ export default function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
         const hasSubgroups = grouped.some(g => g.name);
         return (
           <div key={section.id} className="mb-8">
-            <div className="font-display text-xl text-ink mb-1">{section.title}</div>
-            {section.intro && (
-              <p className="text-xs text-muted mb-3 leading-snug">{section.intro}</p>
+            <div className="font-display text-xl text-ink mb-1">
+              {lang === 'en' && section.titleEn ? section.titleEn : section.title}
+            </div>
+            {(section.intro || section.introEn) && (
+              <p className="text-xs text-muted mb-3 leading-snug">
+                {lang === 'en' && section.introEn ? section.introEn : section.intro}
+              </p>
             )}
             {hasSubgroups ? (
               grouped.map((g, idx) => (

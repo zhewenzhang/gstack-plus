@@ -5,6 +5,8 @@ import Hero from '@/components/Hero';
 import QuickTry from '@/components/QuickTry';
 import HomeBelowFold from '@/components/HomeBelowFold';
 
+const SITE_VERSION = '0.3.0';
+
 export default function Home() {
   const location = useLocation();
   useEffect(() => {
@@ -24,7 +26,7 @@ export default function Home() {
       <QuickTry />
       <HomeBelowFold />
       <footer className="border-t border-neutral-200 py-10 px-5 text-center text-xs text-muted">
-        gstack<sup>+</sup> · v0.1.0 ·
+        gstack<sup>+</sup> · v{SITE_VERSION} ·
         <a href="https://www.npmjs.com/package/gstack-plus" target="_blank" rel="noreferrer" className="mx-1.5 hover:text-ink underline-offset-4 hover:underline">npm</a>·
         <a href="https://github.com/zhewenzhang/gstack-plus" target="_blank" rel="noreferrer" className="mx-1.5 hover:text-ink underline-offset-4 hover:underline">GitHub</a>·
         <a href="https://github.com/zhewenzhang/gstack-plus/blob/main/LICENSE" target="_blank" rel="noreferrer" className="mx-1.5 hover:text-ink underline-offset-4 hover:underline">MIT</a>
