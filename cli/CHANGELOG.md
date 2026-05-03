@@ -4,15 +4,18 @@ All notable changes to the `gstack-plus` CLI will be documented here.
 
 ## [0.3.1] — 2026-05-04
 
-### Added
-- `gstack-plus config` — manage user preferences in `~/.gstack-plus.json`
-  - `gstack-plus config` — list current config
-  - `gstack-plus config set <key> <value>` — set preference (lang, handoffDir)
-  - `gstack-plus config get <key>` — read a preference
-  - `gstack-plus config reset` — clear all settings
+### Fixed (site)
+- Nav "Docs" label correctly set in English mode (was "Manual")
+- QuickTry "Getting Started" link now points to `/doc/getting-started` (was `/doc/cli`)
 
-### Improved
-- `gstack-plus classify` and `gstack-plus init` now auto-load your saved language and handoff directory
+### Added (CLI)
+- `gstack-plus config` — manage user preferences in `~/.gstack-plus.json`
+  - `config` — list all settings
+  - `config set lang en` — remember language preference
+  - `config set handoffDir <path>` — remember default handoff directory
+  - `config get <key>` — read one setting
+  - `config reset` — clear all settings
+- `classify` and `init` now auto-load saved `lang` and `handoffDir` from config
 
 ## [0.3.0] — 2026-05-04
 

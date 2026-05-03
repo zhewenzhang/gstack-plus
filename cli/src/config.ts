@@ -25,12 +25,13 @@ export async function saveConfig(config: Config): Promise<void> {
 
 export async function setConfigValue(key: keyof Config, value: string): Promise<void> {
   const current = await loadConfig();
-  if (key === 'lang' && (value === 'zh' || value === 'en')) {
+  if (key === 'lang') {
+    if (value !== 'zh' && value !== 'en') throw new Error('lang must be "zh" or "en"');
     current.lang = value;
   } else if (key === 'handoffDir') {
     current.handoffDir = value;
   } else {
-    throw new Error(`Unknown config key: ${key}`);
+    throw new Error(`Unknown config key: "${key}". Valid keys: lang, handoffDir`);
   }
   await saveConfig(current);
 }

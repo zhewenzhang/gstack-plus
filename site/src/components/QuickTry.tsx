@@ -68,7 +68,7 @@ gstack-plus classify "Your task description"`} />
                 {s.linkBrowser[lang]}
               </Link>
               <Link
-                to="/doc/cli"
+                to="/doc/getting-started"
                 className="inline-flex items-center text-sm font-medium text-ink underline-offset-4 hover:underline"
               >
                 {s.linkCli[lang]}

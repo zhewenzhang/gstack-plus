@@ -25,9 +25,9 @@ program
     const { loadConfig } = await import('./config.js');
     const savedConfig = await loadConfig();
 
-    const langFlag = cmd?.parent?.opts?.()?.lang;
-    const lang = (langFlag === 'en' ? 'en' : (savedConfig.lang ?? 'zh')) as 'zh' | 'en';
-    const outDir = opts.out ?? savedConfig.handoffDir ?? './handoffs';
+    const flagLang = cmd?.parent?.opts?.()?.lang;
+    const lang = (flagLang === 'en' ? 'en' : flagLang === 'zh' ? 'zh' : (savedConfig.lang ?? 'zh')) as 'zh' | 'en';
+    const outDir = opts.out !== undefined && opts.out !== './handoffs' ? opts.out : (savedConfig.handoffDir ?? './handoffs');
     let scoring: Scoring;
 
     if (opts.auto) {
@@ -208,9 +208,8 @@ program
     const { resolve } = await import('node:path');
     const { loadConfig } = await import('./config.js');
     const savedConfig = await loadConfig();
-
-    const dirFromOption = opts.dir ?? savedConfig.handoffDir ?? './handoffs';
-    const dir = resolve(dirFromOption);
+    const resolvedDir = opts.dir !== undefined && opts.dir !== './handoffs' ? opts.dir : (savedConfig.handoffDir ?? './handoffs');
+    const dir = resolve(resolvedDir);
     let created = false;
     try {
       await access(dir);
@@ -221,9 +220,9 @@ program
 
     console.log('');
     if (created) {
-      console.log(chalk.green('\u2713') + chalk.bold(` Created ${dirFromOption}/`));
+      console.log(chalk.green('\u2713') + chalk.bold(` Created ${resolvedDir}/`));
     } else {
-      console.log(chalk.dim(`\u2192 ${dirFromOption}/ already exists`));
+      console.log(chalk.dim(`\u2192 ${resolvedDir}/ already exists`));
     }
     console.log('');
     console.log(chalk.bold("gstack-plus is ready. Here's how to start:"));
@@ -249,38 +248,47 @@ program
 
 program
   .command('config [action] [key] [value]')
-  .description('Manage gstack-plus configuration (stored in ~/.gstack-plus.json)')
+  .description('Manage user preferences stored in ~/.gstack-plus.json')
+  .addHelpText('after', `
+Examples:
+  gstack-plus config                     # list all saved settings
+  gstack-plus config set lang en         # remember English as default
+  gstack-plus config set handoffDir ~/handoffs
+  gstack-plus config get lang            # read one setting
+  gstack-plus config reset               # clear all settings
+  `)
   .action(async (action?: string, key?: string, value?: string) => {
-    const { loadConfig, setConfigValue, getConfigValue, getConfigPath } = await import('./config.js');
+    const { loadConfig, setConfigValue, getConfigValue, getConfigPath, saveConfig } = await import('./config.js');
 
-    // No args → list all config
     if (!action) {
       const config = await loadConfig();
       console.log('');
-      console.log(chalk.bold('gstack-plus configuration'));
+      console.log(chalk.bold('gstack-plus config'));
       console.log(chalk.dim(`Location: ${getConfigPath()}`));
       console.log('');
       if (Object.keys(config).length === 0) {
-        console.log(chalk.dim('(no config set — using defaults)'));
+        console.log(chalk.dim('  (no config set — using defaults)'));
+        console.log('');
+        console.log(chalk.dim('  Set a preference:  gstack-plus config set lang en'));
+        console.log(chalk.dim('  Set a preference:  gstack-plus config set handoffDir ./my-handoffs'));
       } else {
         for (const [k, v] of Object.entries(config)) {
-          console.log(`  ${chalk.bold(k)}: ${v}`);
+          console.log(`  ${chalk.bold(k.padEnd(14))}  ${v}`);
         }
       }
       console.log('');
       return;
     }
 
-    // set <key> <value>
     if (action === 'set') {
       if (!key || !value) {
         console.error(chalk.red('Usage: gstack-plus config set <key> <value>'));
-        console.error(chalk.dim('Keys: lang (zh|en), handoffDir'));
+        console.error(chalk.dim('Keys: lang (zh|en), handoffDir (path)'));
         process.exit(1);
       }
       try {
-        await setConfigValue(key as any, value);
-        console.log(chalk.green('\u2713') + ` Config updated: ${key} = ${value}`);
+        await setConfigValue(key as keyof import('./config.js').Config, value);
+        console.log(chalk.green('\u2713') + `  ${key} = ${chalk.bold(value)}`);
       } catch (err) {
         console.error(chalk.red(String(err)));
         process.exit(1);
@@ -288,15 +296,14 @@ program
       return;
     }
 
-    // get <key>
     if (action === 'get') {
       if (!key) {
         console.error(chalk.red('Usage: gstack-plus config get <key>'));
         process.exit(1);
       }
       try {
-        const val = await getConfigValue(key as any);
-        console.log(val || chalk.dim('(not set)'));
+        const val = await getConfigValue(key as keyof import('./config.js').Config);
+        console.log(val ?? chalk.dim('(not set)'));
       } catch (err) {
         console.error(chalk.red(String(err)));
         process.exit(1);
@@ -304,16 +311,14 @@ program
       return;
     }
 
-    // reset
     if (action === 'reset') {
-      const { writeFile } = await import('node:fs/promises');
-      await writeFile(getConfigPath(), '{}', 'utf-8');
-      console.log(chalk.green('\u2713') + ' Config reset to defaults');
+      await saveConfig({});
+      console.log(chalk.green('\u2713') + '  Config reset to defaults');
       return;
     }
 
-    console.error(chalk.red(`Unknown action: ${action}`));
-    console.error(chalk.dim('Actions: set <key> <value>, get <key>, reset, (no args to list)'));
+    console.error(chalk.red(`Unknown action: "${action}"`));
+    console.error(chalk.dim('Valid actions: set <key> <value>, get <key>, reset, (or no args to list)'));
     process.exit(1);
   });
 

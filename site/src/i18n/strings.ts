@@ -5,7 +5,7 @@ export const STRINGS = {
   nav: {
     home:        { zh: '首頁',   en: 'Home' },
     playground:  { zh: '試玩場', en: 'Playground' },
-    manual:      { zh: '手冊',   en: 'Manual' },
+    manual:      { zh: '手冊',   en: 'Docs' },
     notes:       { zh: '筆記',   en: 'Notes' },
     experiments: { zh: '實驗',   en: 'Experiments' },
     strategy:    { zh: '戰略',   en: 'Strategy' },
@@ -44,7 +44,7 @@ export const STRINGS = {
     captionInstall:   { zh: '或全域安裝',               en: 'Or install globally' },
     captionSkip:      { zh: '跳過互動，直接給分數',     en: 'Skip the prompts' },
     sampleEyebrow:    { zh: '你會看到', en: "What you'll see" },
-    linkCli:          { zh: '看完整 CLI 手冊 →', en: 'Read the full CLI guide →' },
+    linkCli:          { zh: '看完整入門指南 →', en: 'Read the Getting Started guide →' },
     linkBrowser:      { zh: '或在瀏覽器試 →',     en: 'Or try in browser →' },
   },
 
