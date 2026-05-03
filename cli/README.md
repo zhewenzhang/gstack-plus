@@ -28,6 +28,16 @@ gstack-plus classify "task description" --scores 4,3,4,2,2
 
 Order: `judgment,context,risk,verifiability,creativity` — each 1–5.
 
+### Auto mode (uses Claude API)
+
+```bash
+ANTHROPIC_API_KEY=sk-... gstack-plus classify "Refactor auth middleware" --auto
+```
+
+Uses `claude-haiku-4-5-20251001` to score the task automatically. Faster for batch use and experimentation. Same routing rules apply to the auto-scored result.
+
+Without the env var, use `--api-key sk-...` directly.
+
 ### Print routing rules
 
 ```bash

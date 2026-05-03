@@ -7,7 +7,11 @@
   "bin": {
     "gstack-plus": "./dist/index.js"
   },
-  "files": ["dist", "templates", "README.md"],
+  "files": [
+    "dist",
+    "templates",
+    "README.md"
+  ],
   "scripts": {
     "dev": "tsx src/index.ts",
     "build": "tsup src/index.ts --format esm --target node18 --clean --shims",
@@ -15,17 +19,18 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "commander": "^12.1.0",
-    "prompts": "^2.4.2",
+    "@anthropic-ai/sdk": "^0.39.0",
     "chalk": "^5.3.0",
-    "ora": "^8.0.1"
+    "commander": "^12.1.0",
+    "ora": "^8.0.1",
+    "prompts": "^2.4.2"
   },
   "devDependencies": {
-    "typescript": "^5.4.0",
     "@types/node": "^20.0.0",
     "@types/prompts": "^2.4.9",
-    "tsx": "^4.7.0",
     "tsup": "^8.0.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.4.0",
     "vitest": "^1.4.0"
   }
 }

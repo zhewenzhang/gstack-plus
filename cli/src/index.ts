@@ -18,10 +18,27 @@ program
   .description('Classify a task across 5 dimensions and route to the right Tier')
   .option('-o, --out <dir>', 'Output directory for handoff doc', './handoffs')
   .option('--scores <csv>', 'Skip prompts; provide scores as judgment,context,risk,verifiability,creativity (1-5 each)')
-  .action(async (task: string, opts: { out: string; scores?: string }) => {
+  .option('--auto', 'Use Claude API (claude-haiku) to auto-score the task (requires ANTHROPIC_API_KEY)')
+  .option('--api-key <key>', 'Anthropic API key (overrides ANTHROPIC_API_KEY env var)')
+  .action(async (task: string, opts: { out: string; scores?: string; auto?: boolean; apiKey?: string }) => {
     let scoring: Scoring;
 
-    if (opts.scores) {
+    if (opts.auto) {
+      const ora = (await import('ora')).default;
+      const spinner = ora('Scoring task with Claude Haiku\u2026').start();
+      try {
+        const { autoScore } = await import('./auto-score.js');
+        scoring = await autoScore(task, opts.apiKey);
+        spinner.succeed('Auto-scored');
+        const labels = ['judgment', 'context', 'risk', 'verifiability', 'creativity'] as const;
+        for (const k of labels) {
+          console.log(`  ${k.padEnd(15)} ${scoring[k]}`);
+        }
+      } catch (err) {
+        spinner.fail(String(err));
+        process.exit(1);
+      }
+    } else if (opts.scores) {
       const parts = opts.scores.split(',').map(n => parseInt(n.trim(), 10));
       if (parts.length !== 5 || parts.some(n => isNaN(n) || n < 1 || n > 5)) {
         console.error(chalk.red('--scores 需要 5 個 1\u20135 的數字，逗號分隔。例: --scores 4,3,4,2,2'));
