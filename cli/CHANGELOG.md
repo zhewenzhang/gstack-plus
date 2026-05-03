@@ -2,6 +2,19 @@
 
 All notable changes to the `gstack-plus` CLI will be documented here.
 
+## [0.3.0] — 2026-05-04
+
+### Added
+- `gstack-plus init` — creates `./handoffs/` directory and prints a step-by-step quick-start guide
+- GitHub Actions CI — build + test workflow on every push/PR
+
+### Tests
+- `route.test.ts`: 4 new tests for bilingual reason output (`lang` parameter)
+- `examples-data.test.ts`: new test suite (7 tests) for EXAMPLES array and `findExample()`
+
+### Docs
+- New *Getting Started* guide on the documentation site
+
 ## [0.2.1] — 2026-05-03
 
 ### Fixed

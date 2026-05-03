@@ -11,7 +11,7 @@ const program = new Command();
 program
   .name('gstack-plus')
   .description('Multi-tier model orchestration CLI')
-  .version('0.2.0')
+  .version('0.3.0')
   .option('--lang <lang>', 'Language for interactive prompts (zh | en)', 'zh');
 
 program
@@ -191,6 +191,51 @@ program
     }
     console.log('');
     console.log(chalk.dim(`Directory: ${opts.dir}  |  Run with -d <path> to change`));
+    console.log('');
+  });
+
+program
+  .command('init')
+  .description('Set up gstack-plus in the current directory — creates handoffs/ dir and prints quick-start guide')
+  .option('-d, --dir <dir>', 'Handoff output directory to create', './handoffs')
+  .action(async (opts: { dir: string }) => {
+    const { mkdir, access } = await import('node:fs/promises');
+    const { resolve } = await import('node:path');
+
+    const dir = resolve(opts.dir);
+    let created = false;
+    try {
+      await access(dir);
+    } catch {
+      await mkdir(dir, { recursive: true });
+      created = true;
+    }
+
+    console.log('');
+    if (created) {
+      console.log(chalk.green('\u2713') + chalk.bold(` Created ${opts.dir}/`));
+    } else {
+      console.log(chalk.dim(`\u2192 ${opts.dir}/ already exists`));
+    }
+    console.log('');
+    console.log(chalk.bold("gstack-plus is ready. Here's how to start:"));
+    console.log('');
+    console.log(`  1. Describe a task you're about to work on:`);
+    console.log(`     ${chalk.cyan('gstack-plus classify "Refactor auth middleware to support OAuth"')}`);
+    console.log('');
+    console.log(`  2. Answer 5 quick scoring questions (1\u20135 each).`);
+    console.log(`     The CLI routes to Tier-A / Tier-Mid / Tier-Exec and writes a handoff doc.`);
+    console.log('');
+    console.log(`  3. Open the handoff doc, fill in Scope Lock + Completion Criteria,`);
+    console.log(`     then send it to the right model.`);
+    console.log('');
+    console.log(chalk.dim('Other commands:'));
+    console.log(chalk.dim(`  gstack-plus examples        browse 5 built-in routing examples`));
+    console.log(chalk.dim(`  gstack-plus rules           print the routing rules`));
+    console.log(chalk.dim(`  gstack-plus history         list your recent handoffs`));
+    console.log(chalk.dim(`  gstack-plus --lang en ...   switch to English prompts`));
+    console.log('');
+    console.log(chalk.dim(`Docs: https://zhewenzhang.github.io/gstack-plus/`));
     console.log('');
   });
 

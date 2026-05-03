@@ -26,3 +26,23 @@ describe('route()', () => {
     expect(route({ judgment:1, context:1, risk:1, verifiability:5, creativity:4 }).tier).toBe('Tier-A');
   });
 });
+
+describe('route() bilingual reasons', () => {
+  it('English: Tier-A reason does not contain Chinese', () => {
+    const d = route({ judgment:4, context:2, risk:2, verifiability:4, creativity:2 }, 'en');
+    expect(d.reason).toMatch(/Tier-A triggered/);
+    expect(d.reason).not.toMatch(/條件觸發/);
+  });
+  it('Chinese (default): Tier-A reason contains Chinese', () => {
+    const d = route({ judgment:4, context:2, risk:2, verifiability:4, creativity:2 });
+    expect(d.reason).toMatch(/Tier-A 條件觸發/);
+  });
+  it('English: Tier-Exec reason', () => {
+    const d = route({ judgment:1, context:1, risk:1, verifiability:5, creativity:1 }, 'en');
+    expect(d.reason).toMatch(/Tier-Exec conditions met/);
+  });
+  it('English: Tier-Mid reason', () => {
+    const d = route({ judgment:3, context:3, risk:3, verifiability:3, creativity:3 }, 'en');
+    expect(d.reason).toMatch(/defaulting to Tier-Mid/);
+  });
+});

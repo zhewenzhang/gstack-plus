@@ -51,6 +51,7 @@ export const NAV: Section[] = [
     title: '開發手冊',
     intro: '從架構到細節：三層模型協作的可執行規範。',
     items: [
+      { order: 300, slug: 'getting-started', title: 'Getting Started', source: 'docs/getting-started.md' },
       { order: 301, slug: 'architecture', title: '三層架構設計', source: 'docs/architecture.md',
         subgroup: '架構', description: 'Tier-A / Tier-Mid / Tier-Exec 的角色、邊界與成本權衡' },
 
