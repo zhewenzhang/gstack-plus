@@ -28,9 +28,16 @@ export default function QuickTry() {
             <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight mb-4">
               Try it in 30 seconds.
             </h2>
+            <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-4" style={{ color: '#555' }}>
+              30 秒上手，零安裝。
+            </h2>
             <p className="text-base text-muted leading-relaxed mb-6">
               Score any task on 5 dimensions, get a routing decision, and a pre-filled handoff doc.
               No install, no API key needed for the basic flow.
+            </p>
+            <p className="text-base leading-relaxed mb-6" style={{ color: '#888' }}>
+              給任何任務打 5 個維度評分，即時得到路由決策 + 預填的 Handoff 文件。
+              不需安裝、不需 API Key，基本流程即可使用。
             </p>
 
             <div className="space-y-3 mb-6">

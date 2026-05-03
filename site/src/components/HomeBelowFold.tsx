@@ -18,18 +18,29 @@ export default function HomeBelowFold() {
         <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight mb-4">
           一個放在 gstack 與 superpowers 之上的「模型派遣層」。
         </h2>
+        <h2 className="font-display text-2xl sm:text-3xl leading-tight mb-4" style={{ color: '#555' }}>
+          A "model dispatch layer" on top of gstack & superpowers.
+        </h2>
         <p className="text-base sm:text-lg text-muted leading-relaxed">
           現有的 AI 工作流框架（gstack、superpowers）已經把「角色技能」做得很好，但所有任務還是丟給同一個模型。
           gstack-plus 在它們之上加一層分類器，把判斷、審查、執行分派到三個不同的 tier，
           讓你用 Opus 的判斷力 + Sonnet 的紀律 + Exec 的成本，做出比單模型更好的決策。
         </p>
+        <p className="text-base leading-relaxed mt-4" style={{ color: '#888' }}>
+          Existing AI workflow frameworks (gstack, superpowers) already do "role skills" well, but every task still goes to one model.
+          gstack-plus adds a classifier layer that dispatches judgment, review, and execution to three different tiers,
+          giving you better decisions using Opus for judgment + Sonnet for discipline + Exec for cost efficiency.
+        </p>
       </div>
 
       {/* Reading path */}
       <div className="mb-20">
-        <div className="text-xs uppercase tracking-widest text-muted mb-3">推薦閱讀路徑</div>
-        <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight mb-8">
+        <div className="text-xs uppercase tracking-widest text-muted mb-3">推薦閱讀路徑 · Recommended Reading Path</div>
+        <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight mb-2">
           五步從動手到深入。
+        </h2>
+        <h2 className="font-display text-2xl sm:text-3xl leading-tight mb-8" style={{ color: '#555' }}>
+          Five steps, from hands-on to deep understanding.
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
           {READING_PATH.map(p => (
@@ -50,9 +61,12 @@ export default function HomeBelowFold() {
 
       {/* Categories */}
       <div>
-        <div className="text-xs uppercase tracking-widest text-muted mb-3">完整目錄</div>
-        <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight mb-8">
+        <div className="text-xs uppercase tracking-widest text-muted mb-3">完整目錄 · Full Directory</div>
+        <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight mb-2">
           按你關心的層次切入。
+        </h2>
+        <h2 className="font-display text-2xl sm:text-3xl leading-tight mb-8" style={{ color: '#555' }}>
+          Jump in at the level you care about.
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {NAV.map(section => {

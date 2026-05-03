@@ -58,6 +58,12 @@ export default function Hero() {
           Beyond <em className="italic" style={{ color: '#6F6F6F' }}>silos,</em> we orchestrate{' '}
           <em className="italic" style={{ color: '#6F6F6F' }}>the eternal.</em>
         </h1>
+        <p
+          className="font-display font-normal animate-fade-rise-delay text-xl sm:text-2xl md:text-3xl max-w-3xl mt-4 leading-snug px-2"
+          style={{ letterSpacing: '-0.02em', color: '#2a2a2a' }}
+        >
+          多模型協作框架 —— 把每個任務路由到正確的 Tier。
+        </p>
 
         <p
           className="font-body text-sm sm:text-base md:text-lg max-w-2xl mt-6 sm:mt-8 leading-relaxed animate-fade-rise-delay px-2"
@@ -67,6 +73,12 @@ export default function Hero() {
           <span className="text-ink"> Tier-A</span> for judgment,
           <span className="text-ink"> Tier-Mid</span> for review,
           <span className="text-ink"> Tier-Exec</span> for execution.
+        </p>
+        <p
+          className="font-body text-sm max-w-2xl leading-relaxed animate-fade-rise-delay px-2"
+          style={{ color: '#9F9F9F' }}
+        >
+          多層模型協作框架。根據判斷、風險、可驗證性等維度，將任務路由到 Tier-A（決策）、Tier-Mid（審查）或 Tier-Exec（執行），在保持質量的前提下降低成本。
         </p>
 
         <div className="flex flex-col sm:flex-row gap-3 mt-8 sm:mt-10 animate-fade-rise-delay-2">
