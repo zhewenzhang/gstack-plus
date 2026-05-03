@@ -4,142 +4,165 @@
 
 **Multi-tier model orchestration for AI-augmented development.**
 
-Route every task to the right model: Tier-A for judgment, Tier-Mid for review, Tier-Exec for execution.
-
+[![npm](https://img.shields.io/npm/v/gstack-plus?style=flat-square&color=000000&label=npm)](https://www.npmjs.com/package/gstack-plus)
 [![Docs](https://img.shields.io/badge/docs-online-000000?style=flat-square)](https://zhewenzhang.github.io/gstack-plus/)
-[![npm](https://img.shields.io/npm/v/gstack-plus?style=flat-square&color=000000)](https://www.npmjs.com/package/gstack-plus)
+[![Playground](https://img.shields.io/badge/playground-try%20it%20live-6F6F6F?style=flat-square)](https://zhewenzhang.github.io/gstack-plus/#/playground)
 [![License](https://img.shields.io/badge/license-MIT-000000?style=flat-square)](./LICENSE)
-[![Status](https://img.shields.io/badge/status-experimental-6F6F6F?style=flat-square)]()
+[![Status](https://img.shields.io/badge/status-active-10b981?style=flat-square)]()
 
-[**📖 Read the docs →**](https://zhewenzhang.github.io/gstack-plus/) &nbsp;·&nbsp;
-[**🗺 Roadmap**](./PROJECT_ROADMAP.md) &nbsp;·&nbsp;
-[**🧪 Experiments**](./experiments/)
+[**🎮 Try Playground**](https://zhewenzhang.github.io/gstack-plus/#/playground) &nbsp;·&nbsp;
+[**📖 Read Docs**](https://zhewenzhang.github.io/gstack-plus/) &nbsp;·&nbsp;
+[**🚀 Install CLI**](#try-it-the-cli)
 
 </div>
 
+<br/>
+
+> **Don't let one model carry everything.** Route every task to the right tier — Opus for judgment, Sonnet for review, Exec for execution. Better decisions, lower spend.
+
 ---
 
-## What is this
+## The Problem
 
-Most AI workflows today route every task to a single model. But not every task needs Opus-level judgment, and not every task can be safely handed to a cheap executor.
+Every AI workflow today makes the same mistake: **sending every task to the same model.**
 
-**gstack-plus** adds a routing layer on top of role-based skill libraries (like [gstack](https://github.com/your-org/gstack) and [superpowers](https://github.com/obra/superpowers)). It classifies each task across 5 dimensions, then dispatches it to the right tier:
-
-| Tier | Model class | Job |
-|------|-------------|-----|
-| **Tier-A** | Opus / GPT-5 / Gemini Ultra | Architecture, judgment-heavy, high-risk decisions |
-| **Tier-Mid** | Sonnet / GPT-4.1 | Review, verification, integration |
-| **Tier-Exec** | Qwen / DeepSeek / Haiku | Execution within a defined scope |
-
-The result: better decisions on the hard parts, cheaper execution on the easy parts, and a paper trail of *why each task got the model it got*.
-
-## Why it exists
-
-Single-model workflows fail in two predictable ways:
-
-1. **Over-spending** — using Opus for `git rebase --autosquash` is wasteful.
-2. **Under-thinking** — using Haiku to design an auth migration is dangerous.
-
-A 5-dimension classifier (judgment / context / risk / verifiability / creativity) plus a *conservative routing* default ("when in doubt, route up") makes both failure modes much rarer.
-
-## Architecture in 30 seconds
-
-```
-                        ┌────────────────┐
-   New task  ─────────► │   Classifier   │  ── 5-dim scoring
-                        └───────┬────────┘
-                                ▼
-                  ┌──────────────────────────┐
-                  │     Routing rules        │
-                  │  judg≥4 ∨ risk≥4 → A     │
-                  │  judg≤2 ∧ verif≥4 → Exec │
-                  │  else → Mid              │
-                  └──────────┬───────────────┘
-                             ▼
-        ┌────────────┬───────┴──────┬────────────┐
-        ▼            ▼              ▼            ▼
-     Tier-A      Tier-Mid       Tier-Exec    (handoff
-   (judgment)   (review)       (execution)   templates
-                                              between
-                                              tiers)
-```
-
-[**Read the full architecture doc →**](https://zhewenzhang.github.io/gstack-plus/#/doc/architecture)
-
-## Documentation
-
-The full handbook is hosted at **https://zhewenzhang.github.io/gstack-plus/**.
-
-| 區段 | 內容 |
+| What happens | The cost |
 |---|---|
-| [概覽](https://zhewenzhang.github.io/gstack-plus/#/doc/roadmap) | 路線圖、核心洞察、學習計劃 |
-| [學習筆記](https://zhewenzhang.github.io/gstack-plus/#/doc/gstack-overview) | gstack & superpowers 解剖、對比 |
-| [開發手冊](https://zhewenzhang.github.io/gstack-plus/#/doc/architecture) | 架構、分類器、交接模板、失敗恢復、整合 |
-| [實驗記錄](https://zhewenzhang.github.io/gstack-plus/#/doc/experiments-readme) | 三層 vs 單模型對照實驗 |
-| [戰略思考](https://zhewenzhang.github.io/gstack-plus/#/doc/yc-blindspots) | YC 風格盲點清單與商業化思考 |
+| 🔴 **Over-spending** — Opus on `git rebase` | Wasted tokens, slower feedback |
+| 🔴 **Under-thinking** — Haiku designing auth migration | Dangerous decisions, rework |
 
-## Try it: the CLI
+## The Solution
 
-```bash
-# No install needed (npx runs the latest version):
-npx gstack-plus classify "Refactor the auth middleware to support OAuth"
+**gstack-plus** adds a routing layer on top of role-based skill libraries ([gstack](https://github.com/your-org/gstack), [superpowers](https://github.com/obra/superpowers)). Every task gets scored across **5 dimensions**, then dispatched to the right tier:
 
-# Or install globally:
-npm install -g gstack-plus
+<div align="center">
+
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tier&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Model&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Job | When |
+|---|---|---|---|
+| **🟣 Tier-A** | Opus / GPT-5 | Judgment & architecture | Risk ≥ 4 OR Creativity ≥ 4 |
+| **🔵 Tier-Mid** | Sonnet / GPT-4.1 | Review & verification | Everything in between |
+| **🟢 Tier-Exec** | Qwen / DeepSeek | Scoped execution | Verifiable AND low-risk |
+
+</div>
+
+## How It Works
+
+```
+  Your task
+      │
+      ▼
+ ┌─────────────┐
+ │  Classifier  │  5-dimension scoring
+ └──────┬──────┘
+        ▼
+ ┌──────────────┐
+ │ Routing Rules │  judgment≥4 OR risk≥4 → Tier-A
+ └──────┬───────┘  verifiable AND low-risk → Tier-Exec
+        ▼           else → Tier-Mid
+ ┌──────┴──────┬──────────┐
+ ▼             ▼          ▼
+Tier-A      Tier-Mid   Tier-Exec
+(judgment)  (review)   (execution)
 ```
 
-You'll be walked through 5 questions (judgment / context / risk / verifiability / creativity, each 1–5), then get a routing decision and a pre-filled handoff doc.
+### The 5 Dimensions
+
+| Dimension | What it measures |
+|---|---|
+| **Judgment** | How much human-level decision-making? |
+| **Context** | How much codebase knowledge is needed? |
+| **Risk** | What's the cost of getting it wrong? |
+| **Verifiability** | Can success be auto-verified? |
+| **Creativity** | How much novel design is required? |
+
+---
+
+## Try It: The CLI
+
+No install needed — `npx` picks up the latest version:
 
 ```bash
-# Skip the prompts — pass scores directly:
-gstack-plus classify "Rename getCwd → getCurrentWorkingDirectory" --scores 1,1,1,5,1
-# → Tier-Exec  (verifiable, low-risk, narrow context)
+npx gstack-plus classify "Refactor the auth middleware to support OAuth"
+```
 
-gstack-plus classify "Design new auth flow for SSO + MFA" --scores 5,4,5,2,4
-# → Tier-A  (judgment + risk + creativity all trigger)
+Walks you through 5 questions → routing decision → pre-filled handoff doc.
+
+### Quick Start
+
+```bash
+# Skip prompts — pass scores directly:
+gstack-plus classify "Rename getCwd" --scores 1,1,1,5,1
+# → Tier-Exec  ✅
+
+gstack-plus classify "Design SSO + MFA" --scores 5,4,5,2,4
+# → Tier-A  🟣
 
 # English prompts:
-gstack-plus --lang en classify "Your task description"
+gstack-plus --lang en classify "Your task"
 
-# Browse 5 built-in routing examples:
+# Browse 5 built-in examples:
 gstack-plus examples
-gstack-plus examples auth     # show one by name
 
-# Review your recent handoffs:
+# Review recent handoffs:
 gstack-plus history
 ```
 
-See [`cli/README.md`](./cli/README.md) for full usage.
+### Install
 
-## Project status
+```bash
+npm install -g gstack-plus
+gstack-plus --version    # 0.2.1
+```
 
-This is an **experimental research project**, published and active.
+---
 
-- ✅ Framework docs — classifier, routing rules, handoff templates, failure recovery
-- ✅ CLI v0.1.0 — `classify`, `rules`, `--scores`, `--auto` (Claude Haiku)
-- ✅ Documentation site — https://zhewenzhang.github.io/gstack-plus/
-- ✅ Web Playground — browser-based classifier with share URL
-- ✅ i18n — 中/EN language toggle on site
-- ✅ CLI v0.2.0 — `examples` command, `--lang zh|en`
-- ✅ CLI v0.2.1 — bilingual output fix, `history` command
-- 🚧 Mode A/B experiments — in progress (user-run)
+## Documentation
 
-See [`PROJECT_ROADMAP.md`](./PROJECT_ROADMAP.md) for the full plan.
+Full handbook: **[https://zhewenzhang.github.io/gstack-plus/](https://zhewenzhang.github.io/gstack-plus/)**
 
-## Repository layout
+| Section | What's inside |
+|---|---|
+| [🗺 Roadmap](https://zhewenzhang.github.io/gstack-plus/#/doc/roadmap) | Project phases and timeline |
+| [🏗 Architecture](https://zhewenzhang.github.io/gstack-plus/#/doc/architecture) | 3-tier model design, boundaries, cost tradeoffs |
+| [📊 Classifier](https://zhewenzhang.github.io/gstack-plus/#/doc/scoring-guide) | 5-dimension scoring guide + routing rules |
+| [📋 Handoff Templates](https://zhewenzhang.github.io/gstack-plus/#/doc/plan-to-exec) | Plan→Exec, Exec→Check, Check→Plan formats |
+| [🔧 Failure Recovery](https://zhewenzhang.github.io/gstack-plus/#/doc/failure-catalog) | Pre-flight checklist + failure routing tree |
+| [🧪 Experiments](https://zhewenzhang.github.io/gstack-plus/#/doc/experiments-readme) | 3-mode × 3-task comparative study |
+| [💡 Strategy](https://zhewenzhang.github.io/gstack-plus/#/doc/yc-blindspots) | YC-style blindspot analysis |
+
+---
+
+## Project Status
+
+**Active research project.** Published and maintained.
+
+| Milestone | Status |
+|---|---|
+| Framework docs (classifier, templates, recovery) | ✅ Complete |
+| CLI v0.1.0 (`classify`, `rules`, `--auto`) | ✅ [npm](https://www.npmjs.com/package/gstack-plus) |
+| Documentation site + Web Playground | ✅ [Live](https://zhewenzhang.github.io/gstack-plus/) |
+| i18n — 中/EN toggle | ✅ Complete |
+| CLI v0.2.0 (`examples`, `--lang`) | ✅ [Release](https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.2.0) |
+| CLI v0.2.1 (bilingual fix, `history`) | ✅ [Release](https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.2.1) |
+| Mode A/B comparative experiments | 🚧 In progress |
+
+---
+
+## Repository Layout
 
 ```
-classifier/      Task scoring + routing rules
+classifier/      5-dimension scoring + routing rules
 handoff/         Plan→Exec / Exec→Check / Check→Plan templates
-verification/    Pre-flight checklist + failure catalog + routing
-experiments/     Comparative experiment specs and results
-docs/            Architecture + integration guides + learning notes
-site/            The documentation website (React + Vite + Tailwind)
+verification/    Pre-flight checklist + failure catalog
+experiments/     Comparative experiment specs
+docs/            Architecture + learning notes
+cli/             npm package source
+site/            Documentation website (React + Vite)
 ```
 
 ## Contributing
 
-This project is in heavy iteration; PRs that touch the framework itself are best filed as discussion issues first. Documentation fixes (typos, clarifications) are very welcome — see [CONTRIBUTING.md](./CONTRIBUTING.md).
+Documentation fixes (typos, clarifications) are welcome — [CONTRIBUTING.md](./CONTRIBUTING.md). For framework changes, please open a discussion first.
 
 ## License
 
