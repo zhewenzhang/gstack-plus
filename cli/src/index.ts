@@ -70,7 +70,7 @@ program
     console.log(chalk.dim('Reason: ') + decision.reason);
     console.log('');
 
-    const outPath = await generateHandoff({ task, scoring, decision, outDir: opts.out });
+    const outPath = await generateHandoff({ task, scoring, decision, outDir: opts.out, lang });
     console.log(chalk.green('\u2713 ') + 'Handoff doc written \u2192 ' + chalk.underline(outPath));
     console.log('');
     const nextMsg = lang === 'en'

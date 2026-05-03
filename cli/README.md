@@ -18,7 +18,7 @@ npx gstack-plus classify "Fix the auth middleware bug"
 gstack-plus classify "Refactor user service to use new auth provider"
 ```
 
-Walks you through 5 prompts, then prints the routing decision and writes a handoff doc.
+Walks you through 5 prompts (1–5 scale), then prints the routing decision and writes a handoff doc.
 
 ### Non-interactive mode
 
@@ -28,15 +28,38 @@ gstack-plus classify "task description" --scores 4,3,4,2,2
 
 Order: `judgment,context,risk,verifiability,creativity` — each 1–5.
 
+### Language option
+
+```bash
+gstack-plus --lang en classify "task description"
+gstack-plus --lang zh classify "task description"   # default
+```
+
+Switches prompts and output messages to English or Chinese. Handoff doc language follows the flag.
+
 ### Auto mode (uses Claude API)
 
 ```bash
 ANTHROPIC_API_KEY=sk-... gstack-plus classify "Refactor auth middleware" --auto
 ```
 
-Uses `claude-haiku-4-5-20251001` to score the task automatically. Faster for batch use and experimentation. Same routing rules apply to the auto-scored result.
+Uses `claude-haiku-4-5-20251001` to score the task automatically. Same routing rules apply.
 
 Without the env var, use `--api-key sk-...` directly.
+
+### Browse examples
+
+```bash
+gstack-plus examples            # list all 5 built-in examples
+gstack-plus examples auth       # show one example by name with score breakdown
+```
+
+### View recent handoffs
+
+```bash
+gstack-plus history             # list recent handoff docs in ./handoffs/
+gstack-plus history -d ~/handoffs -n 20   # custom dir, show up to 20
+```
 
 ### Print routing rules
 

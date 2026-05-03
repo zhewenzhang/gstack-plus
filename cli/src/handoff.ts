@@ -10,8 +10,10 @@ export async function generateHandoff(opts: {
   scoring: Scoring;
   decision: RoutingDecision;
   outDir: string;
+  lang?: 'zh' | 'en';
 }): Promise<string> {
-  const tplPath = path.join(__dirname, '..', 'templates', 'handoff.md');
+  const tplFile = opts.lang === 'en' ? 'handoff-en.md' : 'handoff.md';
+  const tplPath = path.join(__dirname, '..', 'templates', tplFile);
   const tpl = await readFile(tplPath, 'utf-8');
 
   const ts = new Date().toISOString();
