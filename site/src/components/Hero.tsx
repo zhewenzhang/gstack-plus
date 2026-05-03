@@ -45,7 +45,7 @@ export default function Hero() {
       <div className="relative z-10 flex flex-col items-center justify-center text-center px-5 sm:px-6">
         {/* release pill */}
         <a
-          href="https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.1.0"
+          href={s.pillUrl}
           target="_blank" rel="noreferrer"
           className="inline-flex items-center gap-2 px-3 py-1 mb-6 rounded-full border border-neutral-200 bg-white text-[11px] uppercase tracking-wider hover:border-ink transition-colors animate-fade-rise"
         >

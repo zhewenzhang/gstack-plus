@@ -11,7 +11,8 @@ const program = new Command();
 program
   .name('gstack-plus')
   .description('Multi-tier model orchestration CLI')
-  .version('0.1.0');
+  .version('0.2.0')
+  .option('--lang <lang>', 'Language for interactive prompts (zh | en)', 'zh');
 
 program
   .command('classify <task>')
@@ -20,7 +21,8 @@ program
   .option('--scores <csv>', 'Skip prompts; provide scores as judgment,context,risk,verifiability,creativity (1-5 each)')
   .option('--auto', 'Use Claude API (claude-haiku) to auto-score the task (requires ANTHROPIC_API_KEY)')
   .option('--api-key <key>', 'Anthropic API key (overrides ANTHROPIC_API_KEY env var)')
-  .action(async (task: string, opts: { out: string; scores?: string; auto?: boolean; apiKey?: string }) => {
+  .action(async (task: string, opts: { out: string; scores?: string; auto?: boolean; apiKey?: string }, cmd) => {
+    const lang = (cmd?.parent?.opts?.()?.lang === 'en' ? 'en' : 'zh') as 'zh' | 'en';
     let scoring: Scoring;
 
     if (opts.auto) {
@@ -41,7 +43,9 @@ program
     } else if (opts.scores) {
       const parts = opts.scores.split(',').map(n => parseInt(n.trim(), 10));
       if (parts.length !== 5 || parts.some(n => isNaN(n) || n < 1 || n > 5)) {
-        console.error(chalk.red('--scores 需要 5 個 1\u20135 的數字，逗號分隔。例: --scores 4,3,4,2,2'));
+        console.error(chalk.red(lang === 'zh'
+          ? '--scores 需要 5 個 1\u20135 的數字，逗號分隔。例: --scores 4,3,4,2,2'
+          : '--scores needs 5 comma-separated 1\u20135 numbers. e.g. --scores 4,3,4,2,2'));
         process.exit(1);
       }
       scoring = {
@@ -52,7 +56,7 @@ program
         creativity: parts[4] as 1|2|3|4|5,
       };
     } else {
-      scoring = await interactiveScore(task);
+      scoring = await interactiveScore(task, lang);
     }
 
     const decision = route(scoring);
@@ -70,6 +74,58 @@ program
     console.log(chalk.green('\u2713 ') + 'Handoff doc written \u2192 ' + chalk.underline(outPath));
     console.log('');
     console.log(chalk.dim('Next: open the handoff doc, fill in Scope Lock + \u5b8c\u6210\u6a19\u6e96, send to your ' + decision.tier + ' model.'));
+  });
+
+program
+  .command('examples [query]')
+  .description('List built-in routing examples, or show one by name (e.g., examples auth)')
+  .action(async (query?: string) => {
+    const { EXAMPLES, findExample } = await import('./examples-data.js');
+
+    if (!query) {
+      console.log('');
+      console.log(chalk.bold(`${EXAMPLES.length} examples to study:`));
+      console.log('');
+      const longest = Math.max(...EXAMPLES.map(e => e.slug.length));
+      for (const ex of EXAMPLES) {
+        const tierColor = ex.tier === 'Tier-A' ? chalk.magenta
+                       : ex.tier === 'Tier-Mid' ? chalk.cyan
+                       : chalk.green;
+        console.log(`  ${chalk.bold(ex.slug.padEnd(longest + 2))}  ${tierColor(ex.tier.padEnd(10))}  ${chalk.dim(ex.description)}`);
+      }
+      console.log('');
+      console.log(chalk.dim(`Show details:  gstack-plus examples <name>`));
+      console.log(chalk.dim(`Read online:   ${EXAMPLES[0].url.replace(/\/[^/]+$/, '')}/...`));
+      return;
+    }
+
+    const ex = findExample(query);
+    if (!ex) {
+      console.error(chalk.red(`No example matched "${query}".`));
+      console.log(chalk.dim(`Available: ${EXAMPLES.map(e => e.slug).join(', ')}`));
+      process.exit(1);
+    }
+
+    const tierColor = ex.tier === 'Tier-A' ? chalk.bold.magenta
+                   : ex.tier === 'Tier-Mid' ? chalk.bold.cyan
+                   : chalk.bold.green;
+    console.log('');
+    console.log(chalk.bold(ex.title));
+    console.log(chalk.dim(ex.description));
+    console.log('');
+    console.log(`  judgment      ${ex.scores.judgment}`);
+    console.log(`  context       ${ex.scores.context}`);
+    console.log(`  risk          ${ex.scores.risk}`);
+    console.log(`  verifiability ${ex.scores.verifiability}`);
+    console.log(`  creativity    ${ex.scores.creativity}`);
+    console.log('');
+    console.log(`  \u2192 routes to ${tierColor(ex.tier)}`);
+    console.log('');
+    console.log(chalk.dim(`Full analysis: ${chalk.underline(ex.url)}`));
+    console.log('');
+    console.log(chalk.dim(`Try this scoring yourself:`));
+    const scores = `${ex.scores.judgment},${ex.scores.context},${ex.scores.risk},${ex.scores.verifiability},${ex.scores.creativity}`;
+    console.log(`  gstack-plus classify "your task" --scores ${scores}`);
   });
 
 program

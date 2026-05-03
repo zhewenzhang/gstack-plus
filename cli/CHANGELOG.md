@@ -2,6 +2,17 @@
 
 All notable changes to the `gstack-plus` CLI will be documented here.
 
+## [0.2.0] — 2026-05-03
+
+### Added
+- `gstack-plus examples` — list 5 built-in routing examples
+- `gstack-plus examples <name>` — show details of one example with score breakdown and link to the full analysis
+- `--lang en` / `--lang zh` — switch interactive prompt language (default: zh)
+
+### Notes
+- `--lang` only affects the interactive `classify` flow. Other commands and output remain bilingual where applicable.
+- Examples are bundled metadata-only; full analyses are served from the docs site.
+
 ## [0.1.0] — 2026-05-03
 
 ### Added

@@ -15,9 +15,10 @@ export const STRINGS = {
   // ─── Hero ───
   hero: {
     pill: {
-      zh: 'v0.1.0 已上 npm',
-      en: 'v0.1.0 live on npm',
+      zh: 'v0.2.0 已上 npm',
+      en: 'v0.2.0 live on npm',
     },
+    pillUrl: 'https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.2.0',
     headlineHtml: {
       zh: '別讓一個模型<em class="italic" style="color:#6F6F6F">扛下所有事</em>。<br/>讓對的層級做<em class="italic" style="color:#6F6F6F">對的事。</em>',
       en: 'Beyond <em class="italic" style="color:#6F6F6F">silos,</em> we orchestrate <em class="italic" style="color:#6F6F6F">the eternal.</em>',

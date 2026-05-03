@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Nav from '@/components/Nav';
 import { route, DIMENSIONS, PRESETS, type Scoring, type Score } from '@/lib/route';
@@ -54,6 +54,53 @@ ${task}
 export default function Playground() {
   const [task, setTask] = useState('');
   const [scoring, setScoring] = useState<Scoring>(DEFAULT_SCORING);
+
+  // ─── URL state sync (HashRouter-safe) ───
+  // HashRouter URL: https://.../#/playground?t=...&s=...
+  useEffect(() => {
+    const hash = window.location.hash;
+    const qIdx = hash.indexOf('?');
+    if (qIdx < 0) return;
+    const params = new URLSearchParams(hash.slice(qIdx + 1));
+    const t = params.get('t');
+    const s = params.get('s');
+    if (t) setTask(decodeURIComponent(t));
+    if (s) {
+      const parts = s.split(',').map(n => parseInt(n, 10));
+      if (parts.length === 5 && parts.every(n => n >= 1 && n <= 5)) {
+        setScoring({
+          judgment: parts[0] as Score,
+          context: parts[1] as Score,
+          risk: parts[2] as Score,
+          verifiability: parts[3] as Score,
+          creativity: parts[4] as Score,
+        });
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    const hash = window.location.hash;
+    const qIdx = hash.indexOf('?');
+    const route = qIdx >= 0 ? hash.slice(0, qIdx) : hash;
+    const params = new URLSearchParams();
+    if (task) params.set('t', task);
+    params.set('s', `${scoring.judgment},${scoring.context},${scoring.risk},${scoring.verifiability},${scoring.creativity}`);
+    const newHash = `${route}?${params.toString()}`;
+    if (window.location.hash !== newHash) {
+      window.history.replaceState(null, '', newHash);
+    }
+  }, [task, scoring]);
+
+  // ─── Share button ───
+  const [shareCopied, setShareCopied] = useState(false);
+  const copyShareUrl = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setShareCopied(true);
+      setTimeout(() => setShareCopied(false), 1500);
+    } catch { /* clipboard unavailable */ }
+  };
 
   const decision = useMemo(() => route(scoring), [scoring]);
   const updateScore = (key: keyof Scoring, value: number) =>
@@ -149,6 +196,12 @@ export default function Playground() {
             </div>
 
             <div className="mt-6 flex flex-wrap gap-3">
+              <button
+                onClick={copyShareUrl}
+                className="rounded-full px-6 py-3 text-sm border border-neutral-300 text-ink hover:bg-neutral-50 transition-colors"
+              >
+                {shareCopied ? '✓ Link copied' : 'Share this scoring'}
+              </button>
               <button
                 onClick={downloadHandoff}
                 className="rounded-full px-6 py-3 text-sm bg-ink text-white hover:scale-[1.03] transition-transform"
