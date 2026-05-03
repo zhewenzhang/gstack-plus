@@ -10,6 +10,8 @@
 [![License](https://img.shields.io/badge/license-MIT-000000?style=flat-square)](./LICENSE)
 [![Status](https://img.shields.io/badge/status-active-10b981?style=flat-square)]()
 
+[**English**](#) &nbsp;·&nbsp; [**中文**](./README.zh.md)
+
 [**🎮 Try Playground**](https://zhewenzhang.github.io/gstack-plus/#/playground) &nbsp;·&nbsp;
 [**📖 Read Docs**](https://zhewenzhang.github.io/gstack-plus/) &nbsp;·&nbsp;
 [**🚀 Install CLI**](#try-it-the-cli)
