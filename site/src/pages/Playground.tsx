@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Nav from '@/components/Nav';
+import { useLang } from '@/i18n/useLang';
 import { route, DIMENSIONS, PRESETS, type Scoring, type Score } from '@/lib/route';
 
 const TIER_COLOR: Record<string, string> = {
@@ -52,6 +53,7 @@ ${task}
 }
 
 export default function Playground() {
+  const [lang] = useLang();
   const [task, setTask] = useState('');
   const [scoring, setScoring] = useState<Scoring>(DEFAULT_SCORING);
 
@@ -102,7 +104,7 @@ export default function Playground() {
     } catch { /* clipboard unavailable */ }
   };
 
-  const decision = useMemo(() => route(scoring), [scoring]);
+  const decision = useMemo(() => route(scoring, lang), [scoring, lang]);
   const updateScore = (key: keyof Scoring, value: number) =>
     setScoring(prev => ({ ...prev, [key]: value as Score }));
 

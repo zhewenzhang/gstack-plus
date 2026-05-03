@@ -91,24 +91,38 @@ npm install -g gstack-plus
 You'll be walked through 5 questions (judgment / context / risk / verifiability / creativity, each 1–5), then get a routing decision and a pre-filled handoff doc.
 
 ```bash
+# Skip the prompts — pass scores directly:
 gstack-plus classify "Rename getCwd → getCurrentWorkingDirectory" --scores 1,1,1,5,1
 # → Tier-Exec  (verifiable, low-risk, narrow context)
 
 gstack-plus classify "Design new auth flow for SSO + MFA" --scores 5,4,5,2,4
 # → Tier-A  (judgment + risk + creativity all trigger)
+
+# English prompts:
+gstack-plus --lang en classify "Your task description"
+
+# Browse 5 built-in routing examples:
+gstack-plus examples
+gstack-plus examples auth     # show one by name
+
+# Review your recent handoffs:
+gstack-plus history
 ```
 
 See [`cli/README.md`](./cli/README.md) for full usage.
 
 ## Project status
 
-This is an **experimental research project**, not a production library yet.
+This is an **experimental research project**, published and active.
 
-- ✅ Phase 0: Learning notes — done
-- ✅ Phase 1: Handoff templates + classifier — done
-- ✅ Phase 2: Failure recovery — done
-- 🚧 Phase 3: Comparative experiments — in progress
-- ⏭ Phase 4: Open-source release — preparing
+- ✅ Framework docs — classifier, routing rules, handoff templates, failure recovery
+- ✅ CLI v0.1.0 — `classify`, `rules`, `--scores`, `--auto` (Claude Haiku)
+- ✅ Documentation site — https://zhewenzhang.github.io/gstack-plus/
+- ✅ Web Playground — browser-based classifier with share URL
+- ✅ i18n — 中/EN language toggle on site
+- ✅ CLI v0.2.0 — `examples` command, `--lang zh|en`
+- ✅ CLI v0.2.1 — bilingual output fix, `history` command
+- 🚧 Mode A/B experiments — in progress (user-run)
 
 See [`PROJECT_ROADMAP.md`](./PROJECT_ROADMAP.md) for the full plan.
 

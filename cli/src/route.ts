@@ -1,4 +1,4 @@
-import type { RoutingDecision, Scoring } from './types.js';
+import type { RoutingDecision, Scoring, Lang } from './types.js';
 
 /**
  * gstack-plus routing rules (mirrors classifier/routing-rules.md)
@@ -9,7 +9,7 @@ import type { RoutingDecision, Scoring } from './types.js';
  *
  * Conservative routing: when uncertain, route up.
  */
-export function route(s: Scoring): RoutingDecision {
+export function route(s: Scoring, lang: Lang = 'zh'): RoutingDecision {
   const triggered: string[] = [];
 
   if (s.judgment >= 4)   triggered.push(`judgment=${s.judgment} >= 4`);
@@ -19,7 +19,9 @@ export function route(s: Scoring): RoutingDecision {
   if (triggered.length > 0) {
     return {
       tier: 'Tier-A',
-      reason: `Tier-A 條件觸發：${triggered.join(', ')}`,
+      reason: lang === 'en'
+        ? `Tier-A triggered: ${triggered.join(', ')}`
+        : `Tier-A 條件觸發：${triggered.join(', ')}`,
       triggeredRules: triggered,
     };
   }
@@ -28,14 +30,18 @@ export function route(s: Scoring): RoutingDecision {
     const rules = [`judgment=${s.judgment} <= 2`, `context=${s.context} <= 2`, `verifiability=${s.verifiability} >= 4`];
     return {
       tier: 'Tier-Exec',
-      reason: `Tier-Exec 條件全部滿足：${rules.join(', ')}`,
+      reason: lang === 'en'
+        ? `Tier-Exec conditions met: ${rules.join(', ')}`
+        : `Tier-Exec 條件全部滿足：${rules.join(', ')}`,
       triggeredRules: rules,
     };
   }
 
   return {
     tier: 'Tier-Mid',
-    reason: '不滿足 Tier-A 或 Tier-Exec 任一觸發條件，default 路由到 Tier-Mid',
+    reason: lang === 'en'
+      ? 'No Tier-A or Tier-Exec conditions met — defaulting to Tier-Mid'
+      : '不滿足 Tier-A 或 Tier-Exec 任一觸發條件，default 路由到 Tier-Mid',
     triggeredRules: [],
   };
 }

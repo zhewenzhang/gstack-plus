@@ -2,6 +2,15 @@
 
 All notable changes to the `gstack-plus` CLI will be documented here.
 
+## [0.2.1] — 2026-05-03
+
+### Fixed
+- `--lang en` now affects routing reason output (`Tier-A triggered:` instead of `Tier-A 條件觸發：`)
+- `--lang en` now shows English "Next steps" message after classify
+
+### Added
+- `gstack-plus history` — list recent handoff docs in `./handoffs/` with date, tier, and task title
+
 ## [0.2.0] — 2026-05-03
 
 ### Added
