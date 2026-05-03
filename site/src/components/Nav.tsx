@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import MobileDrawer from './MobileDrawer';
 import Sidebar from './Sidebar';
 
 const items = [
   { label: 'Home', to: '/' },
+  { label: 'Playground', to: '/playground' },
   { label: 'Manual', to: '/doc/architecture' },
   { label: 'Notes', to: '/doc/gstack-overview' },
   { label: 'Experiments', to: '/doc/experiments-readme' },
@@ -13,6 +14,16 @@ const items = [
 
 export default function Nav() {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const goToQuickTry = () => {
+    if (location.pathname === '/') {
+      document.getElementById('quick-try')?.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      navigate('/', { state: { scrollTo: 'quick-try' } });
+    }
+  };
 
   return (
     <>
@@ -64,12 +75,12 @@ export default function Nav() {
           </a>
         </div>
 
-        <a
-          href="/#quick-try"
+        <button
+          onClick={goToQuickTry}
           className="rounded-full px-4 sm:px-6 py-2 sm:py-2.5 text-xs sm:text-sm bg-ink text-white transition-transform hover:scale-[1.03] whitespace-nowrap"
         >
           Get started
-        </a>
+        </button>
       </nav>
 
       <MobileDrawer open={open} onClose={() => setOpen(false)}>

@@ -1,11 +1,12 @@
 import { useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const VIDEO_URL = 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260328_083109_283f3553-e28f-428b-a723-d639c617eb2b.mp4';
 
 export default function Hero() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const rafRef = useRef<number>(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const v = videoRef.current;
@@ -70,16 +71,22 @@ export default function Hero() {
 
         <div className="flex flex-col sm:flex-row gap-3 mt-8 sm:mt-10 animate-fade-rise-delay-2">
           <button
+            onClick={() => navigate('/playground')}
+            className="rounded-full px-8 sm:px-12 py-4 sm:py-5 text-sm sm:text-base bg-ink text-white transition-transform hover:scale-[1.03] cursor-pointer"
+          >
+            Open Playground
+          </button>
+          <button
             onClick={() => document.getElementById('quick-try')?.scrollIntoView({ behavior: 'smooth' })}
-            className="rounded-full px-10 sm:px-14 py-4 sm:py-5 text-sm sm:text-base bg-ink text-white transition-transform hover:scale-[1.03] cursor-pointer"
+            className="rounded-full px-8 sm:px-12 py-4 sm:py-5 text-sm sm:text-base border border-neutral-300 text-ink hover:bg-neutral-50 transition-colors cursor-pointer"
           >
             Try the CLI
           </button>
           <Link
             to="/doc/architecture"
-            className="rounded-full px-10 sm:px-14 py-4 sm:py-5 text-sm sm:text-base border border-neutral-300 text-ink hover:bg-neutral-50 transition-colors"
+            className="rounded-full px-8 sm:px-12 py-4 sm:py-5 text-sm sm:text-base text-muted hover:text-ink transition-colors flex items-center justify-center"
           >
-            Read the docs
+            Read the docs →
           </Link>
         </div>
       </div>

@@ -85,7 +85,24 @@ export const NAV: Section[] = [
     ],
   },
   {
-    id: "experiments",
+    id: 'examples',
+    title: '範例庫',
+    intro: '5 個真實任務的完整評分過程，看別人怎麼用。',
+    items: [
+      { order: 351, slug: 'ex-tier-exec-eslint', title: 'Tier-Exec：加 ESLint 配置', source: 'examples/01-tier-exec-eslint.md',
+        description: '機械配置任務的典型路由', subgroup: 'Tier-Exec' },
+      { order: 352, slug: 'ex-tier-exec-rename', title: 'Tier-Exec：跨檔案重命名', source: 'examples/02-tier-exec-rename.md',
+        description: '上下文寬但判斷低 → 仍可派 Exec', subgroup: 'Tier-Exec' },
+      { order: 361, slug: 'ex-tier-mid-refactor', title: 'Tier-Mid：CQRS 重構', source: 'examples/03-tier-mid-refactor.md',
+        description: '中等判斷 + 中等風險的典型', subgroup: 'Tier-Mid' },
+      { order: 371, slug: 'ex-tier-a-auth', title: 'Tier-A：設計 SSO + MFA', source: 'examples/04-tier-a-auth-design.md',
+        description: '三個條件同時觸發 Tier-A', subgroup: 'Tier-A' },
+      { order: 391, slug: 'ex-borderline', title: '邊界案例：cursor pagination', source: 'examples/05-borderline-case.md',
+        description: '保守路由原則的應用時機', subgroup: '邊界案例' },
+    ],
+  },
+  {
+    id: 'experiments',
     title: "實驗記錄",
     intro: "用真實任務驗證三層協作 vs 單模型 / 人工的差異。",
     items: [

@@ -42,6 +42,12 @@ gstack-plus classify "Your task description"`} />
 
             <div className="flex flex-wrap gap-3">
               <Link
+                to="/playground"
+                className="inline-flex items-center text-sm font-medium text-ink underline-offset-4 hover:underline"
+              >
+                Or try in browser →
+              </Link>
+              <Link
                 to="/doc/cli"
                 className="inline-flex items-center text-sm font-medium text-ink underline-offset-4 hover:underline"
               >
