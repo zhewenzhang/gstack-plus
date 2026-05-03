@@ -27,7 +27,7 @@ export default function Home() {
         gstack<sup>+</sup> · v0.1.0 ·
         <a href="https://www.npmjs.com/package/gstack-plus" target="_blank" rel="noreferrer" className="mx-1.5 hover:text-ink underline-offset-4 hover:underline">npm</a>·
         <a href="https://github.com/zhewenzhang/gstack-plus" target="_blank" rel="noreferrer" className="mx-1.5 hover:text-ink underline-offset-4 hover:underline">GitHub</a>·
-        <a href="https://github.com/zhewenzhang/gstack-plus/blob/main/LICENSE" target="_blank" rel="noreferrer" className="mx-1.5 hover:text-ink underline-offset-4 hover:underline">MIT License</a>
+        <a href="https://github.com/zhewenzhang/gstack-plus/blob/main/LICENSE" target="_blank" rel="noreferrer" className="mx-1.5 hover:text-ink underline-offset-4 hover:underline">MIT</a>
       </footer>
     </div>
   );

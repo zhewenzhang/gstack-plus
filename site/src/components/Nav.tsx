@@ -2,20 +2,25 @@ import { useState } from 'react';
 import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import MobileDrawer from './MobileDrawer';
 import Sidebar from './Sidebar';
-
-const items = [
-  { label: 'Home', to: '/' },
-  { label: 'Playground', to: '/playground' },
-  { label: 'Manual', to: '/doc/architecture' },
-  { label: 'Notes', to: '/doc/gstack-overview' },
-  { label: 'Experiments', to: '/doc/experiments-readme' },
-  { label: 'Strategy', to: '/doc/yc-blindspots' },
-];
+import LangToggle from './LangToggle';
+import { useLang } from '@/i18n/useLang';
+import { STRINGS } from '@/i18n/strings';
 
 export default function Nav() {
-  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const [open, setOpen] = useState(false);
+  const [lang] = useLang();
+  const t = STRINGS.nav;
+
+  const items = [
+    { label: t.home[lang],        to: '/' },
+    { label: t.playground[lang],  to: '/playground' },
+    { label: t.manual[lang],      to: '/doc/architecture' },
+    { label: t.notes[lang],       to: '/doc/gstack-overview' },
+    { label: t.experiments[lang], to: '/doc/experiments-readme' },
+    { label: t.strategy[lang],    to: '/doc/yc-blindspots' },
+  ];
 
   const goToQuickTry = () => {
     if (location.pathname === '/') {
@@ -61,26 +66,23 @@ export default function Nav() {
             href="https://www.npmjs.com/package/gstack-plus"
             target="_blank" rel="noreferrer"
             className="text-sm text-muted hover:text-ink transition-colors"
-            aria-label="npm package"
-          >
-            npm
-          </a>
+          >npm</a>
           <a
             href="https://github.com/zhewenzhang/gstack-plus"
             target="_blank" rel="noreferrer"
             className="text-sm text-muted hover:text-ink transition-colors"
-            aria-label="GitHub repository"
-          >
-            GitHub
-          </a>
+          >GitHub</a>
         </div>
 
-        <button
-          onClick={goToQuickTry}
-          className="rounded-full px-4 sm:px-6 py-2 sm:py-2.5 text-xs sm:text-sm bg-ink text-white transition-transform hover:scale-[1.03] whitespace-nowrap"
-        >
-          Get started
-        </button>
+        <div className="flex items-center gap-3">
+          <LangToggle />
+          <button
+            onClick={goToQuickTry}
+            className="rounded-full px-4 sm:px-6 py-2 sm:py-2.5 text-xs sm:text-sm bg-ink text-white transition-transform hover:scale-[1.03] whitespace-nowrap"
+          >
+            {t.getStarted[lang]}
+          </button>
+        </div>
       </nav>
 
       <MobileDrawer open={open} onClose={() => setOpen(false)}>

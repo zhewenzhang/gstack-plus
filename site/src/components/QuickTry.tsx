@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 import CodeBlock from './CodeBlock';
+import { useLang } from '@/i18n/useLang';
+import { STRINGS } from '@/i18n/strings';
 
 const SAMPLE_OUTPUT = `$ npx gstack-plus classify "Refactor auth middleware to support OAuth"
 
@@ -18,33 +20,28 @@ Reason: Tier-A 條件觸發：judgment=4 ≥ 4, risk=4 ≥ 4
 Next: open the handoff doc, fill in Scope Lock + 完成標準, send to your Tier-A model.`;
 
 export default function QuickTry() {
+  const [lang] = useLang();
+  const s = STRINGS.quickTry;
+
   return (
     <section className="bg-neutral-50 border-y border-neutral-200">
       <div className="max-w-6xl mx-auto px-5 sm:px-8 py-16 sm:py-20">
         <div className="grid lg:grid-cols-[1fr_1.4fr] gap-10 lg:gap-16 items-start">
           {/* Left — copy + install */}
           <div>
-            <div className="text-xs uppercase tracking-widest text-muted mb-3">v0.1.0 · live on npm</div>
+            <div className="text-xs uppercase tracking-widest text-muted mb-3">{s.eyebrow[lang]}</div>
             <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight mb-4">
-              Try it in 30 seconds.
-            </h2>
-            <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-4" style={{ color: '#555' }}>
-              30 秒上手，零安裝。
+              {s.title[lang]}
             </h2>
             <p className="text-base text-muted leading-relaxed mb-6">
-              Score any task on 5 dimensions, get a routing decision, and a pre-filled handoff doc.
-              No install, no API key needed for the basic flow.
-            </p>
-            <p className="text-base leading-relaxed mb-6" style={{ color: '#888' }}>
-              給任何任務打 5 個維度評分，即時得到路由決策 + 預填的 Handoff 文件。
-              不需安裝、不需 API Key，基本流程即可使用。
+              {s.body[lang]}
             </p>
 
             <div className="space-y-3 mb-6">
-              <CodeBlock caption="No install (recommended for first try)" code={`npx gstack-plus classify "Your task description"`} />
-              <CodeBlock caption="Or install globally" code={`npm install -g gstack-plus
+              <CodeBlock caption={s.captionNoInstall[lang]} code={`npx gstack-plus classify "Your task description"`} />
+              <CodeBlock caption={s.captionInstall[lang]} code={`npm install -g gstack-plus
 gstack-plus classify "Your task description"`} />
-              <CodeBlock caption="Skip the prompts" code={`gstack-plus classify "task" --scores 4,3,4,2,2`} />
+              <CodeBlock caption={s.captionSkip[lang]} code={`gstack-plus classify "task" --scores 4,3,4,2,2`} />
             </div>
 
             <div className="flex flex-wrap gap-3">
@@ -52,13 +49,13 @@ gstack-plus classify "Your task description"`} />
                 to="/playground"
                 className="inline-flex items-center text-sm font-medium text-ink underline-offset-4 hover:underline"
               >
-                Or try in browser →
+                {s.linkBrowser[lang]}
               </Link>
               <Link
                 to="/doc/cli"
                 className="inline-flex items-center text-sm font-medium text-ink underline-offset-4 hover:underline"
               >
-                Read the full CLI guide →
+                {s.linkCli[lang]}
               </Link>
               <a
                 href="https://www.npmjs.com/package/gstack-plus"
@@ -72,7 +69,7 @@ gstack-plus classify "Your task description"`} />
 
           {/* Right — sample output */}
           <div>
-            <div className="text-xs uppercase tracking-widest text-muted mb-3">What you'll see</div>
+            <div className="text-xs uppercase tracking-widest text-muted mb-3">{s.sampleEyebrow[lang]}</div>
             <CodeBlock code={SAMPLE_OUTPUT} caption="" />
           </div>
         </div>

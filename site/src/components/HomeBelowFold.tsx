@@ -1,49 +1,34 @@
 import { Link } from 'react-router-dom';
 import { NAV } from '@/content/manifest';
-
-const READING_PATH = [
-  { step: '01', slug: 'cli', title: '裝 CLI 試一下', why: '`npx gstack-plus classify "..."`，30 秒看到輸出再回來看理論' },
-  { step: '02', slug: 'roadmap', title: '看路線圖', why: '了解專案分幾個階段、為什麼要分層' },
-  { step: '03', slug: 'architecture', title: '理解三層架構', why: 'Tier-A / Mid / Exec 各自的角色與成本' },
-  { step: '04', slug: 'routing-rules', title: '學會分類任務', why: '5 維評分把任務路由到正確的 Tier' },
-  { step: '05', slug: 'failure-catalog', title: '掌握失敗恢復', why: 'Exec 出錯時，何時 retry、何時升級' },
-];
+import { useLang } from '@/i18n/useLang';
+import { STRINGS } from '@/i18n/strings';
 
 export default function HomeBelowFold() {
+  const [lang] = useLang();
+  const s = STRINGS.below;
+  const path = s.pathSteps[lang];
+
   return (
     <div className="max-w-6xl mx-auto px-5 sm:px-8 py-20 sm:py-28">
       {/* What is gstack-plus */}
       <div className="max-w-3xl mb-20">
-        <div className="text-xs uppercase tracking-widest text-muted mb-3">What is gstack-plus</div>
+        <div className="text-xs uppercase tracking-widest text-muted mb-3">{s.whatEyebrow[lang]}</div>
         <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight mb-4">
-          一個放在 gstack 與 superpowers 之上的「模型派遣層」。
-        </h2>
-        <h2 className="font-display text-2xl sm:text-3xl leading-tight mb-4" style={{ color: '#555' }}>
-          A "model dispatch layer" on top of gstack & superpowers.
+          {s.whatTitle[lang]}
         </h2>
         <p className="text-base sm:text-lg text-muted leading-relaxed">
-          現有的 AI 工作流框架（gstack、superpowers）已經把「角色技能」做得很好，但所有任務還是丟給同一個模型。
-          gstack-plus 在它們之上加一層分類器，把判斷、審查、執行分派到三個不同的 tier，
-          讓你用 Opus 的判斷力 + Sonnet 的紀律 + Exec 的成本，做出比單模型更好的決策。
-        </p>
-        <p className="text-base leading-relaxed mt-4" style={{ color: '#888' }}>
-          Existing AI workflow frameworks (gstack, superpowers) already do "role skills" well, but every task still goes to one model.
-          gstack-plus adds a classifier layer that dispatches judgment, review, and execution to three different tiers,
-          giving you better decisions using Opus for judgment + Sonnet for discipline + Exec for cost efficiency.
+          {s.whatBody[lang]}
         </p>
       </div>
 
       {/* Reading path */}
       <div className="mb-20">
-        <div className="text-xs uppercase tracking-widest text-muted mb-3">推薦閱讀路徑 · Recommended Reading Path</div>
-        <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight mb-2">
-          五步從動手到深入。
-        </h2>
-        <h2 className="font-display text-2xl sm:text-3xl leading-tight mb-8" style={{ color: '#555' }}>
-          Five steps, from hands-on to deep understanding.
+        <div className="text-xs uppercase tracking-widest text-muted mb-3">{s.pathEyebrow[lang]}</div>
+        <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight mb-8">
+          {s.pathTitle[lang]}
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-          {READING_PATH.map(p => (
+          {path.map(p => (
             <Link
               key={p.slug}
               to={`/doc/${p.slug}`}
@@ -61,12 +46,9 @@ export default function HomeBelowFold() {
 
       {/* Categories */}
       <div>
-        <div className="text-xs uppercase tracking-widest text-muted mb-3">完整目錄 · Full Directory</div>
-        <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight mb-2">
-          按你關心的層次切入。
-        </h2>
-        <h2 className="font-display text-2xl sm:text-3xl leading-tight mb-8" style={{ color: '#555' }}>
-          Jump in at the level you care about.
+        <div className="text-xs uppercase tracking-widest text-muted mb-3">{s.catEyebrow[lang]}</div>
+        <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight mb-8">
+          {s.catTitle[lang]}
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {NAV.map(section => {
@@ -79,7 +61,7 @@ export default function HomeBelowFold() {
               >
                 <div className="font-display text-xl text-ink mb-2">{section.title}</div>
                 <div className="text-xs text-muted leading-relaxed mb-3">{section.intro}</div>
-                <div className="text-xs text-muted">{section.items.length} 篇 →</div>
+                <div className="text-xs text-muted">{s.catCount[lang](section.items.length)}</div>
               </Link>
             );
           })}

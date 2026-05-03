@@ -1,5 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useLang } from '@/i18n/useLang';
+import { STRINGS } from '@/i18n/strings';
 
 const VIDEO_URL = 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260328_083109_283f3553-e28f-428b-a723-d639c617eb2b.mp4';
 
@@ -7,6 +9,8 @@ export default function Hero() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const rafRef = useRef<number>(0);
   const navigate = useNavigate();
+  const [lang] = useLang();
+  const s = STRINGS.hero;
 
   useEffect(() => {
     const v = videoRef.current;
@@ -46,39 +50,21 @@ export default function Hero() {
           className="inline-flex items-center gap-2 px-3 py-1 mb-6 rounded-full border border-neutral-200 bg-white text-[11px] uppercase tracking-wider hover:border-ink transition-colors animate-fade-rise"
         >
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-          <span className="text-muted">v0.1.0 live on</span>
-          <span className="text-ink">npm</span>
+          <span className="text-ink">{s.pill[lang]}</span>
           <span className="text-muted">→</span>
         </a>
 
         <h1
           className="font-display font-normal animate-fade-rise text-[2.5rem] leading-[1.05] sm:text-6xl md:text-7xl lg:text-8xl max-w-5xl"
           style={{ letterSpacing: '-0.04em', color: '#000000' }}
-        >
-          Beyond <em className="italic" style={{ color: '#6F6F6F' }}>silos,</em> we orchestrate{' '}
-          <em className="italic" style={{ color: '#6F6F6F' }}>the eternal.</em>
-        </h1>
-        <p
-          className="font-display font-normal animate-fade-rise-delay text-xl sm:text-2xl md:text-3xl max-w-3xl mt-4 leading-snug px-2"
-          style={{ letterSpacing: '-0.02em', color: '#2a2a2a' }}
-        >
-          多模型協作框架 —— 把每個任務路由到正確的 Tier。
-        </p>
+          dangerouslySetInnerHTML={{ __html: s.headlineHtml[lang] }}
+        />
 
         <p
           className="font-body text-sm sm:text-base md:text-lg max-w-2xl mt-6 sm:mt-8 leading-relaxed animate-fade-rise-delay px-2"
           style={{ color: '#6F6F6F' }}
         >
-          A multi-tier model orchestration framework. Route every task to the right model:
-          <span className="text-ink"> Tier-A</span> for judgment,
-          <span className="text-ink"> Tier-Mid</span> for review,
-          <span className="text-ink"> Tier-Exec</span> for execution.
-        </p>
-        <p
-          className="font-body text-sm max-w-2xl leading-relaxed animate-fade-rise-delay px-2"
-          style={{ color: '#9F9F9F' }}
-        >
-          多層模型協作框架。根據判斷、風險、可驗證性等維度，將任務路由到 Tier-A（決策）、Tier-Mid（審查）或 Tier-Exec（執行），在保持質量的前提下降低成本。
+          {s.sub[lang]}
         </p>
 
         <div className="flex flex-col sm:flex-row gap-3 mt-8 sm:mt-10 animate-fade-rise-delay-2">
@@ -86,19 +72,19 @@ export default function Hero() {
             onClick={() => navigate('/playground')}
             className="rounded-full px-8 sm:px-12 py-4 sm:py-5 text-sm sm:text-base bg-ink text-white transition-transform hover:scale-[1.03] cursor-pointer"
           >
-            Open Playground
+            {s.ctaPrimary[lang]}
           </button>
           <button
             onClick={() => document.getElementById('quick-try')?.scrollIntoView({ behavior: 'smooth' })}
             className="rounded-full px-8 sm:px-12 py-4 sm:py-5 text-sm sm:text-base border border-neutral-300 text-ink hover:bg-neutral-50 transition-colors cursor-pointer"
           >
-            Try the CLI
+            {s.ctaSecondary[lang]}
           </button>
           <Link
             to="/doc/architecture"
             className="rounded-full px-8 sm:px-12 py-4 sm:py-5 text-sm sm:text-base text-muted hover:text-ink transition-colors flex items-center justify-center"
           >
-            Read the docs →
+            {s.ctaTertiary[lang]}
           </Link>
         </div>
       </div>
