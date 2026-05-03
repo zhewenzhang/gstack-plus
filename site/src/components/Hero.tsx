@@ -38,6 +38,18 @@ export default function Hero() {
   return (
     <section className="relative pt-6 sm:pt-10 pb-20 sm:pb-32">
       <div className="relative z-10 flex flex-col items-center justify-center text-center px-5 sm:px-6">
+        {/* release pill */}
+        <a
+          href="https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.1.0"
+          target="_blank" rel="noreferrer"
+          className="inline-flex items-center gap-2 px-3 py-1 mb-6 rounded-full border border-neutral-200 bg-white text-[11px] uppercase tracking-wider hover:border-ink transition-colors animate-fade-rise"
+        >
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+          <span className="text-muted">v0.1.0 live on</span>
+          <span className="text-ink">npm</span>
+          <span className="text-muted">→</span>
+        </a>
+
         <h1
           className="font-display font-normal animate-fade-rise text-[2.5rem] leading-[1.05] sm:text-6xl md:text-7xl lg:text-8xl max-w-5xl"
           style={{ letterSpacing: '-0.04em', color: '#000000' }}
@@ -57,17 +69,17 @@ export default function Hero() {
         </p>
 
         <div className="flex flex-col sm:flex-row gap-3 mt-8 sm:mt-10 animate-fade-rise-delay-2">
-          <Link
-            to="/doc/roadmap"
-            className="rounded-full px-10 sm:px-14 py-4 sm:py-5 text-sm sm:text-base bg-ink text-white transition-transform hover:scale-[1.03]"
+          <button
+            onClick={() => document.getElementById('quick-try')?.scrollIntoView({ behavior: 'smooth' })}
+            className="rounded-full px-10 sm:px-14 py-4 sm:py-5 text-sm sm:text-base bg-ink text-white transition-transform hover:scale-[1.03] cursor-pointer"
           >
-            Begin Journey
-          </Link>
+            Try the CLI
+          </button>
           <Link
             to="/doc/architecture"
             className="rounded-full px-10 sm:px-14 py-4 sm:py-5 text-sm sm:text-base border border-neutral-300 text-ink hover:bg-neutral-50 transition-colors"
           >
-            See Architecture
+            Read the docs
           </Link>
         </div>
       </div>

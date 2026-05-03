@@ -45,14 +45,31 @@ export default function Nav() {
               {i.label}
             </NavLink>
           ))}
+          <span className="w-px h-4 bg-neutral-300" />
+          <a
+            href="https://www.npmjs.com/package/gstack-plus"
+            target="_blank" rel="noreferrer"
+            className="text-sm text-muted hover:text-ink transition-colors"
+            aria-label="npm package"
+          >
+            npm
+          </a>
+          <a
+            href="https://github.com/zhewenzhang/gstack-plus"
+            target="_blank" rel="noreferrer"
+            className="text-sm text-muted hover:text-ink transition-colors"
+            aria-label="GitHub repository"
+          >
+            GitHub
+          </a>
         </div>
 
-        <Link
-          to="/doc/roadmap"
+        <a
+          href="/#quick-try"
           className="rounded-full px-4 sm:px-6 py-2 sm:py-2.5 text-xs sm:text-sm bg-ink text-white transition-transform hover:scale-[1.03] whitespace-nowrap"
         >
-          Begin Journey
-        </Link>
+          Get started
+        </a>
       </nav>
 
       <MobileDrawer open={open} onClose={() => setOpen(false)}>

@@ -23,7 +23,10 @@ export const NAV: Section[] = [
       { order: 101, slug: "roadmap", title: "項目路線圖", source: "PROJECT_ROADMAP.md" },
       { order: 102, slug: "key-insights", title: "核心洞察", source: "docs/learning-notes/key-insights.md" },
       { order: 103, slug: "learning-plan", title: "學習計劃", source: "LEARNING_PLAN.md" },
-      { order: 104, slug: "readme", title: "README", source: "README.md" },
+      { order: 104, slug: "cli", title: "CLI 使用手冊", source: "cli/README.md",
+        description: '`npx gstack-plus classify "..."` — 30 秒上手' },
+      { order: 105, slug: "changelog", title: "CHANGELOG", source: "cli/CHANGELOG.md" },
+      { order: 106, slug: "readme", title: "README", source: "README.md" },
     ],
   },
   {

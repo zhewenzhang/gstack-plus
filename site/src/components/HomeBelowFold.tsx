@@ -2,10 +2,11 @@ import { Link } from 'react-router-dom';
 import { NAV } from '@/content/manifest';
 
 const READING_PATH = [
-  { step: '01', slug: 'roadmap', title: '看路線圖', why: '先了解我們在解什麼問題，分幾個階段' },
-  { step: '02', slug: 'architecture', title: '理解三層架構', why: 'Tier-A / Mid / Exec 各自的角色與成本' },
-  { step: '03', slug: 'routing-rules', title: '學會分類任務', why: '用 5 維評分把任務路由到正確的 Tier' },
-  { step: '04', slug: 'failure-catalog', title: '掌握失敗恢復', why: '當 Exec 出錯時，何時 retry、何時升級' },
+  { step: '01', slug: 'cli', title: '裝 CLI 試一下', why: '`npx gstack-plus classify "..."`，30 秒看到輸出再回來看理論' },
+  { step: '02', slug: 'roadmap', title: '看路線圖', why: '了解專案分幾個階段、為什麼要分層' },
+  { step: '03', slug: 'architecture', title: '理解三層架構', why: 'Tier-A / Mid / Exec 各自的角色與成本' },
+  { step: '04', slug: 'routing-rules', title: '學會分類任務', why: '5 維評分把任務路由到正確的 Tier' },
+  { step: '05', slug: 'failure-catalog', title: '掌握失敗恢復', why: 'Exec 出錯時，何時 retry、何時升級' },
 ];
 
 export default function HomeBelowFold() {
@@ -28,9 +29,9 @@ export default function HomeBelowFold() {
       <div className="mb-20">
         <div className="text-xs uppercase tracking-widest text-muted mb-3">推薦閱讀路徑</div>
         <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight mb-8">
-          四步看完 gstack-plus。
+          五步從動手到深入。
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
           {READING_PATH.map(p => (
             <Link
               key={p.slug}
