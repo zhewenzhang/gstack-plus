@@ -36,42 +36,53 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative" style={{ paddingTop: 'calc(8rem - 75px)', paddingBottom: '10rem' }}>
-      {/* video layer */}
-      <div className="absolute z-0" style={{ top: '300px', inset: 'auto 0 0 0' }}>
-        <video
-          ref={videoRef}
-          src={VIDEO_URL}
-          className="w-full h-auto"
-          style={{ opacity: 0, transition: 'opacity 0.05s linear' }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
-      </div>
-
-      <div className="relative z-10 flex flex-col items-center justify-center text-center px-6">
+    <section className="relative pt-6 sm:pt-10 pb-20 sm:pb-32">
+      <div className="relative z-10 flex flex-col items-center justify-center text-center px-5 sm:px-6">
         <h1
-          className="font-display text-5xl sm:text-7xl md:text-8xl max-w-7xl font-normal animate-fade-rise"
-          style={{ lineHeight: 0.95, letterSpacing: '-2.46px', color: '#000000' }}
+          className="font-display font-normal animate-fade-rise text-[2.5rem] leading-[1.05] sm:text-6xl md:text-7xl lg:text-8xl max-w-5xl"
+          style={{ letterSpacing: '-0.04em', color: '#000000' }}
         >
           Beyond <em className="italic" style={{ color: '#6F6F6F' }}>silos,</em> we orchestrate{' '}
           <em className="italic" style={{ color: '#6F6F6F' }}>the eternal.</em>
         </h1>
 
         <p
-          className="font-body text-base sm:text-lg max-w-2xl mt-8 leading-relaxed animate-fade-rise-delay"
+          className="font-body text-sm sm:text-base md:text-lg max-w-2xl mt-6 sm:mt-8 leading-relaxed animate-fade-rise-delay px-2"
           style={{ color: '#6F6F6F' }}
         >
-          A multi-tier model orchestration framework for brilliant minds, fearless makers, and
-          thoughtful souls. Through the noise of single-model thinking, we craft tiered systems
-          for deep judgment and pure execution.
+          A multi-tier model orchestration framework. Route every task to the right model:
+          <span className="text-ink"> Tier-A</span> for judgment,
+          <span className="text-ink"> Tier-Mid</span> for review,
+          <span className="text-ink"> Tier-Exec</span> for execution.
         </p>
 
-        <Link
-          to="/doc/roadmap"
-          className="rounded-full px-14 py-5 text-base mt-12 bg-ink text-white transition-transform hover:scale-[1.03] animate-fade-rise-delay-2"
-        >
-          Begin Journey
-        </Link>
+        <div className="flex flex-col sm:flex-row gap-3 mt-8 sm:mt-10 animate-fade-rise-delay-2">
+          <Link
+            to="/doc/roadmap"
+            className="rounded-full px-10 sm:px-14 py-4 sm:py-5 text-sm sm:text-base bg-ink text-white transition-transform hover:scale-[1.03]"
+          >
+            Begin Journey
+          </Link>
+          <Link
+            to="/doc/architecture"
+            className="rounded-full px-10 sm:px-14 py-4 sm:py-5 text-sm sm:text-base border border-neutral-300 text-ink hover:bg-neutral-50 transition-colors"
+          >
+            See Architecture
+          </Link>
+        </div>
+      </div>
+
+      {/* video band */}
+      <div className="relative mt-12 sm:mt-16 max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="relative overflow-hidden rounded-2xl bg-neutral-100">
+          <video
+            ref={videoRef}
+            src={VIDEO_URL}
+            className="w-full h-auto block"
+            style={{ opacity: 0, transition: 'opacity 0.05s linear' }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-white/60 via-transparent to-transparent" />
+        </div>
       </div>
     </section>
   );

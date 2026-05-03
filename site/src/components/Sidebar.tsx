@@ -1,31 +1,78 @@
 import { NavLink } from 'react-router-dom';
-import { NAV } from '@/content/manifest';
+import { NAV, type Item } from '@/content/manifest';
 
-export default function Sidebar() {
+function groupBySubgroup(items: Item[]): { name: string | null; items: Item[] }[] {
+  const result: { name: string | null; items: Item[] }[] = [];
+  const seen = new Map<string, Item[]>();
+  const order: (string | null)[] = [];
+  for (const it of items.slice().sort((a, b) => a.order - b.order)) {
+    const key = it.subgroup ?? '__none__';
+    if (!seen.has(key)) { seen.set(key, []); order.push(it.subgroup ?? null); }
+    seen.get(key)!.push(it);
+  }
+  for (const k of order) {
+    result.push({ name: k, items: seen.get(k ?? '__none__')! });
+  }
+  return result;
+}
+
+export default function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
   return (
-    <aside className="w-72 shrink-0 border-r border-neutral-200 px-6 py-10 sticky top-0 h-screen overflow-y-auto">
-      {NAV.map(section => (
-        <div key={section.id} className="mb-8">
-          <div className="font-display text-xl text-ink mb-3">{section.title}</div>
-          <ul className="space-y-1.5">
-            {section.items
-              .slice()
-              .sort((a, b) => a.order - b.order)
-              .map(item => (
-                <li key={item.slug}>
-                  <NavLink
-                    to={`/doc/${item.slug}`}
-                    className={({ isActive }) =>
-                      `block text-sm transition-colors ${isActive ? 'text-ink font-medium' : 'text-muted hover:text-ink'}`
-                    }
-                  >
-                    {item.title}
-                  </NavLink>
-                </li>
-              ))}
-          </ul>
-        </div>
-      ))}
+    <aside className="h-full w-full overflow-y-auto px-6 py-8 lg:py-10">
+      {NAV.map(section => {
+        const grouped = groupBySubgroup(section.items);
+        const hasSubgroups = grouped.some(g => g.name);
+        return (
+          <div key={section.id} className="mb-8">
+            <div className="font-display text-xl text-ink mb-1">{section.title}</div>
+            {section.intro && (
+              <p className="text-xs text-muted mb-3 leading-snug">{section.intro}</p>
+            )}
+            {hasSubgroups ? (
+              grouped.map((g, idx) => (
+                <div key={idx} className="mb-3">
+                  {g.name && (
+                    <div className="text-[11px] uppercase tracking-wider text-muted mb-1.5 mt-2">
+                      {g.name}
+                    </div>
+                  )}
+                  <ul className="space-y-1">
+                    {g.items.map(item => (
+                      <li key={item.slug}>
+                        <NavLink
+                          to={`/doc/${item.slug}`}
+                          onClick={onNavigate}
+                          className={({ isActive }) =>
+                            `block text-sm py-0.5 transition-colors ${isActive ? 'text-ink font-medium' : 'text-muted hover:text-ink'}`
+                          }
+                        >
+                          {item.title}
+                        </NavLink>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))
+            ) : (
+              <ul className="space-y-1">
+                {grouped[0].items.map(item => (
+                  <li key={item.slug}>
+                    <NavLink
+                      to={`/doc/${item.slug}`}
+                      onClick={onNavigate}
+                      className={({ isActive }) =>
+                        `block text-sm py-0.5 transition-colors ${isActive ? 'text-ink font-medium' : 'text-muted hover:text-ink'}`
+                      }
+                    >
+                      {item.title}
+                    </NavLink>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        );
+      })}
     </aside>
   );
 }
