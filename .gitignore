@@ -17,6 +17,10 @@ node_modules/
 dist/
 build/
 
+# Site
+site/node_modules/
+site/dist/
+
 # Environment
 .env
 .env.local
@@ -26,6 +30,11 @@ build/
 *-draft.md
 .tmp/
 .scratch/
+
+# Screenshots and images at root (keep docs/ and site/public/ images)
+*.png
+!docs/**/*.png
+!site/public/**/*.png
 
 # Personal notes (will exclude from public repo when ready)
 PRIVATE_*.md

@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: General questions / discussion
+    url: https://github.com/zhewenzhang/gstack-plus/discussions
+    about: Open a discussion instead of an issue
