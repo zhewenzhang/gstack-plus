@@ -77,6 +77,24 @@ The full handbook is hosted at **https://zhewenzhang.github.io/gstack-plus/**.
 | [實驗記錄](https://zhewenzhang.github.io/gstack-plus/#/doc/experiments-readme) | 三層 vs 單模型對照實驗 |
 | [戰略思考](https://zhewenzhang.github.io/gstack-plus/#/doc/yc-blindspots) | YC 風格盲點清單與商業化思考 |
 
+## Try it: the CLI
+
+```bash
+npx gstack-plus classify "Refactor the auth middleware to support OAuth"
+```
+
+You'll be walked through 5 questions (judgment / context / risk / verifiability / creativity, each 1–5), then get a routing decision and a pre-filled handoff doc.
+
+```bash
+gstack-plus classify "Rename getCwd → getCurrentWorkingDirectory" --scores 1,1,1,5,1
+# → Tier-Exec  (verifiable, low-risk, narrow context)
+
+gstack-plus classify "Design new auth flow for SSO + MFA" --scores 5,4,5,2,4
+# → Tier-A  (judgment + risk + creativity all trigger)
+```
+
+See [`cli/README.md`](./cli/README.md) for full usage.
+
 ## Project status
 
 This is an **experimental research project**, not a production library yet.

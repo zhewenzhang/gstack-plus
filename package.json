@@ -1,18 +1,18 @@
 {
-  "name": "gstack-plus",
-  "version": "1.0.0",
-  "description": "> Multi-tier AI workflow orchestration. Add a model dispatch layer on top of role-based skill libraries like gstack and superpowers.",
-  "type": "commonjs",
-  "main": "index.js",
-  "directories": {
-    "doc": "docs"
-  },
+  "name": "gstack-plus-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Multi-tier AI workflow orchestration. Add a model dispatch layer on top of role-based skill libraries.",
+  "workspaces": ["site", "cli"],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "site:dev": "npm run dev --workspace site",
+    "site:build": "npm run build --workspace site",
+    "cli:dev": "npm run dev --workspace cli",
+    "cli:build": "npm run build --workspace cli",
+    "cli:test": "npm run test --workspace cli",
+    "cli:try": "npm run cli:dev -- classify \"Sample task: rename a function\""
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@typescript-eslint/eslint-plugin": "^8.59.1",
