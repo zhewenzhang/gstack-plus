@@ -7,6 +7,7 @@
 Route every task to the right model: Tier-A for judgment, Tier-Mid for review, Tier-Exec for execution.
 
 [![Docs](https://img.shields.io/badge/docs-online-000000?style=flat-square)](https://zhewenzhang.github.io/gstack-plus/)
+[![npm](https://img.shields.io/npm/v/gstack-plus?style=flat-square&color=000000)](https://www.npmjs.com/package/gstack-plus)
 [![License](https://img.shields.io/badge/license-MIT-000000?style=flat-square)](./LICENSE)
 [![Status](https://img.shields.io/badge/status-experimental-6F6F6F?style=flat-square)]()
 
@@ -80,7 +81,11 @@ The full handbook is hosted at **https://zhewenzhang.github.io/gstack-plus/**.
 ## Try it: the CLI
 
 ```bash
+# No install needed (npx runs the latest version):
 npx gstack-plus classify "Refactor the auth middleware to support OAuth"
+
+# Or install globally:
+npm install -g gstack-plus
 ```
 
 You'll be walked through 5 questions (judgment / context / risk / verifiability / creativity, each 1–5), then get a routing decision and a pre-filled handoff doc.

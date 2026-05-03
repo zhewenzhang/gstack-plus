@@ -1,0 +1,22 @@
+# Changelog
+
+All notable changes to the `gstack-plus` CLI will be documented here.
+
+## [0.1.0] — 2026-05-03
+
+### Added
+
+- `gstack-plus classify <task>` — interactive 5-dimension task scorer with routing decision
+- `--scores <csv>` flag — non-interactive scoring via comma-separated values
+- `--auto` flag — Claude Haiku-powered automatic scoring (requires `@anthropic-ai/sdk` + `ANTHROPIC_API_KEY`)
+- `gstack-plus rules` — prints routing rules in plain text
+- Handoff document generator: writes a pre-filled `handoffs/handoff-<id>.md` after each classification
+- Routing engine implementing the gstack-plus rules:
+  - `judgment≥4 OR risk≥4 OR creativity≥4` → Tier-A
+  - `judgment≤2 AND context≤2 AND verifiability≥4` → Tier-Exec
+  - else → Tier-Mid
+
+### Notes
+
+This is the initial release. The routing rules and dimension definitions are still being validated
+through comparative experiments (see `experiments/`). Treat 0.1.x as experimental.
