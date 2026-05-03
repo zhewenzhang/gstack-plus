@@ -2,6 +2,18 @@
 
 All notable changes to the `gstack-plus` CLI will be documented here.
 
+## [0.3.1] — 2026-05-04
+
+### Added
+- `gstack-plus config` — manage user preferences in `~/.gstack-plus.json`
+  - `gstack-plus config` — list current config
+  - `gstack-plus config set <key> <value>` — set preference (lang, handoffDir)
+  - `gstack-plus config get <key>` — read a preference
+  - `gstack-plus config reset` — clear all settings
+
+### Improved
+- `gstack-plus classify` and `gstack-plus init` now auto-load your saved language and handoff directory
+
 ## [0.3.0] — 2026-05-04
 
 ### Added

@@ -11,18 +11,23 @@ const program = new Command();
 program
   .name('gstack-plus')
   .description('Multi-tier model orchestration CLI')
-  .version('0.3.0')
-  .option('--lang <lang>', 'Language for interactive prompts (zh | en)', 'zh');
+  .version('0.3.1')
+  .option('--lang <lang>', 'Language for interactive prompts (zh | en)');
 
 program
   .command('classify <task>')
   .description('Classify a task across 5 dimensions and route to the right Tier')
-  .option('-o, --out <dir>', 'Output directory for handoff doc', './handoffs')
+  .option('-o, --out <dir>', 'Output directory for handoff doc')
   .option('--scores <csv>', 'Skip prompts; provide scores as judgment,context,risk,verifiability,creativity (1-5 each)')
   .option('--auto', 'Use Claude API (claude-haiku) to auto-score the task (requires ANTHROPIC_API_KEY)')
   .option('--api-key <key>', 'Anthropic API key (overrides ANTHROPIC_API_KEY env var)')
-  .action(async (task: string, opts: { out: string; scores?: string; auto?: boolean; apiKey?: string }, cmd) => {
-    const lang = (cmd?.parent?.opts?.()?.lang === 'en' ? 'en' : 'zh') as 'zh' | 'en';
+  .action(async (task: string, opts: { out?: string; scores?: string; auto?: boolean; apiKey?: string }, cmd) => {
+    const { loadConfig } = await import('./config.js');
+    const savedConfig = await loadConfig();
+
+    const langFlag = cmd?.parent?.opts?.()?.lang;
+    const lang = (langFlag === 'en' ? 'en' : (savedConfig.lang ?? 'zh')) as 'zh' | 'en';
+    const outDir = opts.out ?? savedConfig.handoffDir ?? './handoffs';
     let scoring: Scoring;
 
     if (opts.auto) {
@@ -70,7 +75,7 @@ program
     console.log(chalk.dim('Reason: ') + decision.reason);
     console.log('');
 
-    const outPath = await generateHandoff({ task, scoring, decision, outDir: opts.out, lang });
+    const outPath = await generateHandoff({ task, scoring, decision, outDir, lang });
     console.log(chalk.green('\u2713 ') + 'Handoff doc written \u2192 ' + chalk.underline(outPath));
     console.log('');
     const nextMsg = lang === 'en'
@@ -197,12 +202,15 @@ program
 program
   .command('init')
   .description('Set up gstack-plus in the current directory — creates handoffs/ dir and prints quick-start guide')
-  .option('-d, --dir <dir>', 'Handoff output directory to create', './handoffs')
-  .action(async (opts: { dir: string }) => {
+  .option('-d, --dir <dir>', 'Handoff output directory to create')
+  .action(async (opts: { dir?: string }) => {
     const { mkdir, access } = await import('node:fs/promises');
     const { resolve } = await import('node:path');
+    const { loadConfig } = await import('./config.js');
+    const savedConfig = await loadConfig();
 
-    const dir = resolve(opts.dir);
+    const dirFromOption = opts.dir ?? savedConfig.handoffDir ?? './handoffs';
+    const dir = resolve(dirFromOption);
     let created = false;
     try {
       await access(dir);
@@ -213,9 +221,9 @@ program
 
     console.log('');
     if (created) {
-      console.log(chalk.green('\u2713') + chalk.bold(` Created ${opts.dir}/`));
+      console.log(chalk.green('\u2713') + chalk.bold(` Created ${dirFromOption}/`));
     } else {
-      console.log(chalk.dim(`\u2192 ${opts.dir}/ already exists`));
+      console.log(chalk.dim(`\u2192 ${dirFromOption}/ already exists`));
     }
     console.log('');
     console.log(chalk.bold("gstack-plus is ready. Here's how to start:"));
@@ -233,10 +241,80 @@ program
     console.log(chalk.dim(`  gstack-plus examples        browse 5 built-in routing examples`));
     console.log(chalk.dim(`  gstack-plus rules           print the routing rules`));
     console.log(chalk.dim(`  gstack-plus history         list your recent handoffs`));
-    console.log(chalk.dim(`  gstack-plus --lang en ...   switch to English prompts`));
+    console.log(chalk.dim(`  gstack-plus config set lang en  remember your language`));
     console.log('');
     console.log(chalk.dim(`Docs: https://zhewenzhang.github.io/gstack-plus/`));
     console.log('');
+  });
+
+program
+  .command('config [action] [key] [value]')
+  .description('Manage gstack-plus configuration (stored in ~/.gstack-plus.json)')
+  .action(async (action?: string, key?: string, value?: string) => {
+    const { loadConfig, setConfigValue, getConfigValue, getConfigPath } = await import('./config.js');
+
+    // No args → list all config
+    if (!action) {
+      const config = await loadConfig();
+      console.log('');
+      console.log(chalk.bold('gstack-plus configuration'));
+      console.log(chalk.dim(`Location: ${getConfigPath()}`));
+      console.log('');
+      if (Object.keys(config).length === 0) {
+        console.log(chalk.dim('(no config set — using defaults)'));
+      } else {
+        for (const [k, v] of Object.entries(config)) {
+          console.log(`  ${chalk.bold(k)}: ${v}`);
+        }
+      }
+      console.log('');
+      return;
+    }
+
+    // set <key> <value>
+    if (action === 'set') {
+      if (!key || !value) {
+        console.error(chalk.red('Usage: gstack-plus config set <key> <value>'));
+        console.error(chalk.dim('Keys: lang (zh|en), handoffDir'));
+        process.exit(1);
+      }
+      try {
+        await setConfigValue(key as any, value);
+        console.log(chalk.green('\u2713') + ` Config updated: ${key} = ${value}`);
+      } catch (err) {
+        console.error(chalk.red(String(err)));
+        process.exit(1);
+      }
+      return;
+    }
+
+    // get <key>
+    if (action === 'get') {
+      if (!key) {
+        console.error(chalk.red('Usage: gstack-plus config get <key>'));
+        process.exit(1);
+      }
+      try {
+        const val = await getConfigValue(key as any);
+        console.log(val || chalk.dim('(not set)'));
+      } catch (err) {
+        console.error(chalk.red(String(err)));
+        process.exit(1);
+      }
+      return;
+    }
+
+    // reset
+    if (action === 'reset') {
+      const { writeFile } = await import('node:fs/promises');
+      await writeFile(getConfigPath(), '{}', 'utf-8');
+      console.log(chalk.green('\u2713') + ' Config reset to defaults');
+      return;
+    }
+
+    console.error(chalk.red(`Unknown action: ${action}`));
+    console.error(chalk.dim('Actions: set <key> <value>, get <key>, reset, (no args to list)'));
+    process.exit(1);
   });
 
 program
