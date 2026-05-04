@@ -456,7 +456,9 @@ else                                  → Tier-Mid`}
                 }}
                 className="rounded-full px-4 py-1.5 text-xs border border-neutral-300 hover:border-ink transition-colors"
               >
-                {promptCopied ? '✓ Copied' : (lang === 'zh' ? '複製 Prompt' : 'Copy prompt')}
+                {promptCopied
+                  ? (lang === 'zh' ? '✓ 已複製' : '✓ Copied')
+                  : (lang === 'zh' ? '複製 Prompt' : 'Copy prompt')}
               </button>
             </div>
             <pre className="bg-neutral-50 border border-neutral-200 rounded-xl p-5 text-xs font-mono leading-relaxed overflow-auto max-h-96 whitespace-pre-wrap">

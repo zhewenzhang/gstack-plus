@@ -41,7 +41,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative pt-6 sm:pt-10 pb-0">
+    <section className="relative pt-6 sm:pt-10 pb-12 sm:pb-20">
       <div className="relative z-10 flex flex-col items-center justify-center text-center px-5 sm:px-6">
         {/* release pill */}
         <a
@@ -91,17 +91,17 @@ export default function Hero() {
         {/* amber stats bar */}
         <div className="flex flex-wrap justify-center items-center gap-8 sm:gap-14 mt-10 sm:mt-12 animate-fade-rise-delay-2">
           <div className="text-center">
-            <div className="font-display text-3xl sm:text-4xl font-bold" style={{ color: '#F59E0B' }}>46%</div>
+            <div className="font-display text-3xl sm:text-4xl" style={{ color: '#F59E0B' }}>46%</div>
             <div className="text-xs text-muted mt-1 tracking-wide">{s.stats.cost[lang]}</div>
           </div>
           <div className="w-px h-10 bg-neutral-200" />
           <div className="text-center">
-            <div className="font-display text-3xl sm:text-4xl font-bold" style={{ color: '#F59E0B' }}>3</div>
+            <div className="font-display text-3xl sm:text-4xl" style={{ color: '#F59E0B' }}>3</div>
             <div className="text-xs text-muted mt-1 tracking-wide">{s.stats.tiers[lang]}</div>
           </div>
           <div className="w-px h-10 bg-neutral-200" />
           <div className="text-center">
-            <div className="font-display text-3xl sm:text-4xl font-bold" style={{ color: '#F59E0B' }}>5</div>
+            <div className="font-display text-3xl sm:text-4xl" style={{ color: '#F59E0B' }}>5</div>
             <div className="text-xs text-muted mt-1 tracking-wide">{s.stats.dims[lang]}</div>
           </div>
         </div>
@@ -119,7 +119,9 @@ export default function Hero() {
           <div className="absolute inset-0 bg-gradient-to-t from-white/20 via-transparent to-transparent" />
         </div>
         <p className="text-center text-xs text-muted mt-3 tracking-wide">
-          gstack<sup>+</sup> in action — live demo recording
+          {lang === 'zh'
+            ? <>gstack<sup>+</sup> 實機演示錄像</>
+            : <>gstack<sup>+</sup> in action — live demo recording</>}
         </p>
       </div>
     </section>

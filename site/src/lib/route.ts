@@ -83,7 +83,7 @@ export const DIMENSIONS: {
     hintEn: '1=single file, 5=cross-module system knowledge',
     examples: [
       { score: 1, zh: '修改單個函式的輸出格式', en: 'Change the output format of a single function' },
-      { score: 3, zh: '重構一個 Service 類，需要解它的所有調用方', en: 'Refactor a service class, need to understand all its callers' },
+      { score: 3, zh: '重構一個 Service 類，需要了解它的所有調用方', en: 'Refactor a service class, need to understand all its callers' },
       { score: 5, zh: '評估將 REST API 改造成 GraphQL 的影響', en: 'Assess the impact of migrating a REST API to GraphQL' },
     ],
   },
