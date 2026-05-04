@@ -52,7 +52,7 @@ export default function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
                             `block text-sm py-0.5 transition-colors ${isActive ? 'text-ink font-medium' : 'text-muted hover:text-ink'}`
                           }
                         >
-                          {item.title}
+                          {lang === 'en' && item.titleEn ? item.titleEn : item.title}
                         </NavLink>
                       </li>
                     ))}
@@ -70,7 +70,7 @@ export default function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
                         `block text-sm py-0.5 transition-colors ${isActive ? 'text-ink font-medium' : 'text-muted hover:text-ink'}`
                       }
                     >
-                      {item.title}
+                      {lang === 'en' && item.titleEn ? item.titleEn : item.title}
                     </NavLink>
                   </li>
                 ))}
