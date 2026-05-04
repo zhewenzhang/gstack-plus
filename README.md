@@ -35,7 +35,9 @@ Every AI workflow today makes the same mistake: **sending every task to the same
 
 ## The Solution
 
-**gstack-plus** adds a routing layer on top of role-based skill libraries (gstack, [superpowers](https://github.com/obra/superpowers)). Every task gets scored across **5 dimensions**, then dispatched to the right tier:
+**gstack-plus** adds a routing layer on top of role-based skill libraries (gstack, [superpowers](https://github.com/obra/superpowers)). Every task gets scored across **5 dimensions**, then dispatched to the right tier.
+
+In a 3-task cost + quality experiment: **routing cut cost 46%** while Tier-Mid (Sonnet) matched or exceeded Opus on output quality. → [See experiment results](experiments/token-comparison/RESULTS.md)
 
 <div align="center">
 
@@ -166,7 +168,8 @@ Full handbook: **[https://zhewenzhang.github.io/gstack-plus/](https://zhewenzhan
 | CLI v0.3.2 (bilingual sidebar, CI workflow) | ✅ [Release](https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.3.2) |
 | CLI v0.3.3 (score bars visualization) | ✅ [Release](https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.3.3) |
 | CLI v0.3.4 (`stats`, `open` commands) | ✅ [Release](https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.3.4) |
-| Mode A/B comparative experiments | 🚧 In progress |
+| Mode A/B routing experiment (cost + quality) | ✅ [Results](experiments/token-comparison/RESULTS.md) |
+| Mode A/B comparative experiments (full scale) | 🚧 Planned |
 
 ---
 

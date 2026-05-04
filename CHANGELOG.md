@@ -12,6 +12,12 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - `gstack-plus stats` command — analyzes `./handoffs/` and shows tier distribution as a bar chart with counts and percentages
 - `gstack-plus open [index]` command — opens a recent handoff doc in `$EDITOR` (default: most recent; falls back to `notepad` on Windows or `vi` on Unix)
 
+### Fixed
+- CI workflow now uses the root `package-lock.json` and runs `npm ci` from the workspace root (was failing because `cli/package-lock.json` does not exist in this npm workspaces monorepo)
+
+### Research
+- Completed Mode A vs Mode B cost + quality experiment: routing cut cost **46%** (all-Opus $0.17 → routed $0.09) across 3 representative tasks; Tier-Mid (Sonnet) matched or exceeded Opus quality for implementation tasks → [`experiments/token-comparison/RESULTS.md`](experiments/token-comparison/RESULTS.md)
+
 ## [0.3.3] — 2026-05-04
 
 ### Added

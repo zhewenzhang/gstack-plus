@@ -39,6 +39,21 @@ And costs look like this:
 
 If you run 50% of your Tier-Exec tasks through Opus, you're paying a 30× premium for mechanical work.
 
+### Experiment Validation
+
+This isn't theory. We ran a 3-task × 2-mode controlled experiment on 2026-05-04:
+
+| Task type | Mode A (All-Opus) | Mode B (Routed) | Cost saving | Quality |
+|-----------|------------------|-----------------|-------------|---------|
+| Tier-Exec: function rename | $0.012 | $0.0001 (Qwen) | −99% | Missed word boundary |
+| Tier-Mid: React Query refactor | $0.079 | $0.012 (Sonnet) | −85% | Sonnet **beat** Opus |
+| Tier-A: SSO+MFA architecture | $0.079 | $0.079 (Opus) | 0% | Tied (same model) |
+| **Total** | **$0.169** | **$0.091** | **−46%** | Near-equivalent |
+
+Key finding: **Tier-Mid routing is the clearest win** — Sonnet is not only 85% cheaper, it produced more actionable output than Opus for implementation tasks.
+
+Full report: [experiments/token-comparison/RESULTS.md](../experiments/token-comparison/RESULTS.md)
+
 ---
 
 ## The gstack-plus Solution: 5-Dimension Scoring → Precise Routing
