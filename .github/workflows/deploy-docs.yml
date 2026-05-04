@@ -9,6 +9,7 @@ on:
       - 'classifier/**'
       - 'handoff/**'
       - 'verification/**'
+      - 'examples/**'
       - 'experiments/**'
       - 'PROJECT_ROADMAP.md'
       - 'YC_BLINDSPOTS.md'
