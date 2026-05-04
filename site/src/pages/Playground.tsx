@@ -2,7 +2,8 @@ import { useState, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Nav from '@/components/Nav';
 import { useLang } from '@/i18n/useLang';
-import { route, DIMENSIONS, PRESETS, type Scoring, type Score } from '@/lib/route';
+import { route, DIMENSIONS, PRESETS, getThresholdHints, type Scoring, type Score } from '@/lib/route';
+import PentagonChart from '@/components/PentagonChart';
 import { ROLES, FLOWS, buildPrompt, type RoleId, type FlowId } from '@/lib/promptBuilder';
 
 const TIER_COLOR: Record<string, string> = {
@@ -109,6 +110,7 @@ export default function Playground() {
   const [selectedRole, setSelectedRole] = useState<RoleId>('developer');
   const [selectedFlow, setSelectedFlow] = useState<FlowId>('execute');
   const [promptCopied, setPromptCopied] = useState(false);
+  const [openHint, setOpenHint] = useState<string | null>(null);
 
   // ─── URL state sync (HashRouter-safe) ───
   // HashRouter URL: https://.../#/playground?t=...&s=...
@@ -223,7 +225,18 @@ export default function Playground() {
               {DIMENSIONS.map(d => (
                 <div key={d.key}>
                   <div className="flex justify-between items-baseline mb-1.5">
-                    <label className="text-sm font-medium text-ink">{d.label}</label>
+                    <div className="flex items-center gap-1.5">
+                      <label className="text-sm font-medium text-ink">
+                        {lang === 'en' ? d.labelEn : d.label}
+                      </label>
+                      <button
+                        onClick={() => setOpenHint(openHint === d.key ? null : d.key)}
+                        className="text-[10px] text-muted hover:text-ink border border-neutral-200 hover:border-neutral-400 rounded px-1 py-0 leading-4 transition-colors"
+                        title={lang === 'en' ? 'See examples' : '看示例'}
+                      >
+                        {openHint === d.key ? '▲' : '?'}
+                      </button>
+                    </div>
                     <span className="font-display text-xl text-ink tabular-nums">{scoring[d.key]}</span>
                   </div>
                   <input
@@ -233,7 +246,21 @@ export default function Playground() {
                     onChange={e => updateScore(d.key, parseInt(e.target.value))}
                     className="w-full accent-black"
                   />
-                  <div className="text-[11px] text-muted mt-1">{d.hint}</div>
+                  <div className="text-[11px] text-muted mt-1">
+                    {lang === 'en' ? d.hintEn : d.hint}
+                  </div>
+                  {openHint === d.key && (
+                    <div className="mt-2 rounded-lg bg-neutral-50 border border-neutral-200 p-3 space-y-2">
+                      {d.examples.map(ex => (
+                        <div key={ex.score} className="flex gap-2 text-[11px]">
+                          <span className="font-display font-bold text-ink w-4 shrink-0">{ex.score}</span>
+                          <span className="text-muted leading-snug">
+                            {lang === 'en' ? ex.en : ex.zh}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -243,14 +270,45 @@ export default function Playground() {
           <div className="lg:sticky lg:top-8 self-start">
             <div className="text-xs uppercase tracking-widest text-muted mb-3">Routing decision</div>
             <div className={`rounded-2xl border-2 p-6 ${TIER_COLOR[decision.tier]}`}>
-              <div className="font-display text-4xl mb-2">{tierLabel(decision.tier, lang)}</div>
-              <div className="text-sm leading-relaxed mb-4">{decision.reason}</div>
-              {decision.triggeredRules.length > 0 && (
-                <ul className="text-xs space-y-0.5 mb-4">
-                  {decision.triggeredRules.map(r => <li key={r}>• {r}</li>)}
-                </ul>
-              )}
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex-1 min-w-0">
+                  <div className="font-display text-4xl mb-2">{tierLabel(decision.tier, lang)}</div>
+                  <div className="text-sm leading-relaxed mb-4">{decision.reason}</div>
+                  {decision.triggeredRules.length > 0 && (
+                    <ul className="text-xs space-y-0.5">
+                      {decision.triggeredRules.map(r => <li key={r}>• {r}</li>)}
+                    </ul>
+                  )}
+                </div>
+                <PentagonChart scoring={scoring} tier={decision.tier} lang={lang} />
+              </div>
             </div>
+
+            {/* Threshold hints */}
+            {(() => {
+              const hints = getThresholdHints(scoring, decision.tier, lang);
+              if (hints.length === 0) return null;
+              return (
+                <div className="mt-3 space-y-1.5">
+                  {hints.map((h, i) => {
+                    const tierColors: Record<string, string> = {
+                      'Tier-A': 'text-fuchsia-700 bg-fuchsia-50 border-fuchsia-200',
+                      'Tier-Exec': 'text-emerald-700 bg-emerald-50 border-emerald-200',
+                    };
+                    const cls = tierColors[h.targetTier] ?? 'text-cyan-700 bg-cyan-50 border-cyan-200';
+                    return (
+                      <div key={i} className={`text-xs rounded-lg border px-3 py-2 ${cls}`}>
+                        <span className="opacity-70">
+                          {lang === 'en' ? `${h.targetTier} is 1 step away:` : `距 ${h.targetTier} 僅差：`}
+                        </span>
+                        {' '}
+                        <span className="font-medium">↑ {h.changes.join(' · ')}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              );
+            })()}
 
             <div className="mt-6 flex flex-wrap gap-3">
               <button
