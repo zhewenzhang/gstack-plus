@@ -188,7 +188,7 @@ function printReport(modeA: TaskResult[], modeB: TaskResult[]): void {
     }),
   ].join('\n');
 
-  fs.writeFileSync(csvPath, csvRows.join('\n'));
+  fs.writeFileSync(csvPath, csvRows);
   console.log(`\n  ✓ Results saved → ${csvPath}\n`);
 }
 

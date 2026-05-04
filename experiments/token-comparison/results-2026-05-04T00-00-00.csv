@@ -1,0 +1,4 @@
+task_id,task_name,expected_tier,gstack_scores,modeA_model,modeA_in,modeA_out,modeA_total,modeA_cost_usd,modeB_model,modeB_in,modeB_out,modeB_total,modeB_cost_usd,token_saved_pct
+T1,"Rename function across repo",Tier-Exec,"1,2,1,5,1",anthropic/claude-opus-4.7,57,99,156,0.0080,anthropic/claude-opus-4.7,65,129,194,0.0107,-24
+T2,"Refactor data layer to React Query",Tier-Mid,"3,3,2,4,2",anthropic/claude-opus-4.7,315,822,1137,0.0655,anthropic/claude-sonnet-4-6,85,741,826,0.0137,27
+T3,"Design SSO + MFA auth architecture",Tier-A,"5,4,5,2,4",anthropic/claude-opus-4.7,137,1023,1160,0.0777,anthropic/claude-opus-4.7,137,1024,1161,0.0778,0
