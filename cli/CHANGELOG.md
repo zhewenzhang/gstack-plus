@@ -2,7 +2,7 @@
 
 All notable changes to the `gstack-plus` CLI will be documented here.
 
-## [0.3.1] — 2026-05-04
+## [0.3.2] — 2026-05-04
 
 ### Fixed (site)
 - Nav "Docs" label correctly set in English mode (was "Manual")

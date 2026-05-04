@@ -11,7 +11,7 @@ const program = new Command();
 program
   .name('gstack-plus')
   .description('Multi-tier model orchestration CLI')
-  .version('0.3.1')
+  .version('0.3.2')
   .option('--lang <lang>', 'Language for interactive prompts (zh | en)');
 
 program
