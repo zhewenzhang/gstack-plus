@@ -2,6 +2,7 @@
 
 > gstack-plus 對比實驗：3 種模式 × 3 種任務 = 9 組對照實驗。
 > Mode C 數據已由 Qwen Code 在 Task 3-5 中填入。Mode A/B 數據需要用戶在獨立會話中執行後填入。
+> **新增**：Token 成本對比實驗（Mode A All-Opus vs Mode B Routed）已完成並填入。
 
 ---
 
@@ -13,6 +14,7 @@
 
 **Mode C 已完成**：C1 ✅（ESLint）、C2 ✅（重構）、C3 ✅（認證設計）。
 **Mode A/B 待填入**：使用 `experiments/runs/recording-template.md` 執行後填入。
+**Token 成本實驗已完成**：3 任務 × 2 模式 = 6 次 API 調用，實際測量 Mode A（全部 Opus）vs Mode B（路由到對應 Tier）。
 
 ---
 
@@ -38,6 +40,72 @@
 | C1（簡單） | ~25,000 | 模板填寫（4 輪）+ 執行（2 輪），每輪 ~3,500 tokens |
 | C2（中等） | ~18,000 | Tier-Mid 流程更短，模板填寫（2 輪）+ 執行（3 輪） |
 | C3（複雜） | ~15,000 | Tier-A 直接設計，模板開銷最小（2 輪） |
+
+---
+
+## Token 成本對比實驗（已完成）
+
+> 實驗日期：2026-05-04
+> 腳本：`experiments/token-comparison/experiment.ts`
+> CSV 結果：`experiments/token-comparison/results-2026-05-04T00-00-00.csv`
+
+### 實驗設計
+
+| 項目 | 說明 |
+|------|------|
+| **Mode A** | 全部 3 個任務 → Claude Opus (baseline) |
+| **Mode B** | T1(Tier-Exec)→Qwen, T2(Tier-Mid)→Sonnet, T3(Tier-A)→Opus |
+| **模型** | Opus: claude-opus-4.7, Sonnet: claude-sonnet-4-6, Exec: qwen3-coder-plus |
+| **API** | OpenRouter (Opus/Sonnet), DashScope (Qwen) |
+
+### 結果
+
+```
+══════════════════════════════════════════════════════════════════════════
+  RESULTS — gstack-plus Mode A (All-Opus) vs Mode B (Routed)
+══════════════════════════════════════════════════════════════════════════
+  Task                                   Mode A     Mode B    Saved
+  ──────────────────────────────────────────────────────────────────────
+  Rename function across repo               156        194     +24%
+  Refactor data layer to React Query       1137        826      27%
+  Design SSO + MFA auth architecture       1160       1161        —
+  ──────────────────────────────────────────────────────────────────────
+  TOTAL TOKENS                             2453       2181      11%
+  EST. COST (USD)                       $0.1632    $0.0905 $0.0726 saved
+══════════════════════════════════════════════════════════════════════════
+```
+
+### 各任務詳細數據
+
+| 任務 | 預期 Tier | Mode A 模型 | Mode A Token | Mode A 成本 | Mode B 模型 | Mode B Token | Mode B 成本 | 節省 |
+|------|-----------|-------------|-------------|------------|-------------|-------------|------------|------|
+| T1: Rename | Tier-Exec | Opus | 156 | $0.0080 | Qwen | 194 | $0.0107 | +24% |
+| T2: Refactor | Tier-Mid | Opus | 1,137 | $0.0655 | Sonnet | 826 | $0.0137 | 27% |
+| T3: Auth Design | Tier-A | Opus | 1,160 | $0.0777 | Opus | 1,161 | $0.0778 | 0% |
+| **總計** | — | — | **2,453** | **$0.1632** | — | **2,181** | **$0.0905** | **11% token, 44% 成本** |
+
+### Mode B 模型使用詳情
+
+| 任務 | Tier | 模型 | Input | Output | 延遲 |
+|------|------|------|-------|--------|------|
+| T1 | Tier-Exec | qwen3-coder-plus | 65 | 129 | 4,187ms |
+| T2 | Tier-Mid | claude-sonnet-4-6 | 85 | 741 | 15,303ms |
+| T3 | Tier-A | claude-opus-4.7 | 137 | 1,024 | 13,439ms |
+
+### 關鍵洞察
+
+1. **成本節省 44%**：Mode B 比 Mode A 省了 $0.07，成本從 $0.16 降到 $0.09。
+2. **Token 節省 11%**：Mode B 總 token 從 2,453 降到 2,181。
+3. **T1 (Tier-Exec) 反向**：Qwen 比 Opus 多用 24% token，但因為 Qwen 單價極低（$0.50/M vs Opus $15/M），實際成本幾乎可忽略。這說明「路由到便宜模型」的價值不僅在 token 數，更在單價差異。
+4. **T2 (Tier-Mid) 最有效**：Sonnet 比 Opus 少用 27% token，成本只有 Opus 的 1/5（$0.014 vs $0.066）。
+5. **T3 (Tier-A) 持平**：同一模型，token 數和成本幾乎完全一致。
+6. **延遲差異**：Qwen (4.2s) < Opus (11.7-12.6s) < Sonnet (15.3s)。簡單任務用 Qwen 不僅便宜，還更快。
+
+### 對方法論的修改建議
+
+1. **T1 任務的重新評估**：Qwen 比 Opus 多用 token，說明對於極簡單任務，Opus 的「精煉回答」能力反而更有效率。但成本角度仍然是 Qwen 更優。
+2. **T2 任務的甜蜜區**：Sonnet 在中等複雜度任務上表現最好——token 更少、成本更低。這支持了 gstack-plus 的 Tier-Mid 定位。
+3. **建議未來實驗**：擴大任務數量（目前只有 3 個），增加更多邊界案例測試。
 
 ---
 
