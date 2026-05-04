@@ -6,6 +6,7 @@ import Sidebar from '@/components/Sidebar';
 import Markdown from '@/components/Markdown';
 import MobileDrawer from '@/components/MobileDrawer';
 import DocToc from '@/components/DocToc';
+import { useLang } from '@/i18n/useLang';
 
 const REPO_BASE = 'https://github.com/zhewenzhang/gstack-plus/blob/main/';
 
@@ -21,6 +22,7 @@ function findContext(slug: string | undefined) {
 }
 
 export default function DocPage() {
+  const [lang] = useLang();
   const { slug } = useParams();
   const { item, prev, next, sectionTitle } = findContext(slug);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -41,7 +43,10 @@ export default function DocPage() {
     );
   }
 
-  const md = loadMarkdown((item as Item).source);
+  const itemTyped = item as Item;
+  const hasEnVersion = Boolean(itemTyped.sourceEn);
+  const source = (lang === 'en' && itemTyped.sourceEn) ? itemTyped.sourceEn : itemTyped.source;
+  const md = loadMarkdown(source);
 
   return (
     <div className="min-h-screen bg-background">
@@ -84,10 +89,12 @@ export default function DocPage() {
 
           <header className="mb-10">
             <h1 className="font-display text-3xl sm:text-4xl md:text-5xl text-ink leading-tight mb-3">
-              {item.title}
+              {lang === 'en' && itemTyped.titleEn ? itemTyped.titleEn : item.title}
             </h1>
-            {(item as Item).description && (
-              <p className="text-base text-muted leading-relaxed">{(item as Item).description}</p>
+            {(lang === 'en' && itemTyped.descriptionEn ? itemTyped.descriptionEn : itemTyped.description) && (
+              <p className="text-base text-muted leading-relaxed">
+                {lang === 'en' && itemTyped.descriptionEn ? itemTyped.descriptionEn : itemTyped.description}
+              </p>
             )}
             <div className="mt-4">
               <a
@@ -102,6 +109,18 @@ export default function DocPage() {
 
           <div className="flex gap-10">
             <article ref={articleRef} className="flex-1 min-w-0">
+              {lang === 'en' && !hasEnVersion && (
+                <div className="mb-6 px-4 py-3 rounded-lg bg-amber-50 border border-amber-200 text-sm text-amber-800">
+                  English translation in progress — showing Chinese original.
+                  <a
+                    href={`https://github.com/zhewenzhang/gstack-plus/blob/main/${itemTyped.source}`}
+                    target="_blank" rel="noreferrer"
+                    className="ml-2 underline hover:no-underline"
+                  >
+                    Contribute a translation ↗
+                  </a>
+                </div>
+              )}
               {md ? <Markdown source={md} /> : <p className="text-muted">Markdown 尚未載入。</p>}
 
               {/* prev / next */}

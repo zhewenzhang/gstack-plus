@@ -4,8 +4,10 @@ export type Item = {
   title: string;
   titleEn?: string;
   source: string;
+  sourceEn?: string;
   subgroup?: string;
   description?: string;
+  descriptionEn?: string;
 };
 
 export type Section = {
@@ -27,12 +29,14 @@ export const NAV: Section[] = [
     items: [
       { order: 101, slug: 'getting-started',
         title: 'Getting Started', titleEn: 'Getting Started',
-        source: 'docs/getting-started.md',
-        description: 'npx gstack-plus classify "..." — 5 分鐘上手' },
+        source: 'docs/getting-started.md', sourceEn: 'docs/getting-started-en.md',
+        description: 'npx gstack-plus classify "..." — 5 分鐘上手',
+        descriptionEn: 'Install CLI, make your first routing decision in 5 minutes' },
       { order: 102, slug: 'cli',
         title: 'CLI 使用手冊', titleEn: 'CLI Reference',
-        source: 'cli/README.md',
-        description: 'classify / examples / stats / open / config — 完整命令說明' },
+        source: 'cli/README.md', sourceEn: 'cli/README-en.md',
+        description: 'classify / examples / stats / open / config — 完整命令說明',
+        descriptionEn: 'classify / examples / stats / open / config — full command reference' },
       { order: 103, slug: 'changelog',
         title: 'Changelog', titleEn: 'Changelog',
         source: 'CHANGELOG.md' },
@@ -47,12 +51,14 @@ export const NAV: Section[] = [
     items: [
       { order: 201, slug: 'architecture',
         title: '三層架構設計', titleEn: '3-Tier Architecture',
-        source: 'docs/architecture.md',
-        description: 'Tier-A / Tier-Mid / Tier-Exec 的角色、邊界與成本權衡' },
+        source: 'docs/architecture.md', sourceEn: 'docs/architecture-en.md',
+        description: 'Tier-A / Tier-Mid / Tier-Exec 的角色、邊界與成本權衡',
+        descriptionEn: 'Roles, boundaries, and cost tradeoffs of the 3-tier model' },
       { order: 202, slug: 'key-insights',
         title: '核心設計洞察', titleEn: 'Key Design Insights',
-        source: 'docs/learning-notes/key-insights.md',
-        description: 'AI 紀律、角色化設計、隔離即品質等 5 個設計原則' },
+        source: 'docs/learning-notes/key-insights.md', sourceEn: 'docs/learning-notes/key-insights-en.md',
+        description: 'AI 紀律、角色化設計、隔離即品質等 5 個設計原則',
+        descriptionEn: '5 design principles from practice: AI discipline, role-based design, isolation-as-quality' },
     ],
   },
   {
@@ -64,12 +70,14 @@ export const NAV: Section[] = [
     items: [
       { order: 301, slug: 'scoring-guide',
         title: '評分指南', titleEn: 'Scoring Guide',
-        source: 'classifier/scoring-guide.md',
-        description: '5 個維度（判斷、上下文、風險、可驗證、創意）的 1–5 分標準' },
+        source: 'classifier/scoring-guide.md', sourceEn: 'classifier/scoring-guide-en.md',
+        description: '5 個維度（判斷、上下文、風險、可驗證、創意）的 1–5 分標準',
+        descriptionEn: '1–5 scoring standards for the 5 dimensions' },
       { order: 302, slug: 'routing-rules',
         title: '路由規則', titleEn: 'Routing Rules',
-        source: 'classifier/routing-rules.md',
-        description: '從評分到 Tier 的決策表與保守路由原則' },
+        source: 'classifier/routing-rules.md', sourceEn: 'classifier/routing-rules-en.md',
+        description: '從評分到 Tier 的決策表與保守路由原則',
+        descriptionEn: 'Decision table from scoring to Tier + conservative routing principle' },
       { order: 303, slug: 'test-tasks',
         title: '20+ 任務評分示範', titleEn: '20+ Worked Tasks',
         source: 'classifier/test-tasks.md',
