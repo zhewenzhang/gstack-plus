@@ -6,7 +6,9 @@ import Sidebar from '@/components/Sidebar';
 import Markdown from '@/components/Markdown';
 import MobileDrawer from '@/components/MobileDrawer';
 import DocToc from '@/components/DocToc';
+import LangToggle from '@/components/LangToggle';
 import { useLang } from '@/i18n/useLang';
+import { STRINGS } from '@/i18n/strings';
 
 const REPO_BASE = 'https://github.com/zhewenzhang/gstack-plus/blob/main/';
 
@@ -33,6 +35,7 @@ export default function DocPage() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const articleRef = useRef<HTMLDivElement>(null);
   const [articleEl, setArticleEl] = useState<HTMLElement | null>(null);
+  const s = STRINGS.doc;
 
   useEffect(() => { setArticleEl(articleRef.current); }, [slug]);
   useEffect(() => { window.scrollTo({ top: 0 }); }, [slug]);
@@ -41,8 +44,8 @@ export default function DocPage() {
     return (
       <div className="min-h-screen flex items-center justify-center text-center px-6">
         <div>
-          <h1 className="font-display text-3xl mb-3">找不到這篇文章</h1>
-          <Link className="underline" to="/">回首頁</Link>
+          <h1 className="font-display text-3xl mb-3">{s.notFoundTitle[lang]}</h1>
+          <Link className="underline" to="/">{s.notFoundHome[lang]}</Link>
         </div>
       </div>
     );
@@ -64,8 +67,11 @@ export default function DocPage() {
           <span className="block w-5 h-[1.5px] bg-ink" />
         </button>
         <Link to="/" className="font-display text-xl">gstack<sup>+</sup></Link>
-        <a href={REPO_BASE + (item as Item).source} target="_blank" rel="noreferrer"
-          className="text-xs text-muted hover:text-ink">Edit ↗</a>
+        <div className="flex items-center gap-2">
+          <LangToggle />
+          <a href={REPO_BASE + (item as Item).source} target="_blank" rel="noreferrer"
+            className="text-xs text-muted hover:text-ink">Edit ↗</a>
+        </div>
       </div>
 
       <MobileDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)}>
@@ -75,8 +81,9 @@ export default function DocPage() {
       <div className="flex max-w-[1500px] mx-auto">
         {/* Desktop sidebar */}
         <aside className="hidden lg:block w-72 shrink-0 sticky top-0 h-screen border-r border-neutral-200">
-          <div className="px-6 py-6 border-b border-neutral-200">
+          <div className="px-6 py-6 border-b border-neutral-200 flex items-center justify-between">
             <Link to="/" className="font-display text-2xl">gstack<sup>+</sup></Link>
+            <LangToggle />
           </div>
           <Sidebar />
         </aside>
@@ -107,7 +114,7 @@ export default function DocPage() {
                 target="_blank" rel="noreferrer"
                 className="hidden lg:inline-block text-xs text-muted hover:text-ink underline-offset-4 hover:underline"
               >
-                {lang === 'en' ? 'Edit on GitHub ↗' : '在 GitHub 上編輯本頁 ↗'}
+                {s.editGithub[lang]}
               </a>
             </div>
           </header>
@@ -116,24 +123,24 @@ export default function DocPage() {
             <article ref={articleRef} className="flex-1 min-w-0">
               {lang === 'en' && !hasEnVersion && (
                 <div className="mb-6 px-4 py-3 rounded-lg bg-amber-50 border border-amber-200 text-sm text-amber-800">
-                  English translation in progress — showing Chinese original.
+                  {s.enProgress[lang]}
                   <a
                     href={`https://github.com/zhewenzhang/gstack-plus/blob/main/${itemTyped.source}`}
                     target="_blank" rel="noreferrer"
                     className="ml-2 underline hover:no-underline"
                   >
-                    Contribute a translation ↗
+                    {s.contributeTranslation[lang]}
                   </a>
                 </div>
               )}
-              {md ? <Markdown source={md} /> : <p className="text-muted">Markdown 尚未載入。</p>}
+              {md ? <Markdown source={md} /> : <p className="text-muted">{s.mdLoading[lang]}</p>}
 
               {/* prev / next */}
               <div className="mt-16 pt-8 border-t border-neutral-200 grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {prev ? (
                   <Link to={`/doc/${prev.slug}`} className="group block rounded-xl border border-neutral-200 hover:border-ink transition-colors p-4">
                     <div className="text-[11px] uppercase tracking-wider text-muted mb-1.5">
-                      {lang === 'en' ? '← Previous' : '← 上一篇'}
+                      {s.prev[lang]}
                     </div>
                     <div className="font-display text-base text-ink">
                       {lang === 'en' && prev.titleEn ? prev.titleEn : prev.title}
@@ -143,7 +150,7 @@ export default function DocPage() {
                 {next ? (
                   <Link to={`/doc/${next.slug}`} className="group block rounded-xl border border-neutral-200 hover:border-ink transition-colors p-4 sm:text-right">
                     <div className="text-[11px] uppercase tracking-wider text-muted mb-1.5">
-                      {lang === 'en' ? 'Next →' : '下一篇 →'}
+                      {s.next[lang]}
                     </div>
                     <div className="font-display text-base text-ink">
                       {lang === 'en' && next.titleEn ? next.titleEn : next.title}

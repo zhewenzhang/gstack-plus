@@ -93,4 +93,16 @@ export const STRINGS = {
   footer: {
     license: { zh: 'MIT 授權', en: 'MIT License' },
   },
+
+  // ─── DocPage ───
+  doc: {
+    notFoundTitle: { zh: '找不到這篇文章', en: 'Page not found' },
+    notFoundHome: { zh: '回首頁', en: 'Back to home' },
+    mdLoading: { zh: 'Markdown 載入中...', en: 'Loading markdown...' },
+    enProgress: { zh: '英文翻譯進行中 — 顯示中文原版', en: 'English translation in progress — showing Chinese original' },
+    contributeTranslation: { zh: '貢獻翻譯 ↗', en: 'Contribute a translation ↗' },
+    editGithub: { zh: '在 GitHub 上編輯本頁 ↗', en: 'Edit on GitHub ↗' },
+    prev: { zh: '← 上一篇', en: '← Previous' },
+    next: { zh: '下一篇 →', en: 'Next →' },
+  },
 } as const;
