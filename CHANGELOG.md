@@ -6,6 +6,12 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ---
 
+## [0.3.4] — 2026-05-04
+
+### Added
+- `gstack-plus stats` command — analyzes `./handoffs/` and shows tier distribution as a bar chart with counts and percentages
+- `gstack-plus open [index]` command — opens a recent handoff doc in `$EDITOR` (default: most recent; falls back to `notepad` on Windows or `vi` on Unix)
+
 ## [0.3.3] — 2026-05-04
 
 ### Added
@@ -71,6 +77,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ---
 
+[0.3.4]: https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.3.4
 [0.3.3]: https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.3.3
 [0.3.2]: https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.3.2
 [0.3.1]: https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.3.1

@@ -15,7 +15,7 @@ const program = new Command();
 program
   .name('gstack-plus')
   .description('Multi-tier model orchestration CLI')
-  .version('0.3.3')
+  .version('0.3.4')
   .option('--lang <lang>', 'Language for interactive prompts (zh | en)');
 
 program
@@ -355,6 +355,109 @@ gstack-plus routing rules
 Conservative routing: when in doubt, route up.
 Full spec: classifier/routing-rules.md
 `);
+  });
+
+program
+  .command('stats')
+  .description('Show tier distribution of past handoffs')
+  .option('-d, --dir <dir>', 'Handoff directory to scan', './handoffs')
+  .action(async (opts: { dir: string }) => {
+    const { readdir, readFile } = await import('node:fs/promises');
+    const { join } = await import('node:path');
+
+    let files: string[];
+    try {
+      const all = await readdir(opts.dir);
+      files = all.filter(f => f.startsWith('handoff-') && f.endsWith('.md'));
+    } catch {
+      console.log('');
+      console.log(chalk.dim(`No handoffs directory at ${opts.dir}.`));
+      console.log(chalk.dim('Generate one with: gstack-plus classify "your task"'));
+      console.log('');
+      return;
+    }
+
+    if (files.length === 0) {
+      console.log('');
+      console.log(chalk.dim(`No handoff files found in ${opts.dir}.`));
+      console.log('');
+      return;
+    }
+
+    const counts: Record<string, number> = { 'Tier-A': 0, 'Tier-Mid': 0, 'Tier-Exec': 0 };
+    for (const file of files) {
+      const content = await readFile(join(opts.dir, file), 'utf-8');
+      const tierLine = content.split('\n').find(l => l.includes('Routed to:')) ?? '';
+      const m = tierLine.match(/\*\*(Tier-[A-Za-z]+)\*\*/);
+      if (m && counts[m[1]] !== undefined) counts[m[1]]++;
+    }
+
+    const total = files.length;
+    console.log('');
+    console.log(chalk.bold(`${total} handoff${total === 1 ? '' : 's'} in ${opts.dir}`));
+    console.log('');
+
+    const tiers = [
+      { name: 'Tier-A',    color: chalk.bold.magenta },
+      { name: 'Tier-Mid',  color: chalk.bold.cyan },
+      { name: 'Tier-Exec', color: chalk.bold.green },
+    ];
+
+    for (const { name, color } of tiers) {
+      const count = counts[name];
+      const pct = Math.round((count / total) * 100);
+      const barWidth = total > 0 ? Math.round((count / total) * 30) : 0;
+      const bar = '█'.repeat(barWidth) + '░'.repeat(30 - barWidth);
+      console.log(`  ${color(name.padEnd(10))}  ${chalk.dim(bar)}  ${count.toString().padStart(3)}  ${pct.toString().padStart(3)}%`);
+    }
+    console.log('');
+    console.log(chalk.dim(`Tip: classified ${counts['Tier-Exec']} as Tier-Exec means ${counts['Tier-Exec']} tasks didn't need an expensive model.`));
+    console.log('');
+  });
+
+program
+  .command('open [index]')
+  .description('Open a recent handoff doc in your editor (default: most recent, 1)')
+  .option('-d, --dir <dir>', 'Handoff directory to scan', './handoffs')
+  .action(async (index: string | undefined, opts: { dir: string }) => {
+    const { readdir } = await import('node:fs/promises');
+    const { join } = await import('node:path');
+    const { spawn } = await import('node:child_process');
+
+    let files: string[];
+    try {
+      const all = await readdir(opts.dir);
+      files = all
+        .filter(f => f.startsWith('handoff-') && f.endsWith('.md'))
+        .sort()
+        .reverse();
+    } catch {
+      console.error(chalk.red(`No handoffs directory at ${opts.dir}.`));
+      process.exit(1);
+    }
+
+    if (files.length === 0) {
+      console.error(chalk.red(`No handoff files found in ${opts.dir}.`));
+      process.exit(1);
+    }
+
+    const idx = index ? parseInt(index, 10) - 1 : 0;
+    if (isNaN(idx) || idx < 0 || idx >= files.length) {
+      console.error(chalk.red(`Invalid index "${index}". Available: 1-${files.length} (use 'gstack-plus history' to list).`));
+      process.exit(1);
+    }
+
+    const filePath = join(opts.dir, files[idx]);
+    const editor = process.env.EDITOR || (process.platform === 'win32' ? 'notepad' : 'vi');
+    console.log(chalk.dim(`Opening ${filePath} in ${editor}…`));
+
+    const proc = spawn(editor, [filePath], { stdio: 'inherit', shell: process.platform === 'win32' });
+    proc.on('exit', code => process.exit(code ?? 0));
+    proc.on('error', err => {
+      console.error(chalk.red(`Failed to open editor: ${err.message}`));
+      console.error(chalk.dim(`Set $EDITOR or open manually: ${filePath}`));
+      process.exit(1);
+    });
   });
 
 program.parseAsync().catch(err => { console.error(chalk.red(err)); process.exit(1); });

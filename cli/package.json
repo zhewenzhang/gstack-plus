@@ -1,6 +1,6 @@
 {
   "name": "gstack-plus",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Multi-tier model orchestration CLI: classify tasks and route to the right Tier (A / Mid / Exec).",
   "license": "MIT",
   "type": "module",

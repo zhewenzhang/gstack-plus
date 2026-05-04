@@ -130,7 +130,7 @@ Reason: Tier-A triggered: judgment=5 >= 4, risk=5 >= 4, creativity=4 >= 4
 
 ```bash
 npm install -g gstack-plus
-gstack-plus --version    # 0.3.3
+gstack-plus --version    # 0.3.4
 ```
 
 ---
@@ -167,6 +167,7 @@ Full handbook: **[https://zhewenzhang.github.io/gstack-plus/](https://zhewenzhan
 | CLI v0.3.1 (`config` command) | ✅ [Release](https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.3.1) |
 | CLI v0.3.2 (bilingual sidebar, CI workflow) | ✅ [Release](https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.3.2) |
 | CLI v0.3.3 (score bars visualization) | ✅ [Release](https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.3.3) |
+| CLI v0.3.4 (`stats`, `open` commands) | ✅ [Release](https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.3.4) |
 | Mode A/B comparative experiments | 🚧 In progress |
 
 ---
