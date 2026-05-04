@@ -181,11 +181,12 @@ export default function Playground() {
         <div className="mb-10">
           <div className="text-xs uppercase tracking-widest text-muted mb-2">Playground</div>
           <h1 className="font-display text-3xl sm:text-5xl text-ink leading-tight mb-3">
-            Try the classifier in your browser.
+            {lang === 'zh' ? '在瀏覽器裡試一試分類器。' : 'Try the classifier in your browser.'}
           </h1>
           <p className="text-base text-muted leading-relaxed max-w-2xl">
-            No install. No API key. Move the sliders, watch the routing change in real time.
-            Download the handoff doc when you're ready to ship the task to a model.
+            {lang === 'zh'
+              ? '無需安裝，無需 API key。移動滑桿，實時看到路由變化。準備好後下載 handoff 文件，直接發給模型。'
+              : 'No install. No API key. Move the sliders, watch the routing change in real time. Download the handoff doc when you\'re ready to ship the task to a model.'}
           </p>
         </div>
 
@@ -277,7 +278,9 @@ export default function Playground() {
 
           {/* Result */}
           <div className="lg:sticky lg:top-8 self-start">
-            <div className="text-xs uppercase tracking-widest text-muted mb-3">Routing decision</div>
+            <div className="text-xs uppercase tracking-widest text-muted mb-3">
+              {lang === 'zh' ? '路由決策' : 'Routing decision'}
+            </div>
             <div className={`rounded-2xl border-2 p-6 ${TIER_COLOR[decision.tier]}`}>
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1 min-w-0">
@@ -311,7 +314,13 @@ export default function Playground() {
                           {lang === 'en' ? `${h.targetTier} is 1 step away:` : `距 ${h.targetTier} 僅差：`}
                         </span>
                         {' '}
-                        <span className="font-medium">↑ {h.changes.join(' · ')}</span>
+                        <span className="font-medium">
+                          {h.changes.map((c, ci) => {
+                            const m = c.match(/(\d+)→(\d+)/);
+                            const dir = m && parseInt(m[2]) > parseInt(m[1]) ? '↑' : '↓';
+                            return (ci > 0 ? ' · ' : '') + dir + ' ' + c;
+                          }).join('')}
+                        </span>
                       </div>
                     );
                   })}
@@ -324,24 +333,28 @@ export default function Playground() {
                 onClick={copyShareUrl}
                 className="rounded-full px-6 py-3 text-sm border border-neutral-300 text-ink hover:bg-neutral-50 transition-colors"
               >
-                {shareCopied ? '✓ Link copied' : 'Share this scoring'}
+                {shareCopied
+                  ? (lang === 'zh' ? '✓ 已複製' : '✓ Link copied')
+                  : (lang === 'zh' ? '分享此評分' : 'Share this scoring')}
               </button>
               <button
                 onClick={downloadHandoff}
                 className="rounded-full px-6 py-3 text-sm bg-ink text-white hover:scale-[1.03] transition-transform"
               >
-                Download handoff doc
+                {lang === 'zh' ? '下載 Handoff 文件' : 'Download handoff doc'}
               </button>
               <Link
                 to="/doc/cli"
                 className="rounded-full px-6 py-3 text-sm border border-neutral-300 text-ink hover:bg-neutral-50 transition-colors"
               >
-                Use the CLI instead →
+                {lang === 'zh' ? '改用 CLI →' : 'Use the CLI instead →'}
               </Link>
             </div>
 
             <div className="mt-8 text-xs text-muted leading-relaxed">
-              <div className="font-medium text-ink mb-1">Routing rules</div>
+              <div className="font-medium text-ink mb-1">
+                {lang === 'zh' ? '路由規則' : 'Routing rules'}
+              </div>
               <code className="block bg-neutral-100 p-2 rounded text-[11px] font-mono whitespace-pre">
 {`judgment≥4 OR risk≥4 OR creativity≥4 → Tier-A
 judgment≤2 AND context≤2 AND verif≥4  → Tier-Exec

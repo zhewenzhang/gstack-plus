@@ -24,7 +24,7 @@ function point(r: number, angleDeg: number) {
 function polyPoints(values: number[]) {
   return values
     .map((v, i) => {
-      const r = ((v - 1) / 4) * MAX_R;
+      const r = Math.max(4, ((v - 1) / 4) * MAX_R);
       const p = point(r, ANGLES_DEG[i]);
       return `${p.x.toFixed(2)},${p.y.toFixed(2)}`;
     })
@@ -98,7 +98,7 @@ export default function PentagonChart({ scoring, tier, lang }: Props) {
 
       {/* Score dots */}
       {values.map((v, i) => {
-        const r = ((v - 1) / 4) * MAX_R;
+        const r = Math.max(4, ((v - 1) / 4) * MAX_R);
         const p = point(r, ANGLES_DEG[i]);
         return <circle key={i} cx={p.x} cy={p.y} r="2.5" fill={stroke} />;
       })}
