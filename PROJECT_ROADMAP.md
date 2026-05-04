@@ -4,7 +4,25 @@
 >
 > **創建日期**：2026-05-02
 > **作者**：davezhangus@gmail.com
-> **狀態**：規劃階段
+> **狀態**：進行中（CLI v0.3.2 已發布 npm，GitHub Pages 文件網站已上線）
+
+---
+
+## 📊 當前實際進度（截至 2026-05-03）
+
+| 里程碑 | 狀態 | 說明 |
+|--------|------|------|
+| Phase 0 學習階段 | ✅ 完成 | gstack & superpowers 學習筆記已建立（docs/learning-notes/） |
+| Phase 1 基礎框架 | ✅ 完成 | 5 維度分類器、路由引擎、移交模板（docs/templates/） |
+| npm publish v0.1.0 | ✅ 完成 | CLI 首發，包含 classify、rules、examples |
+| npm publish v0.2.0 | ✅ 完成 | history、init 命令；英文移交模板 |
+| npm publish v0.2.1 | ✅ 完成 | Bug fix 小版本 |
+| npm publish v0.3.0 | ✅ 完成 | GitHub Pages 文件網站上線；雙語路由（zh/en） |
+| npm publish v0.3.1 | ✅ 完成 | config 命令（~/.gstack-plus.json 偏好設定） |
+| npm publish v0.3.2 | ✅ 完成 | 網站雙語 Sidebar；QuickTry 雙語範例；CI workflow |
+| GitHub Pages 網站 | ✅ 上線 | https://zhewenzhang.github.io/gstack-plus/ |
+| Mode A/B 對比實驗 | ⏳ 待執行 | 模板已在 experiments/runs/，需手動執行 |
+| 軟發布（HN/Twitter/掘金） | ⏳ 草稿建立中 | Phase 19 本次任務 |
 
 ---
 
@@ -319,11 +337,12 @@ gstack-plus/
 ## 📅 完整時間表
 
 ```
-Week 1-2:  Phase 0 學習         ✓ 確認節點：理解 gstack 哲學
-Week 3-4:  Phase 1 基礎框架      ✓ 確認節點：分類器準確率 ≥ 80%
-Week 5-6:  Phase 2 失敗回流      ✓ 確認節點：智能路由處理 4/5 場景
-Week 7-8:  Phase 3 對比實驗      ✓ 確認節點：數據圖表完成
-Week 9-10: Phase 4 發布          ✓ 確認節點：GitHub v0.1.0 發布
+Week 1-2:  Phase 0 學習         ✅ 完成 — gstack/superpowers 學習筆記完成
+Week 3-4:  Phase 1 基礎框架     ✅ 完成 — 5D分類器 + 移交模板 + CLI v0.1.0 發布
+Week 5-6:  Phase 2 框架迭代     ✅ 完成 — v0.2.x history/init/英文模板/雙語路由
+Week 7-8:  Phase 3 網站 + 配置  ✅ 完成 — v0.3.x GitHub Pages + config + CI
+Week 9-10: Phase 4 對比實驗     ⏳ 待執行 — 實驗模板就緒，需手動運行
+Week 11+:  Phase 5 軟發布       🚀 進行中 — HN/Twitter/掘金草稿建立
 ```
 
 **總計：10 週（約 2.5 個月）**
