@@ -73,6 +73,25 @@ gstack-plus --lang en classify "Design auth flow" --scores 5,4,5,2,4
 # → Tier-A  (English prompts + output)
 ```
 
+## Save your preferences
+
+Run `config set` once so you don't need flags every time:
+
+```bash
+gstack-plus config set lang en            # English prompts forever
+gstack-plus config set handoffDir ~/work/handoffs   # custom output dir
+
+# Now classify uses your saved settings automatically
+gstack-plus classify "Design the auth migration"
+```
+
+Check or reset your settings anytime:
+
+```bash
+gstack-plus config          # show saved settings
+gstack-plus config reset    # clear all settings
+```
+
 ## Explore
 
 ```bash

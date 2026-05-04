@@ -61,6 +61,32 @@ gstack-plus history             # list recent handoff docs in ./handoffs/
 gstack-plus history -d ~/handoffs -n 20   # custom dir, show up to 20
 ```
 
+### Initialize a project
+
+```bash
+gstack-plus init
+```
+
+Creates `./handoffs/` directory and prints a step-by-step quick-start guide.
+
+```bash
+gstack-plus init -d ~/my-handoffs   # custom directory
+```
+
+### Manage config
+
+Store preferences in `~/.gstack-plus.json` so you don't need to pass flags every time:
+
+```bash
+gstack-plus config                        # list current settings
+gstack-plus config set lang en            # remember English as default
+gstack-plus config set handoffDir ~/work/handoffs   # remember handoff directory
+gstack-plus config get lang               # read one setting
+gstack-plus config reset                  # clear all settings
+```
+
+Once `lang` is set, `classify` and `init` use it automatically without `--lang`.
+
 ### Print routing rules
 
 ```bash
