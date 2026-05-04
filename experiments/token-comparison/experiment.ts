@@ -62,6 +62,7 @@ type TaskResult = {
   totalTokens: number;
   costUsd: number;
   latencyMs: number;
+  outputText: string;
 };
 
 // ─── Runner ───────────────────────────────────────────────────────────────────
@@ -82,6 +83,8 @@ async function runTask(
   const costUsd =
     (usage.prompt_tokens * price.input + usage.completion_tokens * price.output) / 1_000_000;
 
+  const outputText = res.choices[0]?.message?.content ?? '(no output)';
+
   return {
     taskId: task.id,
     taskName: task.name,
@@ -91,6 +94,7 @@ async function runTask(
     totalTokens: usage.prompt_tokens + usage.completion_tokens,
     costUsd,
     latencyMs: Date.now() - t0,
+    outputText,
   };
 }
 
@@ -189,7 +193,77 @@ function printReport(modeA: TaskResult[], modeB: TaskResult[]): void {
   ].join('\n');
 
   fs.writeFileSync(csvPath, csvRows);
-  console.log(`\n  ✓ Results saved → ${csvPath}\n`);
+  console.log(`\n  ✓ Results saved → ${csvPath}`);
+
+  // Generate quality-review.md for human scoring
+  const reviewLines: string[] = [
+    '# Quality Review — gstack-plus Mode A vs Mode B',
+    '',
+    '> **打分說明**：每個任務對兩個模型的輸出分別評分。',
+    '> 評分維度：**有用性 1–5**（1=幾乎沒用，5=直接可用）、**正確性 Pass/Fail**。',
+    '> 填完後把這個文件回報給 Claude 進行最終分析。',
+    '',
+    '---',
+    '',
+  ];
+
+  for (let i = 0; i < TASKS.length; i++) {
+    const task = TASKS[i];
+    const a = modeA[i];
+    const b = modeB[i];
+
+    reviewLines.push(`## ${task.id} — ${task.name}`);
+    reviewLines.push('');
+    reviewLines.push(`**任務 prompt：**`);
+    reviewLines.push('');
+    reviewLines.push('```');
+    reviewLines.push(task.prompt);
+    reviewLines.push('```');
+    reviewLines.push('');
+    reviewLines.push(`**預期 Tier：** ${task.expectedTier}`);
+    reviewLines.push('');
+    reviewLines.push('---');
+    reviewLines.push('');
+
+    reviewLines.push(`### Mode A — ${a.model} (${a.totalTokens} tokens, $${a.costUsd.toFixed(5)})`);
+    reviewLines.push('');
+    reviewLines.push(a.outputText);
+    reviewLines.push('');
+    reviewLines.push('**Mode A 評分（你來填）：**');
+    reviewLines.push('- 有用性：__ / 5');
+    reviewLines.push('- 正確性：Pass / Fail');
+    reviewLines.push('- 備註：');
+    reviewLines.push('');
+    reviewLines.push('---');
+    reviewLines.push('');
+
+    reviewLines.push(`### Mode B — ${b.model} (${b.totalTokens} tokens, $${b.costUsd.toFixed(5)})`);
+    reviewLines.push('');
+    reviewLines.push(b.outputText);
+    reviewLines.push('');
+    reviewLines.push('**Mode B 評分（你來填）：**');
+    reviewLines.push('- 有用性：__ / 5');
+    reviewLines.push('- 正確性：Pass / Fail');
+    reviewLines.push('- 備註：');
+    reviewLines.push('');
+    reviewLines.push('---');
+    reviewLines.push('');
+  }
+
+  reviewLines.push('## 總結（你來填）');
+  reviewLines.push('');
+  reviewLines.push('| 任務 | Mode A 有用性 | Mode B 有用性 | 勝者 |');
+  reviewLines.push('|------|-------------|-------------|------|');
+  for (const task of TASKS) {
+    reviewLines.push(`| ${task.id} ${task.name} | __ / 5 | __ / 5 | A / B / 持平 |`);
+  }
+  reviewLines.push('');
+
+  const reviewPath = 'quality-review.md';
+  fs.writeFileSync(reviewPath, reviewLines.join('\n'));
+  console.log(`  ✓ Quality review template → ${reviewPath}`);
+  console.log('');
+  console.log('  下一步：打開 quality-review.md，閱讀每對輸出，填寫評分，回報給 Claude 分析。\n');
 }
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
