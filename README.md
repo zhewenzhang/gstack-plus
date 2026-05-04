@@ -22,6 +22,21 @@
 
 > **Don't let one model carry everything.** Route every task to the right tier — Opus for judgment, Sonnet for review, Exec for execution. Better decisions, lower spend.
 
+<div align="center">
+
+### Measured Results: 3-task Cost + Quality Benchmark
+
+| Task | Routed To | All-Opus Cost | Routed Cost | Saved | Quality |
+|---|---|---|---|---|---|
+| Rename function across repo | Tier-Exec → Qwen | $0.01173 | $0.00014 | **−99%** | Opus 5/5 · Qwen 3/5 |
+| Refactor to React Query v5 | Tier-Mid → Sonnet | $0.07849 | $0.01191 | **−85%** | Opus 4/5 · **Sonnet 5/5** ✓ |
+| Design SSO + MFA auth | Tier-A → Opus | $0.07885 | $0.07885 | — | Both Opus |
+| **Total** | | **$0.1691** | **$0.0909** | **−46%** | Quality maintained |
+
+*Sonnet beat Opus on quality at 85% lower cost for mid-complexity tasks. → [Full report](experiments/token-comparison/RESULTS.md)*
+
+</div>
+
 ---
 
 ## The Problem

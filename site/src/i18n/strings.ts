@@ -20,7 +20,7 @@ export const STRINGS = {
     },
     pillUrl: 'https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.3.4',
     headlineHtml: {
-      zh: '別讓一個模型<em class="italic" style="color:#6F6F6F">扛下所有事</em>。<br/>讓對的層級做<em class="italic" style="color:#6F6F6F">對的事。</em>',
+      zh: '對的模型，<em class="italic" style="color:#6F6F6F">做對的事。</em>',
       en: 'Stop sending <em class="italic" style="color:#6F6F6F">every task</em> to the<br/>same model. Route to the <em class="italic" style="color:#6F6F6F">right tier.</em>',
     },
     sub: {
@@ -30,6 +30,11 @@ export const STRINGS = {
     ctaPrimary:   { zh: '打開試玩場',  en: 'Open Playground' },
     ctaSecondary: { zh: '試 CLI 命令', en: 'Try the CLI' },
     ctaTertiary:  { zh: '看完整文檔 →', en: 'Read the docs →' },
+    stats: {
+      cost:  { zh: '成本降低', en: 'cost reduction' },
+      tiers: { zh: '模型層級', en: 'model tiers' },
+      dims:  { zh: '評分維度', en: 'scoring dimensions' },
+    },
   },
 
   // ─── QuickTry ───

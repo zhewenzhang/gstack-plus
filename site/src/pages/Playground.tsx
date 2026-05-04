@@ -11,6 +11,16 @@ const TIER_COLOR: Record<string, string> = {
   'Tier-Exec': 'bg-emerald-50 text-emerald-900 border-emerald-300',
 };
 
+const TIER_LABELS: Record<string, { zh: string; en: string }> = {
+  'Tier-A':    { zh: 'Tier-A · 判斷層', en: 'Tier-A · Judgment' },
+  'Tier-Mid':  { zh: 'Tier-Mid · 審查層', en: 'Tier-Mid · Review' },
+  'Tier-Exec': { zh: 'Tier-Exec · 執行層', en: 'Tier-Exec · Execute' },
+};
+
+function tierLabel(tier: string, lang: 'zh' | 'en'): string {
+  return TIER_LABELS[tier]?.[lang] ?? tier;
+}
+
 const DEFAULT_SCORING: Scoring = { judgment: 3, context: 3, risk: 3, verifiability: 3, creativity: 3 };
 
 function generateHandoff(task: string, scoring: Scoring, tier: string, reason: string, lang: 'zh' | 'en'): string {
@@ -233,7 +243,7 @@ export default function Playground() {
           <div className="lg:sticky lg:top-8 self-start">
             <div className="text-xs uppercase tracking-widest text-muted mb-3">Routing decision</div>
             <div className={`rounded-2xl border-2 p-6 ${TIER_COLOR[decision.tier]}`}>
-              <div className="font-display text-4xl mb-2">{decision.tier}</div>
+              <div className="font-display text-4xl mb-2">{tierLabel(decision.tier, lang)}</div>
               <div className="text-sm leading-relaxed mb-4">{decision.reason}</div>
               {decision.triggeredRules.length > 0 && (
                 <ul className="text-xs space-y-0.5 mb-4">

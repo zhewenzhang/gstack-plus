@@ -87,6 +87,24 @@ export default function Hero() {
             {s.ctaTertiary[lang]}
           </Link>
         </div>
+
+        {/* amber stats bar */}
+        <div className="flex flex-wrap justify-center items-center gap-8 sm:gap-14 mt-10 sm:mt-12 animate-fade-rise-delay-2">
+          <div className="text-center">
+            <div className="font-display text-3xl sm:text-4xl font-bold" style={{ color: '#F59E0B' }}>46%</div>
+            <div className="text-xs text-muted mt-1 tracking-wide">{s.stats.cost[lang]}</div>
+          </div>
+          <div className="w-px h-10 bg-neutral-200" />
+          <div className="text-center">
+            <div className="font-display text-3xl sm:text-4xl font-bold" style={{ color: '#F59E0B' }}>3</div>
+            <div className="text-xs text-muted mt-1 tracking-wide">{s.stats.tiers[lang]}</div>
+          </div>
+          <div className="w-px h-10 bg-neutral-200" />
+          <div className="text-center">
+            <div className="font-display text-3xl sm:text-4xl font-bold" style={{ color: '#F59E0B' }}>5</div>
+            <div className="text-xs text-muted mt-1 tracking-wide">{s.stats.dims[lang]}</div>
+          </div>
+        </div>
       </div>
 
       {/* video band */}
