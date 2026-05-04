@@ -94,10 +94,7 @@ Walks you through 5 questions → routing decision → pre-filled handoff doc.
 ```bash
 # Skip prompts — pass scores directly:
 gstack-plus classify "Rename getCwd" --scores 1,1,1,5,1
-# → Tier-Exec  ✅
-
 gstack-plus classify "Design SSO + MFA" --scores 5,4,5,2,4
-# → Tier-A  🟣
 
 # English prompts:
 gstack-plus --lang en classify "Your task"
@@ -109,11 +106,31 @@ gstack-plus examples
 gstack-plus history
 ```
 
+### Output Preview
+
+```text
+$ gstack-plus --lang en classify "Design SSO + MFA" --scores 5,4,5,2,4
+
+────────────────────────────────────────────────
+  Judgment    ██████████  5
+  Context     ████████░░  4
+  Risk        ██████████  5
+  Verif.      ████░░░░░░  2
+  Creativity  ████████░░  4
+
+Routing decision: Tier-A
+Reason: Tier-A triggered: judgment=5 >= 4, risk=5 >= 4, creativity=4 >= 4
+
+✓ Handoff doc written → handoffs/handoff-2026-05-04-x7k2.md
+```
+
+> Bars for dimensions that triggered Tier-A (judgment / risk / creativity ≥ 4) are highlighted in **magenta** in your terminal.
+
 ### Install
 
 ```bash
 npm install -g gstack-plus
-gstack-plus --version    # 0.2.1
+gstack-plus --version    # 0.3.3
 ```
 
 ---
@@ -146,6 +163,10 @@ Full handbook: **[https://zhewenzhang.github.io/gstack-plus/](https://zhewenzhan
 | i18n — 中/EN toggle | ✅ Complete |
 | CLI v0.2.0 (`examples`, `--lang`) | ✅ [Release](https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.2.0) |
 | CLI v0.2.1 (bilingual fix, `history`) | ✅ [Release](https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.2.1) |
+| CLI v0.3.0 (lang-aware routing, docs site) | ✅ [Release](https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.3.0) |
+| CLI v0.3.1 (`config` command) | ✅ [Release](https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.3.1) |
+| CLI v0.3.2 (bilingual sidebar, CI workflow) | ✅ [Release](https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.3.2) |
+| CLI v0.3.3 (score bars visualization) | ✅ [Release](https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.3.3) |
 | Mode A/B comparative experiments | 🚧 In progress |
 
 ---

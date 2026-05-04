@@ -28,6 +28,22 @@ gstack-plus classify "task description" --scores 4,3,4,2,2
 
 Order: `judgment,context,risk,verifiability,creativity` — each 1–5.
 
+### Output preview
+
+```text
+────────────────────────────────────────────────
+  Judgment    ████████░░  4
+  Context     ██████░░░░  3
+  Risk        ████████░░  4
+  Verif.      ████░░░░░░  2
+  Creativity  ████░░░░░░  2
+
+Routing decision: Tier-A
+Reason: Tier-A triggered: judgment=4 >= 4, risk=4 >= 4
+```
+
+Bars for dimensions that triggered Tier-A (judgment / risk / creativity ≥ 4) display in magenta in your terminal.
+
 ### Language option
 
 ```bash
