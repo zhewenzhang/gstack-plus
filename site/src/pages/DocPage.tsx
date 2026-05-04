@@ -11,20 +11,25 @@ import { useLang } from '@/i18n/useLang';
 const REPO_BASE = 'https://github.com/zhewenzhang/gstack-plus/blob/main/';
 
 function findContext(slug: string | undefined) {
-  const flat = NAV.flatMap(s => s.items.map(i => ({ ...i, sectionTitle: s.title })));
+  const flat = NAV.flatMap(s => s.items.map(i => ({
+    ...i,
+    sectionTitle: s.title,
+    sectionTitleEn: s.titleEn,
+  })));
   const idx = flat.findIndex(i => i.slug === slug);
   return {
     item: idx >= 0 ? flat[idx] : null,
     prev: idx > 0 ? flat[idx - 1] : null,
     next: idx >= 0 && idx < flat.length - 1 ? flat[idx + 1] : null,
     sectionTitle: idx >= 0 ? (flat[idx] as any).sectionTitle as string : '',
+    sectionTitleEn: idx >= 0 ? (flat[idx] as any).sectionTitleEn as string | undefined : undefined,
   };
 }
 
 export default function DocPage() {
   const [lang] = useLang();
   const { slug } = useParams();
-  const { item, prev, next, sectionTitle } = findContext(slug);
+  const { item, prev, next, sectionTitle, sectionTitleEn } = findContext(slug);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const articleRef = useRef<HTMLDivElement>(null);
   const [articleEl, setArticleEl] = useState<HTMLElement | null>(null);
@@ -81,7 +86,7 @@ export default function DocPage() {
           <nav className="text-xs text-muted mb-6 flex items-center gap-1.5 flex-wrap">
             <Link to="/" className="hover:text-ink">Home</Link>
             <span>/</span>
-            <span>{sectionTitle}</span>
+            <span>{lang === 'en' && sectionTitleEn ? sectionTitleEn : sectionTitle}</span>
             {(item as Item).subgroup && (<><span>/</span><span>{(item as Item).subgroup}</span></>)}
             <span>/</span>
             <span className="text-ink">{item.title}</span>
@@ -102,7 +107,7 @@ export default function DocPage() {
                 target="_blank" rel="noreferrer"
                 className="hidden lg:inline-block text-xs text-muted hover:text-ink underline-offset-4 hover:underline"
               >
-                在 GitHub 上編輯本頁 ↗
+                {lang === 'en' ? 'Edit on GitHub ↗' : '在 GitHub 上編輯本頁 ↗'}
               </a>
             </div>
           </header>
@@ -127,14 +132,22 @@ export default function DocPage() {
               <div className="mt-16 pt-8 border-t border-neutral-200 grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {prev ? (
                   <Link to={`/doc/${prev.slug}`} className="group block rounded-xl border border-neutral-200 hover:border-ink transition-colors p-4">
-                    <div className="text-[11px] uppercase tracking-wider text-muted mb-1.5">← 上一篇</div>
-                    <div className="font-display text-base text-ink">{prev.title}</div>
+                    <div className="text-[11px] uppercase tracking-wider text-muted mb-1.5">
+                      {lang === 'en' ? '← Previous' : '← 上一篇'}
+                    </div>
+                    <div className="font-display text-base text-ink">
+                      {lang === 'en' && prev.titleEn ? prev.titleEn : prev.title}
+                    </div>
                   </Link>
                 ) : <div />}
                 {next ? (
                   <Link to={`/doc/${next.slug}`} className="group block rounded-xl border border-neutral-200 hover:border-ink transition-colors p-4 sm:text-right">
-                    <div className="text-[11px] uppercase tracking-wider text-muted mb-1.5">下一篇 →</div>
-                    <div className="font-display text-base text-ink">{next.title}</div>
+                    <div className="text-[11px] uppercase tracking-wider text-muted mb-1.5">
+                      {lang === 'en' ? 'Next →' : '下一篇 →'}
+                    </div>
+                    <div className="font-display text-base text-ink">
+                      {lang === 'en' && next.titleEn ? next.titleEn : next.title}
+                    </div>
                   </Link>
                 ) : <div />}
               </div>

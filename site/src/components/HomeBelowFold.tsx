@@ -59,8 +59,12 @@ export default function HomeBelowFold() {
                 to={`/doc/${first.slug}`}
                 className="group block rounded-xl border border-neutral-200 hover:border-ink transition-colors p-5 bg-white"
               >
-                <div className="font-display text-xl text-ink mb-2">{section.title}</div>
-                <div className="text-xs text-muted leading-relaxed mb-3">{section.intro}</div>
+                <div className="font-display text-xl text-ink mb-2">
+                  {lang === 'en' && section.titleEn ? section.titleEn : section.title}
+                </div>
+                <div className="text-xs text-muted leading-relaxed mb-3">
+                  {lang === 'en' && section.introEn ? section.introEn : section.intro}
+                </div>
                 <div className="text-xs text-muted">{s.catCount[lang](section.items.length)}</div>
               </Link>
             );
