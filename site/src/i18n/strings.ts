@@ -65,16 +65,16 @@ export const STRINGS = {
     pathSteps: {
       zh: [
         { step: '01', slug: 'cli',             title: '裝 CLI 試一下',  why: '`npx gstack-plus classify "..."`，30 秒看到輸出再回來看理論' },
-        { step: '02', slug: 'roadmap',         title: '看路線圖',      why: '了解專案分幾個階段、為什麼要分層' },
-        { step: '03', slug: 'architecture',    title: '理解三層架構',   why: 'Tier-A / Mid / Exec 各自的角色與成本' },
-        { step: '04', slug: 'routing-rules',   title: '學會分類任務',   why: '5 維評分把任務路由到正確的 Tier' },
+        { step: '02', slug: 'architecture',    title: '理解三層架構',   why: 'Tier-A / Mid / Exec 各自的角色邊界與成本權衡' },
+        { step: '03', slug: 'scoring-guide',   title: '學 5 維評分',    why: '掌握評分維度，才能正確把任務分配到對的 Tier' },
+        { step: '04', slug: 'routing-rules',   title: '套路由規則',     why: '從評分到 Tier 的決策表 + 保守路由原則' },
         { step: '05', slug: 'failure-catalog', title: '掌握失敗恢復',   why: 'Exec 出錯時，何時 retry、何時升級' },
       ],
       en: [
-        { step: '01', slug: 'cli',             title: 'Try the CLI',           why: '`npx gstack-plus classify "..."` — see real output before reading theory' },
-        { step: '02', slug: 'roadmap',         title: 'Read the roadmap',      why: 'What phases, why we layered the system this way' },
-        { step: '03', slug: 'architecture',    title: 'Grasp the 3-tier model', why: 'Roles and costs of Tier-A / Mid / Exec' },
-        { step: '04', slug: 'routing-rules',   title: 'Learn to classify',     why: '5-dim scoring to route tasks to the right tier' },
+        { step: '01', slug: 'cli',             title: 'Try the CLI',            why: '`npx gstack-plus classify "..."` — see real output before reading theory' },
+        { step: '02', slug: 'architecture',    title: 'Grasp the 3-tier model', why: 'Roles, boundaries, and cost tradeoffs of Tier-A / Mid / Exec' },
+        { step: '03', slug: 'scoring-guide',   title: 'Learn 5-dim scoring',    why: 'Master the 5 dimensions before applying routing rules' },
+        { step: '04', slug: 'routing-rules',   title: 'Apply routing rules',    why: 'Decision table from scores to tier + conservative routing principle' },
         { step: '05', slug: 'failure-catalog', title: 'Master failure recovery', why: 'When to retry vs escalate when Exec fails' },
       ],
     },

@@ -35,7 +35,7 @@ Every AI workflow today makes the same mistake: **sending every task to the same
 
 ## The Solution
 
-**gstack-plus** adds a routing layer on top of role-based skill libraries ([gstack](https://github.com/your-org/gstack), [superpowers](https://github.com/obra/superpowers)). Every task gets scored across **5 dimensions**, then dispatched to the right tier:
+**gstack-plus** adds a routing layer on top of role-based skill libraries (gstack, [superpowers](https://github.com/obra/superpowers)). Every task gets scored across **5 dimensions**, then dispatched to the right tier:
 
 <div align="center">
 
@@ -141,13 +141,11 @@ Full handbook: **[https://zhewenzhang.github.io/gstack-plus/](https://zhewenzhan
 
 | Section | What's inside |
 |---|---|
-| [🗺 Roadmap](https://zhewenzhang.github.io/gstack-plus/#/doc/roadmap) | Project phases and timeline |
-| [🏗 Architecture](https://zhewenzhang.github.io/gstack-plus/#/doc/architecture) | 3-tier model design, boundaries, cost tradeoffs |
-| [📊 Classifier](https://zhewenzhang.github.io/gstack-plus/#/doc/scoring-guide) | 5-dimension scoring guide + routing rules |
-| [📋 Handoff Templates](https://zhewenzhang.github.io/gstack-plus/#/doc/plan-to-exec) | Plan→Exec, Exec→Check, Check→Plan formats |
-| [🔧 Failure Recovery](https://zhewenzhang.github.io/gstack-plus/#/doc/failure-catalog) | Pre-flight checklist + failure routing tree |
-| [🧪 Experiments](https://zhewenzhang.github.io/gstack-plus/#/doc/experiments-readme) | 3-mode × 3-task comparative study |
-| [💡 Strategy](https://zhewenzhang.github.io/gstack-plus/#/doc/yc-blindspots) | YC-style blindspot analysis |
+| [🚀 Get Started](https://zhewenzhang.github.io/gstack-plus/#/doc/getting-started) | Install CLI, first routing decision in 5 min |
+| [🏗 The Framework](https://zhewenzhang.github.io/gstack-plus/#/doc/architecture) | 3-tier design, boundaries, cost tradeoffs |
+| [📊 Classify & Route](https://zhewenzhang.github.io/gstack-plus/#/doc/scoring-guide) | 5-dimension scoring guide + routing rules |
+| [📋 Handoff & Guardrails](https://zhewenzhang.github.io/gstack-plus/#/doc/plan-to-exec) | Plan→Exec, Exec→Check, pre-flight checklist |
+| [💡 Examples](https://zhewenzhang.github.io/gstack-plus/#/doc/ex-tier-exec-eslint) | 5 fully scored real-world tasks |
 
 ---
 

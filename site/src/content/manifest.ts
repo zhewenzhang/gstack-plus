@@ -156,7 +156,7 @@ export const NAV: Section[] = [
         title: '邊界案例：cursor pagination', titleEn: 'Borderline: Cursor Pagination',
         source: 'examples/05-borderline-case.md',
         subgroup: 'Borderline',
-        description: '保守路遊原則的應用時機' },
+        description: '保守路由原則的應用時機' },
     ],
   },
 ];
