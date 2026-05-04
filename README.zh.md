@@ -4,18 +4,38 @@
 
 **多層 AI 模型編排框架 —— 讓每個任務路由到正確的 Tier。**
 
+[![npm](https://img.shields.io/npm/v/gstack-plus?style=flat-square&color=000000&label=npm)](https://www.npmjs.com/package/gstack-plus)
 [![Docs](https://img.shields.io/badge/docs-online-000000?style=flat-square)](https://zhewenzhang.github.io/gstack-plus/)
-[![npm](https://img.shields.io/npm/v/gstack-plus?style=flat-square&color=000000)](https://www.npmjs.com/package/gstack-plus)
 [![Playground](https://img.shields.io/badge/playground-try%20it%20live-6F6F6F?style=flat-square)](https://zhewenzhang.github.io/gstack-plus/#/playground)
 [![License](https://img.shields.io/badge/license-MIT-000000?style=flat-square)](./LICENSE)
+[![Status](https://img.shields.io/badge/status-active-10b981?style=flat-square)]()
 
-**[English](./README.md)** | **中文**
+[**English**](./README.md) &nbsp;·&nbsp; [**中文**](#)
+
+[**🎮 打開試玩場**](https://zhewenzhang.github.io/gstack-plus/#/playground) &nbsp;·&nbsp;
+[**📖 閱讀文檔**](https://zhewenzhang.github.io/gstack-plus/) &nbsp;·&nbsp;
+[**🚀 安裝 CLI**](#快速上手)
 
 </div>
 
 <br/>
 
 > **別讓一個模型扛下所有事。** 讓對的層級做對的事 —— Opus 做判斷、Sonnet 做審查、Exec 做執行。質量不打折，成本砍一半。
+
+<div align="center">
+
+### 實驗結果：3 任務成本 + 質量對比
+
+| 任務 | 路由到 | 全部 Opus 成本 | 路由成本 | 節省 | 質量 |
+|---|---|---|---|---|---|
+| 跨專案重命名函數 | Tier-Exec → Qwen | $0.01173 | $0.00014 | **−99%** | Opus 5/5 · Qwen 3/5 |
+| 重構為 React Query v5 | Tier-Mid → Sonnet | $0.07849 | $0.01191 | **−85%** | Opus 4/5 · **Sonnet 5/5** ✓ |
+| 設計 SSO + MFA 認證 | Tier-A → Opus | $0.07885 | $0.07885 | — | 兩版持平 |
+| **合計** | | **$0.1691** | **$0.0909** | **−46%** | 質量持平 |
+
+*Sonnet 在中等複雜度任務上以 85% 更低成本勝過 Opus。→ [完整報告](experiments/token-comparison/RESULTS.md)*
+
+</div>
 
 ---
 
@@ -26,11 +46,13 @@
 | 發生了什麼 | 代價 |
 |---|---|
 | 🔴 **過度花費** — 用 Opus 做 `git rebase` | 浪費 token，反饋變慢 |
-| 🔴 **思考不足** — 用便宜模型設計認證遷移 | 危險決策，大量返工 |
+| 🔴 **思考不足** — 用 Haiku 設計認證遷移 | 危險決策，大量返工 |
 
 ## 解決方案
 
-**gstack-plus** 在角色技能庫（[gstack](https://github.com/your-org/gstack)、[superpowers](https://github.com/obra/superpowers)）之上加了一個**分類層**。每個任務按 **5 個維度**評分，然後分派到對應的 Tier：
+**gstack-plus** 在角色技能庫（gstack、[superpowers](https://github.com/obra/superpowers)）之上加了一個**分類層**。每個任務按 **5 個維度**評分，然後分派到對應的 Tier。
+
+在 3 任務成本 + 質量實驗中：**路由降低成本 46%**，同時 Tier-Mid（Sonnet）的輸出質量與 Opus 相當甚至更優。→ [查看實驗結果](experiments/token-comparison/RESULTS.md)
 
 <div align="center">
 
@@ -66,7 +88,7 @@ Tier-A      Tier-Mid   Tier-Exec
 
 | 維度 | 測量什麼 |
 |---|---|
-| **判斷力** | 需要多少人類等級的決策？ |
+| **判斷強度** | 需要多少人類等級的決策？ |
 | **上下文** | 需要多少代碼庫知識？ |
 | **風險** | 做錯的代價有多高？ |
 | **可驗證性** | 能否用命令自動驗證？ |
@@ -89,10 +111,7 @@ npx gstack-plus classify "重構認證中間件以支援 OAuth"
 ```bash
 # 跳過互動，直接給分數：
 gstack-plus classify "重命名 getCwd" --scores 1,1,1,5,1
-# → Tier-Exec  ✅
-
-gstack-plus classify "設計 SSO + MFA 認證" --scores 5,4,5,2,4
-# → Tier-A  🟣
+gstack-plus classify "設計 SSO + MFA" --scores 5,4,5,2,4
 
 # 切換英文提示：
 gstack-plus --lang en classify "Your task"
@@ -104,11 +123,31 @@ gstack-plus examples
 gstack-plus history
 ```
 
+### 輸出預覽
+
+```text
+$ gstack-plus --lang en classify "Design SSO + MFA" --scores 5,4,5,2,4
+
+────────────────────────────────────────────────
+  Judgment    ██████████  5
+  Context     ████████░░  4
+  Risk        ██████████  5
+  Verif.      ████░░░░░░  2
+  Creativity  ████████░░  4
+
+Routing decision: Tier-A
+Reason: Tier-A triggered: judgment=5 >= 4, risk=5 >= 4, creativity=4 >= 4
+
+✓ Handoff doc written → handoffs/handoff-2026-05-04-x7k2.md
+```
+
+> 觸發 Tier-A 的維度（判斷 / 風險 / 創意 ≥ 4）在終端中以**洋紅色**高亮顯示。
+
 ### 安裝
 
 ```bash
 npm install -g gstack-plus
-gstack-plus --version    # 0.2.1
+gstack-plus --version    # 0.3.4
 ```
 
 ---
@@ -119,13 +158,11 @@ gstack-plus --version    # 0.2.1
 
 | 區段 | 內容 |
 |---|---|
-| [🗺 路線圖](https://zhewenzhang.github.io/gstack-plus/#/doc/roadmap) | 項目階段與時間線 |
-| [🏗 架構設計](https://zhewenzhang.github.io/gstack-plus/#/doc/architecture) | 三層模型設計、邊界、成本權衡 |
-| [📊 分類器](https://zhewenzhang.github.io/gstack-plus/#/doc/scoring-guide) | 5 維度評分指南 + 路由規則 |
-| [📋 交接模板](https://zhewenzhang.github.io/gstack-plus/#/doc/plan-to-exec) | Plan→Exec、Exec→Check、Check→Plan 格式 |
-| [🔧 失敗恢復](https://zhewenzhang.github.io/gstack-plus/#/doc/failure-catalog) | 起飛前檢查清單 + 失敗路由樹 |
-| [🧪 實驗記錄](https://zhewenzhang.github.io/gstack-plus/#/doc/experiments-readme) | 3 模式 × 3 任務對照實驗 |
-| [💡 戰略思考](https://zhewenzhang.github.io/gstack-plus/#/doc/yc-blindspots) | YC 風格盲點分析 |
+| [🚀 快速上手](https://zhewenzhang.github.io/gstack-plus/#/doc/getting-started) | 安裝 CLI，5 分鐘內做出第一個路由決策 |
+| [🏗 三層架構](https://zhewenzhang.github.io/gstack-plus/#/doc/architecture) | 三層模型設計、邊界、成本權衡 |
+| [📊 分類與路由](https://zhewenzhang.github.io/gstack-plus/#/doc/scoring-guide) | 5 維度評分指南 + 路由規則 |
+| [📋 交接與防護](https://zhewenzhang.github.io/gstack-plus/#/doc/plan-to-exec) | Plan→Exec、Exec→Check、起飛前檢查清單 |
+| [💡 完整範例](https://zhewenzhang.github.io/gstack-plus/#/doc/ex-tier-exec-eslint) | 5 個真實任務的完整評分決策 |
 
 ---
 
@@ -141,7 +178,13 @@ gstack-plus --version    # 0.2.1
 | 中英雙語切換 | ✅ 完成 |
 | CLI v0.2.0（`examples`、`--lang`） | ✅ [Release](https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.2.0) |
 | CLI v0.2.1（雙語修復、`history`） | ✅ [Release](https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.2.1) |
-| Mode A/B 對照實驗 | 🚧 進行中 |
+| CLI v0.3.0（語言感知路由、文檔網站） | ✅ [Release](https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.3.0) |
+| CLI v0.3.1（`config` 命令） | ✅ [Release](https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.3.1) |
+| CLI v0.3.2（雙語側邊欄、CI 工作流） | ✅ [Release](https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.3.2) |
+| CLI v0.3.3（分數條視覺化） | ✅ [Release](https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.3.3) |
+| CLI v0.3.4（`stats`、`open` 命令） | ✅ [Release](https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.3.4) |
+| Mode A/B 路由實驗（成本 + 質量） | ✅ [結果](experiments/token-comparison/RESULTS.md) |
+| Mode A/B 全面對照實驗 | 🚧 計劃中 |
 
 ---
 
