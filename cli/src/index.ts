@@ -6,12 +6,16 @@ import { route } from './route.js';
 import { generateHandoff } from './handoff.js';
 import type { Scoring } from './types.js';
 
+function scoreBar(n: number): string {
+  return '\u2588'.repeat(n * 2) + '\u2591'.repeat((5 - n) * 2);
+}
+
 const program = new Command();
 
 program
   .name('gstack-plus')
   .description('Multi-tier model orchestration CLI')
-  .version('0.3.2')
+  .version('0.3.3')
   .option('--lang <lang>', 'Language for interactive prompts (zh | en)');
 
 program
@@ -37,10 +41,12 @@ program
         const { autoScore } = await import('./auto-score.js');
         scoring = await autoScore(task, opts.apiKey);
         spinner.succeed('Auto-scored');
-        const labels = ['judgment', 'context', 'risk', 'verifiability', 'creativity'] as const;
-        for (const k of labels) {
-          console.log(`  ${k.padEnd(15)} ${scoring[k]}`);
-        }
+        const autoLabels = ['Judgment  ', 'Context   ', 'Risk      ', 'Verif.    ', 'Creativity'];
+      const autoKeys = ['judgment', 'context', 'risk', 'verifiability', 'creativity'] as const;
+      for (let i = 0; i < 5; i++) {
+        const s = scoring[autoKeys[i]];
+        console.log(`  ${autoLabels[i]}  ${chalk.dim(scoreBar(s))}  ${s}`);
+      }
       } catch (err) {
         spinner.fail(String(err));
         process.exit(1);
@@ -68,6 +74,18 @@ program
 
     console.log('');
     console.log(chalk.dim('\u{2500}'.repeat(48)));
+    const scoreLabels = lang === 'en'
+      ? ['Judgment  ', 'Context   ', 'Risk      ', 'Verif.    ', 'Creativity']
+      : ['判斷強度  ', '上下文寬度', '風險權重  ', '可驗證性  ', '創意密度  '];
+    const scoreKeys = ['judgment', 'context', 'risk', 'verifiability', 'creativity'] as const;
+    for (let i = 0; i < 5; i++) {
+      const key = scoreKeys[i];
+      const s = scoring[key];
+      const isTriggered = (key === 'judgment' || key === 'risk' || key === 'creativity') && s >= 4;
+      const bar = isTriggered ? chalk.bold.magenta(scoreBar(s)) : chalk.dim(scoreBar(s));
+      console.log(`  ${scoreLabels[i]}  ${bar}  ${s}`);
+    }
+    console.log('');
     const color = decision.tier === 'Tier-A' ? chalk.bold.magenta
                 : decision.tier === 'Tier-Mid' ? chalk.bold.cyan
                 : chalk.bold.green;
@@ -121,11 +139,12 @@ program
     console.log(chalk.bold(ex.title));
     console.log(chalk.dim(ex.description));
     console.log('');
-    console.log(`  judgment      ${ex.scores.judgment}`);
-    console.log(`  context       ${ex.scores.context}`);
-    console.log(`  risk          ${ex.scores.risk}`);
-    console.log(`  verifiability ${ex.scores.verifiability}`);
-    console.log(`  creativity    ${ex.scores.creativity}`);
+    const exKeys = ['judgment', 'context', 'risk', 'verifiability', 'creativity'] as const;
+    const exLabels = ['Judgment  ', 'Context   ', 'Risk      ', 'Verif.    ', 'Creativity'];
+    for (let i = 0; i < 5; i++) {
+      const s = ex.scores[exKeys[i]];
+      console.log(`  ${exLabels[i]}  ${chalk.dim(scoreBar(s))}  ${s}`);
+    }
     console.log('');
     console.log(`  \u2192 routes to ${tierColor(ex.tier)}`);
     console.log('');
