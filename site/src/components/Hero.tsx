@@ -41,7 +41,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative pt-6 sm:pt-10 pb-20 sm:pb-32">
+    <section className="relative pt-6 sm:pt-10 pb-0">
       <div className="relative z-10 flex flex-col items-center justify-center text-center px-5 sm:px-6">
         {/* release pill */}
         <a
@@ -61,7 +61,7 @@ export default function Hero() {
         />
 
         <p
-          className="font-body text-sm sm:text-base md:text-lg max-w-2xl mt-6 sm:mt-8 leading-relaxed animate-fade-rise-delay px-2"
+          className="font-body text-base sm:text-lg max-w-2xl mt-6 sm:mt-8 leading-relaxed animate-fade-rise-delay px-2"
           style={{ color: '#6F6F6F' }}
         >
           {s.sub[lang]}
@@ -108,16 +108,19 @@ export default function Hero() {
       </div>
 
       {/* video band */}
-      <div className="relative mt-12 sm:mt-16 max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="relative overflow-hidden rounded-2xl bg-neutral-100">
+      <div className="relative mt-20 sm:mt-28 max-w-6xl mx-auto px-4 sm:px-6 pb-0">
+        <div className="relative overflow-hidden rounded-2xl bg-neutral-100 shadow-sm">
           <video
             ref={videoRef}
             src={VIDEO_URL}
             className="w-full h-auto block"
             style={{ opacity: 0, transition: 'opacity 0.05s linear' }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-white/60 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-white/20 via-transparent to-transparent" />
         </div>
+        <p className="text-center text-xs text-muted mt-3 tracking-wide">
+          gstack<sup>+</sup> in action — live demo recording
+        </p>
       </div>
     </section>
   );

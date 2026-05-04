@@ -7,4 +7,13 @@ body {
   font-family: 'Inter', sans-serif;
   background: #FFFFFF;
   color: #000000;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* CJK 段落自然換行 */
+p, li, dd {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  line-break: loose;
 }
