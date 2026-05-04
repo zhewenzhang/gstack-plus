@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Nav from '@/components/Nav';
 import { useLang } from '@/i18n/useLang';
 import { route, DIMENSIONS, PRESETS, type Scoring, type Score } from '@/lib/route';
+import { ROLES, FLOWS, buildPrompt, type RoleId, type FlowId } from '@/lib/promptBuilder';
 
 const TIER_COLOR: Record<string, string> = {
   'Tier-A':    'bg-fuchsia-50 text-fuchsia-900 border-fuchsia-300',
@@ -56,6 +57,9 @@ export default function Playground() {
   const [lang] = useLang();
   const [task, setTask] = useState('');
   const [scoring, setScoring] = useState<Scoring>(DEFAULT_SCORING);
+  const [selectedRole, setSelectedRole] = useState<RoleId>('developer');
+  const [selectedFlow, setSelectedFlow] = useState<FlowId>('execute');
+  const [promptCopied, setPromptCopied] = useState(false);
 
   // ─── URL state sync (HashRouter-safe) ───
   // HashRouter URL: https://.../#/playground?t=...&s=...
@@ -226,6 +230,112 @@ judgment≤2 AND context≤2 AND verif≥4  → Tier-Exec
 else                                  → Tier-Mid`}
               </code>
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Prompt Builder ───────────────────────────────────────── */}
+      <div className="max-w-6xl mx-auto px-5 sm:px-8 pb-16 pt-4">
+        <div className="border-t border-neutral-200 pt-12">
+          <div className="text-xs uppercase tracking-widest text-muted mb-2">Prompt Builder</div>
+          <h2 className="font-display text-2xl sm:text-3xl text-ink mb-2">
+            {lang === 'zh' ? '生成可直接使用的 Prompt' : 'Generate a ready-to-use prompt'}
+          </h2>
+          <p className="text-sm text-muted mb-8 max-w-2xl">
+            {lang === 'zh'
+              ? '選擇角色和工作模式，系統自動把任務描述 + 路由結果組合成一份結構化 prompt，可以直接貼進任何 AI 助手。'
+              : 'Choose a role and flow. The system assembles your task + routing result into a structured prompt you can paste directly into any AI assistant.'}
+          </p>
+
+          {/* Step 1: Role */}
+          <div className="mb-8">
+            <div className="text-xs uppercase tracking-widest text-muted mb-3">
+              {lang === 'zh' ? '步驟 1 — 選角色' : 'Step 1 — Choose a role'}
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
+              {ROLES.map(r => (
+                <button
+                  key={r.id}
+                  onClick={() => setSelectedRole(r.id)}
+                  className={`rounded-xl border p-3 text-left transition-colors ${
+                    selectedRole === r.id
+                      ? 'border-ink bg-neutral-50'
+                      : 'border-neutral-200 hover:border-neutral-400'
+                  }`}
+                >
+                  <div className="text-xs font-medium text-ink mb-1">
+                    {lang === 'zh' ? r.label : r.labelEn}
+                  </div>
+                  <div className="text-[10px] text-muted leading-snug">
+                    {lang === 'zh' ? r.description : r.descriptionEn}
+                  </div>
+                  <div className="mt-2">
+                    <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${
+                      r.tier === 'Tier-A' || r.tier === 'Tier-A/Mid' ? 'bg-fuchsia-100 text-fuchsia-700' :
+                      r.tier === 'Tier-Exec' ? 'bg-emerald-100 text-emerald-700' :
+                      'bg-cyan-100 text-cyan-700'
+                    }`}>
+                      {r.tier}
+                    </span>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Step 2: Flow */}
+          <div className="mb-8">
+            <div className="text-xs uppercase tracking-widest text-muted mb-3">
+              {lang === 'zh' ? '步驟 2 — 選工作模式' : 'Step 2 — Choose a flow'}
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {FLOWS.map(f => (
+                <button
+                  key={f.id}
+                  onClick={() => setSelectedFlow(f.id)}
+                  className={`rounded-full px-4 py-2 text-sm border transition-colors ${
+                    selectedFlow === f.id
+                      ? 'border-ink bg-ink text-white'
+                      : 'border-neutral-300 hover:border-ink text-ink'
+                  }`}
+                >
+                  {lang === 'zh' ? f.label : f.labelEn}
+                  <span className="ml-2 text-[11px] opacity-60">
+                    {lang === 'zh' ? f.description : f.descriptionEn}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Step 3: Generated Prompt */}
+          <div>
+            <div className="flex items-center justify-between mb-3">
+              <div className="text-xs uppercase tracking-widest text-muted">
+                {lang === 'zh' ? '步驟 3 — 你的 Prompt（複製後直接用）' : 'Step 3 — Your prompt (ready to paste)'}
+              </div>
+              <button
+                onClick={async () => {
+                  const prompt = buildPrompt(task, scoring, decision.tier, selectedRole, selectedFlow, lang);
+                  try {
+                    await navigator.clipboard.writeText(prompt);
+                    setPromptCopied(true);
+                    setTimeout(() => setPromptCopied(false), 1500);
+                  } catch { /* clipboard unavailable */ }
+                }}
+                className="rounded-full px-4 py-1.5 text-xs border border-neutral-300 hover:border-ink transition-colors"
+              >
+                {promptCopied ? '✓ Copied' : (lang === 'zh' ? '複製 Prompt' : 'Copy prompt')}
+              </button>
+            </div>
+            <pre className="bg-neutral-50 border border-neutral-200 rounded-xl p-5 text-xs font-mono leading-relaxed overflow-auto max-h-96 whitespace-pre-wrap">
+              {buildPrompt(task, scoring, decision.tier, selectedRole, selectedFlow, lang)}
+            </pre>
+            <p className="mt-3 text-xs text-muted">
+              {lang === 'zh'
+                ? '💡 這是 System Prompt。配合「Download handoff doc」使用效果最好：handoff doc 作為 User 消息，這個作為 System 消息。'
+                : '💡 This is your System Prompt. Pair it with the handoff doc for best results: handoff doc as the User message, this as the System message.'}
+            </p>
           </div>
         </div>
       </div>
