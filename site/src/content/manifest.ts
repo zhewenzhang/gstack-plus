@@ -59,6 +59,11 @@ export const NAV: Section[] = [
         source: 'docs/learning-notes/key-insights.md', sourceEn: 'docs/learning-notes/key-insights-en.md',
         description: 'AI 紀律、角色化設計、隔離即品質等 5 個設計原則',
         descriptionEn: '5 design principles from practice: AI discipline, role-based design, isolation-as-quality' },
+      { order: 203, slug: 'strategy',
+        title: '為什麼要分層？', titleEn: 'Why Layered Routing?',
+        source: 'docs/strategy.md', sourceEn: 'docs/strategy-en.md',
+        description: 'gstack-plus 的設計動機 — 路由懶惰比模型貴更致命',
+        descriptionEn: 'The design motivation — lazy routing is worse than expensive models' },
     ],
   },
   {
