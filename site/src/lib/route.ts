@@ -123,15 +123,70 @@ export const DIMENSIONS: {
 ];
 
 export const PRESETS: { label: string; task: string; scoring: Scoring }[] = [
-  { label: 'Tier-Exec：加 ESLint 配置',
-    task: '為 Node.js 專案初始化 ESLint v9 + TypeScript ESLint',
-    scoring: { judgment: 1, context: 1, risk: 1, verifiability: 5, creativity: 1 } },
-  { label: 'Tier-Mid：CQRS 重構',
-    task: '把 UserService 拆成 UserQuery 和 UserCommand',
-    scoring: { judgment: 3, context: 3, risk: 3, verifiability: 4, creativity: 2 } },
-  { label: 'Tier-A：設計 SSO + MFA',
-    task: '為 SaaS 設計 Google/GitHub SSO，admin 帳號強制 MFA',
-    scoring: { judgment: 5, context: 4, risk: 5, verifiability: 2, creativity: 4 } },
+  // ── Tier-Exec ───────────────────────────────────────────────────────────
+  {
+    label: 'Exec · 加 ESLint',
+    task: '為 Node.js 專案初始化 ESLint v9 + TypeScript ESLint，加入 .eslintrc 並配置 no-console、no-unused-vars 規則',
+    scoring: { judgment: 1, context: 1, risk: 1, verifiability: 5, creativity: 1 },
+  },
+  {
+    label: 'Exec · 重命名函式',
+    task: '把 src/ 下所有 TypeScript 文件中的 getCwd 重命名為 getWorkingDir',
+    scoring: { judgment: 1, context: 2, risk: 2, verifiability: 5, creativity: 1 },
+  },
+  {
+    label: 'Exec · 加環境變量',
+    task: '在 .env.example 加入 DATABASE_URL、REDIS_URL、JWT_SECRET 三個變量，並更新 README 的 Setup 章節',
+    scoring: { judgment: 1, context: 1, risk: 1, verifiability: 5, creativity: 1 },
+  },
+  // ── Tier-Mid ────────────────────────────────────────────────────────────
+  {
+    label: 'Mid · CQRS 重構',
+    task: '把 UserService 按 CQRS 拆成 UserQueryService 和 UserCommandService，保持現有接口不變',
+    scoring: { judgment: 3, context: 3, risk: 3, verifiability: 4, creativity: 2 },
+  },
+  {
+    label: 'Mid · 升級 React Query',
+    task: '把 React 應用的 data fetching 從 raw fetch() 遷移到 React Query v5，覆蓋用戶列表和詳情頁',
+    scoring: { judgment: 3, context: 3, risk: 2, verifiability: 4, creativity: 2 },
+  },
+  {
+    label: 'Mid · Code Review',
+    task: '審查 PR #47：新增了一個 PaymentProcessor 類，處理 Stripe webhook 和退款邏輯',
+    scoring: { judgment: 3, context: 3, risk: 3, verifiability: 3, creativity: 1 },
+  },
+  {
+    label: 'Mid · 修復 race condition',
+    task: '修復用戶同時點擊提交按鈕導致雙重扣款的 bug，需要理解現有的 OrderService 和 PaymentService 流程',
+    scoring: { judgment: 3, context: 3, risk: 4, verifiability: 4, creativity: 2 },
+  },
+  // ── Tier-A ──────────────────────────────────────────────────────────────
+  {
+    label: 'A · 設計 SSO + MFA',
+    task: '為 B2B SaaS 設計 SAML SSO + TOTP MFA 認證架構，需要考慮 session 管理、MFA bypass 攻擊防護',
+    scoring: { judgment: 5, context: 4, risk: 5, verifiability: 2, creativity: 4 },
+  },
+  {
+    label: 'A · 微服務拆分決策',
+    task: '評估是否把現有 Rails monolith 的 billing 模塊拆成獨立微服務，分析邊界、依賴、遷移風險',
+    scoring: { judgment: 5, context: 5, risk: 4, verifiability: 2, creativity: 4 },
+  },
+  {
+    label: 'A · 設計插件系統',
+    task: '為開源工具設計插件架構，支持第三方開發者擴展核心功能，需要決定 API 設計、版本兼容策略',
+    scoring: { judgment: 5, context: 3, risk: 3, verifiability: 2, creativity: 5 },
+  },
+  // ── Borderline ──────────────────────────────────────────────────────────
+  {
+    label: 'Border · Cursor pagination',
+    task: '把用戶列表 API 的分頁從 offset 改成 cursor-based，需要兼容現有的前端查詢參數',
+    scoring: { judgment: 2, context: 2, risk: 3, verifiability: 4, creativity: 2 },
+  },
+  {
+    label: 'Border · 性能優化',
+    task: '優化首頁加載時間，目前 LCP > 4s，需要分析原因並提出方案，可能涉及圖片優化/代碼分割/CDN',
+    scoring: { judgment: 3, context: 3, risk: 2, verifiability: 4, creativity: 3 },
+  },
 ];
 
 export type ThresholdHint = {

@@ -6,6 +6,35 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ---
 
+## [0.4.0] — 2026-05-04
+
+### Added — Documentation Site
+
+- Full bilingual documentation site (Chinese + English) at [zhewenzhang.github.io/gstack-plus](https://zhewenzhang.github.io/gstack-plus/)
+- **14 English translations** added: classifier examples, all handoff templates, verification guardrails, 5 worked examples
+- **11 learning notes** restored to sidebar navigation (gstack anatomy + superpowers anatomy series)
+- Strategy page: "Why Layered Routing?" — design motivation with cost analysis and experiment validation
+
+### Added — Playground
+
+- **Prompt Builder** — role selector (6 roles) × flow selector (5 flows) generates structured system prompt ready to paste into any AI assistant
+- **Pentagon radar chart** — 5-dimension scoring rendered as SVG polygon, colored by tier, real-time updates
+- **Dimension scoring examples** — each slider has expandable 1/3/5-point examples for calibration
+- **Threshold proximity hints** — shows exactly which dimension to adjust to reach a different tier
+- **12 presets** covering Tier-Exec / Tier-Mid / Tier-A and borderline cases
+- Share URL preserves task + scoring state
+
+### Added — Homepage
+
+- Amber stats bar: 46% cost reduction · 3 model tiers · 5 scoring dimensions
+- Experiment results table in README (Mode A vs Mode B, per-task cost + quality)
+
+### Added — Tooling
+
+- **qwen-bridge MCP server** (`D:\qwen-bridge`) — Claude can dispatch tasks directly to Qwen Code via MCP tool, zero window switching
+
+---
+
 ## [0.3.4] — 2026-05-04
 
 ### Added
@@ -83,6 +112,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ---
 
+[0.4.0]: https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.4.0
 [0.3.4]: https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.3.4
 [0.3.3]: https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.3.3
 [0.3.2]: https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.3.2

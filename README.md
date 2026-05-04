@@ -4,7 +4,7 @@
 
 **Multi-tier model orchestration for AI-augmented development.**
 
-[![npm](https://img.shields.io/npm/v/gstack-plus?style=flat-square&color=000000&label=npm)](https://www.npmjs.com/package/gstack-plus)
+[![npm](https://img.shields.io/npm/v/gstack-plus?style=flat-square&color=000000&label=npm%20v0.4.0)](https://www.npmjs.com/package/gstack-plus)
 [![Docs](https://img.shields.io/badge/docs-online-000000?style=flat-square)](https://zhewenzhang.github.io/gstack-plus/)
 [![Playground](https://img.shields.io/badge/playground-try%20it%20live-6F6F6F?style=flat-square)](https://zhewenzhang.github.io/gstack-plus/#/playground)
 [![License](https://img.shields.io/badge/license-MIT-000000?style=flat-square)](./LICENSE)
