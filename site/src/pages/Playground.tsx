@@ -191,17 +191,26 @@ export default function Playground() {
 
         {/* Presets */}
         <div className="mb-8">
-          <div className="text-xs uppercase tracking-widest text-muted mb-3">Quick load</div>
+          <div className="text-xs uppercase tracking-widest text-muted mb-3">
+            {lang === 'zh' ? '快速載入示例' : 'Quick load examples'}
+          </div>
           <div className="flex flex-wrap gap-2">
-            {PRESETS.map(p => (
-              <button
-                key={p.label}
-                onClick={() => { setTask(p.task); setScoring(p.scoring); }}
-                className="px-3 py-1.5 text-xs rounded-full border border-neutral-300 hover:border-ink hover:bg-neutral-50 transition-colors"
-              >
-                {p.label}
-              </button>
-            ))}
+            {PRESETS.map(p => {
+              const tierColor =
+                p.label.startsWith('Exec') ? 'border-emerald-200 hover:border-emerald-400 text-emerald-800' :
+                p.label.startsWith('A ·') || p.label.startsWith('A·') ? 'border-fuchsia-200 hover:border-fuchsia-400 text-fuchsia-800' :
+                p.label.startsWith('Border') ? 'border-amber-200 hover:border-amber-400 text-amber-800' :
+                'border-cyan-200 hover:border-cyan-400 text-cyan-800';
+              return (
+                <button
+                  key={p.label}
+                  onClick={() => { setTask(p.task); setScoring(p.scoring); }}
+                  className={`px-3 py-1.5 text-xs rounded-full border bg-white hover:bg-neutral-50 transition-colors ${tierColor}`}
+                >
+                  {p.label}
+                </button>
+              );
+            })}
           </div>
         </div>
 
