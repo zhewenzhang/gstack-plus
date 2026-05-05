@@ -1,0 +1,182 @@
+[
+  {
+    "taskId": "E1",
+    "taskName": "Add Husky pre-commit hook",
+    "scoreA": {
+      "correctness": 4,
+      "completeness": 3,
+      "actionability": 4
+    },
+    "scoreB": {
+      "correctness": 5,
+      "completeness": 4,
+      "actionability": 5
+    },
+    "winner": "B",
+    "confidence": "high",
+    "keyDiff": "Response 2 provides more precise and explicit configuration steps with clearer package script and lint-staged configuration syntax",
+    "tokensUsed": 516,
+    "costUsd": 0.0004128,
+    "tier": "Tier-Exec"
+  },
+  {
+    "taskId": "E2",
+    "taskName": "Count lines in TypeScript files",
+    "scoreA": {
+      "correctness": 5,
+      "completeness": 5,
+      "actionability": 5
+    },
+    "scoreB": {
+      "correctness": 5,
+      "completeness": 5,
+      "actionability": 5
+    },
+    "winner": "tie",
+    "confidence": "high",
+    "keyDiff": "Single quote vs double quote, which has no functional impact",
+    "tokensUsed": 405,
+    "costUsd": 0.000324,
+    "tier": "Tier-Exec"
+  },
+  {
+    "taskId": "E3",
+    "taskName": "Create .prettierrc config",
+    "scoreA": {
+      "correctness": 5,
+      "completeness": 5,
+      "actionability": 5
+    },
+    "scoreB": {
+      "correctness": 5,
+      "completeness": 5,
+      "actionability": 5
+    },
+    "winner": "tie",
+    "confidence": "high",
+    "keyDiff": "Both responses are identical and perfectly meet the specified task requirements",
+    "tokensUsed": 445,
+    "costUsd": 0.000356,
+    "tier": "Tier-Exec"
+  },
+  {
+    "taskId": "M1",
+    "taskName": "Code review for no-pagination API",
+    "scoreA": {
+      "correctness": 5,
+      "completeness": 5,
+      "actionability": 5
+    },
+    "scoreB": {
+      "correctness": 4,
+      "completeness": 4,
+      "actionability": 4
+    },
+    "winner": "A",
+    "confidence": "high",
+    "keyDiff": "Response 1 provides more detailed rationale and a more comprehensive code example demonstrating the pagination solution.",
+    "tokensUsed": 843,
+    "costUsd": 0.0006744000000000001,
+    "tier": "Tier-Mid"
+  },
+  {
+    "taskId": "M2",
+    "taskName": "Config migration plan to Zod",
+    "scoreA": {
+      "correctness": 5,
+      "completeness": 5,
+      "actionability": 5
+    },
+    "scoreB": {
+      "correctness": 4,
+      "completeness": 4,
+      "actionability": 4
+    },
+    "winner": "A",
+    "confidence": "high",
+    "keyDiff": "Response 1 provides more nuanced risk analysis and a more comprehensive rollback strategy with additional context and detail.",
+    "tokensUsed": 1495,
+    "costUsd": 0.001196,
+    "tier": "Tier-Mid"
+  },
+  {
+    "taskId": "M3",
+    "taskName": "API design review: idempotency + errors",
+    "scoreA": {
+      "correctness": 5,
+      "completeness": 5,
+      "actionability": 5
+    },
+    "scoreB": {
+      "correctness": 5,
+      "completeness": 4,
+      "actionability": 5
+    },
+    "winner": "A",
+    "confidence": "high",
+    "keyDiff": "Response 2 provides more nuanced and precise technical guidance with deeper implementation details and edge case considerations.",
+    "tokensUsed": 1212,
+    "costUsd": 0.0009696,
+    "tier": "Tier-Mid"
+  },
+  {
+    "taskId": "A1",
+    "taskName": "Database sharding strategy",
+    "scoreA": {
+      "correctness": 5,
+      "completeness": 4,
+      "actionability": 4
+    },
+    "scoreB": {
+      "correctness": 5,
+      "completeness": 5,
+      "actionability": 5
+    },
+    "winner": "B",
+    "confidence": "high",
+    "keyDiff": "Response 1 provides more detailed technical rationale and deeper operational insights into each sharding strategy component.",
+    "tokensUsed": 2534,
+    "costUsd": 0.0020272,
+    "tier": "Tier-A"
+  },
+  {
+    "taskId": "A2",
+    "taskName": "Feature flag system design",
+    "scoreA": {
+      "correctness": 5,
+      "completeness": 5,
+      "actionability": 5
+    },
+    "scoreB": {
+      "correctness": 5,
+      "completeness": 5,
+      "actionability": 5
+    },
+    "winner": "tie",
+    "confidence": "high",
+    "keyDiff": "Response 1 has slightly more concise technical commentary while Response 2 provides more detailed exploration of segment and experimentation mechanics.",
+    "tokensUsed": 2648,
+    "costUsd": 0.0021184,
+    "tier": "Tier-A"
+  },
+  {
+    "taskId": "A3",
+    "taskName": "JWT auth security review",
+    "scoreA": {
+      "correctness": 5,
+      "completeness": 4,
+      "actionability": 4
+    },
+    "scoreB": {
+      "correctness": 5,
+      "completeness": 5,
+      "actionability": 5
+    },
+    "winner": "B",
+    "confidence": "high",
+    "keyDiff": "Response 1 provides more granular implementation details and deeper technical exploration of each vulnerability's nuances.",
+    "tokensUsed": 2453,
+    "costUsd": 0.0019624,
+    "tier": "Tier-A"
+  }
+]

@@ -1,0 +1,16 @@
+{
+  "name": "gstack-experiments-s2",
+  "type": "module",
+  "scripts": {
+    "stability": "npx tsx routing-stability.ts",
+    "benchmark": "npx tsx benchmark.ts",
+    "judge": "npx tsx llm-judge.ts"
+  },
+  "devDependencies": {
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "openai": "^4.0.0"
+  }
+}
