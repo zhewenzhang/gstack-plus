@@ -255,4 +255,20 @@ export const NAV: Section[] = [
         descriptionEn: 'Quality control mechanisms and review cycles' },
     ],
   },
+  {
+    id: 'research',
+    title: '實驗報告',
+    titleEn: 'Experiment Reports',
+    intro: '對 gstack-plus 方法論的量化驗證：成本、質量、路由穩定性。',
+    introEn: 'Quantified validation of the gstack-plus methodology: cost, quality, routing stability.',
+    items: [
+      { order: 701, slug: 'experiment-series-2',
+        title: '實驗 Series 2：多維度有效性驗證',
+        titleEn: 'Experiment Series 2: Multi-dimensional Validity',
+        source: 'docs/experiment-series-2.md',
+        sourceEn: 'docs/experiment-series-2-en.md',
+        description: '30 任務路由穩定性 + 9 任務成本對比 + LLM-as-Judge 盲評，三個實驗驗證方法論有效性',
+        descriptionEn: '30-task routing stability + 9-task cost benchmark + LLM-as-Judge blind eval — three experiments validate the methodology' },
+    ],
+  },
 ];

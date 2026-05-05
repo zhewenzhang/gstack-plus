@@ -35,6 +35,16 @@
 
 *Sonnet beat Opus on quality at 85% lower cost for mid-complexity tasks. → [Full report](experiments/token-comparison/RESULTS.md)*
 
+**Series 2 Update (2026-05-05) — 9 tasks, 30-task routing validation:**
+
+| Experiment | Result |
+|------------|--------|
+| Routing accuracy | **100%** (30/30 tasks, Exp-2A) |
+| Routing stability | **87%** avg (±1 perturbation resistance) |
+| Cost saving vs All-Opus | **27%** (balanced mix) — **98%** on Tier-Exec tasks |
+| Quality: All-Opus vs Routed | **14.1/15 = 14.1/15** (LLM-as-Judge, blind, Exp-2C) |
+| Most critical scoring dimension | **Judgment** (±1 changes routing 32% of the time) |
+
 </div>
 
 ---
