@@ -93,12 +93,12 @@ export default function Hero() {
             <div className="font-display text-3xl sm:text-4xl" style={{ color: '#F59E0B' }}>46%</div>
             <div className="text-xs text-muted mt-1 tracking-wide">{s.stats.cost[lang]}</div>
           </div>
-          <div className="w-px h-10 bg-neutral-200" />
+          <div className="w-px h-10 bg-neutral-200 dark:bg-[#2A2A2A]" />
           <div className="text-center">
             <div className="font-display text-3xl sm:text-4xl" style={{ color: '#F59E0B' }}>3</div>
             <div className="text-xs text-muted mt-1 tracking-wide">{s.stats.tiers[lang]}</div>
           </div>
-          <div className="w-px h-10 bg-neutral-200" />
+          <div className="w-px h-10 bg-neutral-200 dark:bg-[#2A2A2A]" />
           <div className="text-center">
             <div className="font-display text-3xl sm:text-4xl" style={{ color: '#F59E0B' }}>5</div>
             <div className="text-xs text-muted mt-1 tracking-wide">{s.stats.dims[lang]}</div>
@@ -108,7 +108,7 @@ export default function Hero() {
 
       {/* video band */}
       <div className="relative mt-20 sm:mt-28 max-w-6xl mx-auto px-4 sm:px-6 pb-0">
-        <div className="relative overflow-hidden rounded-2xl bg-neutral-100 shadow-sm">
+        <div className="relative overflow-hidden rounded-2xl bg-neutral-100 dark:bg-[#161616] shadow-sm">
           <video
             ref={videoRef}
             src={VIDEO_URL}

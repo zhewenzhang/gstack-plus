@@ -7,9 +7,9 @@ import PentagonChart from '@/components/PentagonChart';
 import { ROLES, FLOWS, buildPrompt, type RoleId, type FlowId } from '@/lib/promptBuilder';
 
 const TIER_COLOR: Record<string, string> = {
-  'Tier-A':    'bg-fuchsia-50 text-fuchsia-900 border-fuchsia-300',
-  'Tier-Mid':  'bg-cyan-50 text-cyan-900 border-cyan-300',
-  'Tier-Exec': 'bg-emerald-50 text-emerald-900 border-emerald-300',
+  'Tier-A':    'bg-fuchsia-50 dark:bg-fuchsia-950/40 text-fuchsia-900 dark:text-fuchsia-200 border-fuchsia-300 dark:border-fuchsia-800',
+  'Tier-Mid':  'bg-cyan-50 dark:bg-cyan-950/40 text-cyan-900 dark:text-cyan-200 border-cyan-300 dark:border-cyan-800',
+  'Tier-Exec': 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-200 border-emerald-300 dark:border-emerald-800',
 };
 
 const TIER_LABELS: Record<string, { zh: string; en: string }> = {
@@ -199,10 +199,10 @@ export default function Playground() {
           <div className="flex flex-wrap gap-2">
             {PRESETS.map(p => {
               const tierColor =
-                p.label.startsWith('Exec') ? 'border-emerald-200 hover:border-emerald-400 text-emerald-800' :
-                p.label.startsWith('A ·') || p.label.startsWith('A·') ? 'border-fuchsia-200 hover:border-fuchsia-400 text-fuchsia-800' :
-                p.label.startsWith('Border') ? 'border-amber-200 hover:border-amber-400 text-amber-800' :
-                'border-cyan-200 hover:border-cyan-400 text-cyan-800';
+                p.label.startsWith('Exec') ? 'border-emerald-200 dark:border-emerald-800 hover:border-emerald-400 dark:hover:border-emerald-600 text-emerald-800 dark:text-emerald-300' :
+                p.label.startsWith('A ·') || p.label.startsWith('A·') ? 'border-fuchsia-200 dark:border-fuchsia-800 hover:border-fuchsia-400 dark:hover:border-fuchsia-600 text-fuchsia-800 dark:text-fuchsia-300' :
+                p.label.startsWith('Border') ? 'border-amber-200 dark:border-amber-800 hover:border-amber-400 dark:hover:border-amber-600 text-amber-800 dark:text-amber-300' :
+                'border-cyan-200 dark:border-cyan-800 hover:border-cyan-400 dark:hover:border-cyan-600 text-cyan-800 dark:text-cyan-300';
               return (
                 <button
                   key={p.label}
@@ -228,7 +228,7 @@ export default function Playground() {
                 onChange={e => setTask(e.target.value)}
                 rows={4}
                 placeholder="例：Refactor the auth middleware to support OAuth..."
-                className="w-full p-3 border border-neutral-300 rounded-lg font-body text-sm resize-none focus:outline-none focus:border-ink"
+                className="w-full p-3 border border-neutral-300 dark:border-[#383838] rounded-lg font-body text-sm resize-none focus:outline-none focus:border-ink bg-background text-ink placeholder:text-muted"
               />
             </label>
 
@@ -242,7 +242,7 @@ export default function Playground() {
                       </label>
                       <button
                         onClick={() => setOpenHint(openHint === d.key ? null : d.key)}
-                        className="text-[10px] text-muted hover:text-ink border border-neutral-200 hover:border-neutral-400 rounded px-1 py-0 leading-4 transition-colors"
+                        className="text-[10px] text-muted hover:text-ink border border-neutral-200 dark:border-[#2A2A2A] hover:border-neutral-400 dark:hover:border-[#444444] rounded px-1 py-0 leading-4 transition-colors"
                         title={lang === 'en' ? 'See examples' : '看示例'}
                       >
                         {openHint === d.key ? '▲' : '?'}
@@ -308,10 +308,10 @@ export default function Playground() {
                 <div className="mt-3 space-y-1.5">
                   {hints.map((h, i) => {
                     const tierColors: Record<string, string> = {
-                      'Tier-A': 'text-fuchsia-700 bg-fuchsia-50 border-fuchsia-200',
-                      'Tier-Exec': 'text-emerald-700 bg-emerald-50 border-emerald-200',
+                      'Tier-A': 'text-fuchsia-700 dark:text-fuchsia-300 bg-fuchsia-50 dark:bg-fuchsia-950/30 border-fuchsia-200 dark:border-fuchsia-800',
+                      'Tier-Exec': 'text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-800',
                     };
-                    const cls = tierColors[h.targetTier] ?? 'text-cyan-700 bg-cyan-50 border-cyan-200';
+                    const cls = tierColors[h.targetTier] ?? 'text-cyan-700 dark:text-cyan-300 bg-cyan-50 dark:bg-cyan-950/30 border-cyan-200 dark:border-cyan-800';
                     return (
                       <div key={i} className={`text-xs rounded-lg border px-3 py-2 ${cls}`}>
                         <span className="opacity-70">
@@ -329,7 +329,7 @@ export default function Playground() {
                     );
                   })}
                   {isBoundary && hints.length === 0 && (
-                    <div className="text-xs rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-amber-800">
+                    <div className="text-xs rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 px-3 py-2 text-amber-800 dark:text-amber-300">
                       <span className="opacity-70">
                         {lang === 'en' ? '⚠ Boundary case — consider routing up.' : '⚠ 邊界案例 — 考慮向上路由。'}
                       </span>
@@ -350,7 +350,7 @@ export default function Playground() {
               </button>
               <button
                 onClick={downloadHandoff}
-                className="rounded-full px-6 py-3 text-sm bg-ink text-white hover:scale-[1.03] transition-transform"
+                className="rounded-full px-6 py-3 text-sm border border-neutral-300 dark:border-[#383838] text-ink hover:bg-neutral-50 dark:hover:bg-[#1a1a1a] transition-colors bg-ink text-white dark:text-black hover:scale-[1.03]"
               >
                 {lang === 'zh' ? '下載 Handoff 文件' : 'Download handoff doc'}
               </button>
@@ -437,8 +437,8 @@ else                                  → Tier-Mid`}
                   onClick={() => setSelectedFlow(f.id)}
                   className={`rounded-full px-4 py-2 text-sm border transition-colors ${
                     selectedFlow === f.id
-                      ? 'border-ink bg-ink text-white'
-                      : 'border-neutral-300 hover:border-ink text-ink'
+                      ? 'border-ink bg-ink text-white dark:text-black'
+                      : 'border-neutral-300 dark:border-[#383838] hover:border-ink text-ink'
                   }`}
                 >
                   {lang === 'zh' ? f.label : f.labelEn}
@@ -456,7 +456,7 @@ else                                  → Tier-Mid`}
               <button
                 onClick={() => setEnhanced(e => !e)}
                 className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 transition-colors ${
-                  enhanced ? 'border-amber-500 bg-amber-500' : 'border-neutral-300 bg-neutral-200'
+                  enhanced ? 'border-amber-500 bg-amber-500' : 'border-neutral-300 dark:border-[#444444] bg-neutral-200 dark:bg-[#2a2a2a]'
                 }`}
                 role="switch"
                 aria-checked={enhanced}
@@ -468,7 +468,7 @@ else                                  → Tier-Mid`}
                   {lang === 'zh' ? 'S1 增強模式' : 'S1 Enhanced'}
                 </span>
                 {enhanced && (
-                  <span className="ml-2 text-[10px] px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-700">
+                  <span className="ml-2 text-[10px] px-1.5 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400">
                     {lang === 'zh' ? 'Sonnet 15.0/15 > Opus 12.7/15' : 'Sonnet 15.0/15 > Opus 12.7/15'}
                   </span>
                 )}
@@ -501,7 +501,7 @@ else                                  → Tier-Mid`}
                     setTimeout(() => setPromptCopied(false), 1500);
                   } catch { /* clipboard unavailable */ }
                 }}
-                className="rounded-full px-4 py-1.5 text-xs border border-neutral-300 hover:border-ink transition-colors"
+                className="rounded-full px-4 py-1.5 text-xs border border-neutral-300 dark:border-[#383838] hover:border-ink transition-colors"
               >
                 {promptCopied
                   ? (lang === 'zh' ? '✓ 已複製' : '✓ Copied')

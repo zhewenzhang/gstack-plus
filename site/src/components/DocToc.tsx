@@ -34,7 +34,7 @@ export default function DocToc({ html }: { html: HTMLElement | null }) {
   if (headings.length < 2) return null;
 
   return (
-    <nav className="hidden xl:block w-56 shrink-0 sticky top-8 self-start max-h-[calc(100vh-4rem)] overflow-y-auto pl-6 border-l border-neutral-100">
+    <nav className="hidden xl:block w-56 shrink-0 sticky top-8 self-start max-h-[calc(100vh-4rem)] overflow-y-auto pl-6 border-l border-neutral-100 dark:border-[#2A2A2A]">
       <div className="text-[11px] uppercase tracking-wider text-muted mb-3">本頁目錄</div>
       <ul className="space-y-1.5">
         {headings.map(h => (
