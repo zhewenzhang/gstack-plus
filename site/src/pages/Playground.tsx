@@ -299,7 +299,10 @@ export default function Playground() {
             {/* Threshold hints */}
             {(() => {
               const hints = getThresholdHints(scoring, decision.tier, lang);
-              if (hints.length === 0) return null;
+              const isBoundary = decision.tier === 'Tier-Exec' && (scoring.judgment === 2 || scoring.context === 2 || scoring.verifiability === 4)
+                || decision.tier === 'Tier-Mid' && (scoring.judgment === 3 || scoring.risk === 3 || scoring.creativity === 3)
+                || decision.tier === 'Tier-A' && (scoring.judgment === 4 || scoring.risk === 4 || scoring.creativity === 4);
+              if (hints.length === 0 && !isBoundary) return null;
               return (
                 <div className="mt-3 space-y-1.5">
                   {hints.map((h, i) => {
@@ -324,6 +327,13 @@ export default function Playground() {
                       </div>
                     );
                   })}
+                  {isBoundary && hints.length === 0 && (
+                    <div className="text-xs rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-amber-800">
+                      <span className="opacity-70">
+                        {lang === 'en' ? '⚠ Boundary case — consider routing up.' : '⚠ 邊界案例 — 考慮向上路由。'}
+                      </span>
+                    </div>
+                  )}
                 </div>
               );
             })()}

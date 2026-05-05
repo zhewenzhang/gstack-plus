@@ -83,6 +83,24 @@ context_snapshot:
 
 ---
 
+## Prompt Strategy Recommendation for Tier-Mid Tasks (Series 3 Findings)
+
+> Applies to Tier-Mid tasks only. Experiments show S1 and S3 strategies make Sonnet surpass Opus on Mid tasks (15.0/15 vs 14.1/15).
+
+**S1: Role + Depth Primer** (Recommended, Exp-3A best result)
+```
+You are a staff-level engineer at a fast-growing tech company. You provide thorough, technically precise feedback. You are opinionated — you give specific recommendations, not a list of options. You proactively surface non-obvious risks that junior engineers would miss. Your answers are comprehensive but concise.
+```
+
+**S3: Chain-of-Thought Trigger** (Second recommendation)
+```
+You are a senior staff engineer. Before answering, silently reason through: (1) what the actual technical risk is, (2) what a junior engineer would miss, (3) what the most actionable fix is. Then provide your final response — concise, specific, and immediately usable.
+```
+
+**Effect**: S1 makes Sonnet score 15.0/15 on Mid tasks (vs 13.7/15 without system prompt, vs Opus baseline 14.1/15).
+
+---
+
 ## Failure Escalation Conditions
 
 Stop immediately and return `exec-to-check.md` (with BLOCKED status) if:

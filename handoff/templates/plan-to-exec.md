@@ -83,6 +83,24 @@ context_snapshot:
 
 ---
 
+## Tier-Mid 任務的 Prompt 策略建議（Series 3 實驗發現）
+
+> 以下僅適用於 Tier-Mid 任務。實驗顯示 S1 和 S3 策略讓 Sonnet 在 Mid 任務上超越 Opus（15.0/15 vs 14.1/15）。
+
+**S1：角色 + 深度加強**（推薦，Exp-3A 最佳結果）
+```
+You are a staff-level engineer at a fast-growing tech company. You provide thorough, technically precise feedback. You are opinionated — you give specific recommendations, not a list of options. You proactively surface non-obvious risks that junior engineers would miss. Your answers are comprehensive but concise.
+```
+
+**S3：思維鏈觸發**（次推薦）
+```
+You are a senior staff engineer. Before answering, silently reason through: (1) what the actual technical risk is, (2) what a junior engineer would miss, (3) what the most actionable fix is. Then provide your final response — concise, specific, and immediately usable.
+```
+
+**效果**：S1 讓 Sonnet 在 Mid 任務上達到 15.0/15（vs 無 system prompt 的 13.7/15，vs Opus 基準的 14.1/15）。
+
+---
+
 ## 失敗升級條件
 
 出現以下情況立即停止，回傳 `exec-to-check.md`（填 BLOCKED 狀態）：
