@@ -166,7 +166,7 @@ Reason: Tier-A triggered: judgment=5 >= 4, risk=5 >= 4, creativity=4 >= 4
 
 ```bash
 npm install -g gstack-plus
-gstack-plus --version    # 0.3.4
+gstack-plus --version    # 0.5.0
 ```
 
 ---
@@ -203,7 +203,10 @@ Full handbook: **[https://zhewenzhang.github.io/gstack-plus/](https://zhewenzhan
 | CLI v0.3.3 (score bars visualization) | ✅ [Release](https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.3.3) |
 | CLI v0.3.4 (`stats`, `open` commands) | ✅ [Release](https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.3.4) |
 | Mode A/B routing experiment (cost + quality) | ✅ [Results](experiments/token-comparison/RESULTS.md) |
-| Mode A/B comparative experiments (full scale) | 🚧 Planned |
+| v0.4.0 — Playground, Pentagon chart, Prompt Builder, 12 presets, bilingual docs | ✅ [Release](https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.4.0) |
+| Experiment Series 2 — routing stability, cost benchmark, LLM-as-Judge (9 tasks) | ✅ [Report](https://zhewenzhang.github.io/gstack-plus/#/doc/experiment-series-2) |
+| Experiment Series 3 — S1 prompt strategy (Sonnet beats Opus), real-world corpus | ✅ [Report](https://zhewenzhang.github.io/gstack-plus/#/doc/experiment-series-3) |
+| v0.5.0 — S1 Enhanced in Prompt Builder, boundary warnings, dark mode | ✅ [Release](https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.5.0) |
 
 ---
 
