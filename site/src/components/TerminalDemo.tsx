@@ -108,25 +108,25 @@ export default function TerminalDemo({ lang }: { lang: Lang }) {
   const reason = lang === 'en' ? task.reasonEn : task.reasonZh;
 
   return (
-    <div className="rounded-xl overflow-hidden border border-[#2A2A2A] shadow-xl font-mono text-[13px] leading-relaxed">
+    <div className="rounded-xl overflow-hidden border border-neutral-200 dark:border-[#2A2A2A] shadow-xl font-mono text-[13px] leading-relaxed">
       {/* Window chrome */}
-      <div className="flex items-center gap-1.5 px-4 py-2.5 bg-[#1A1A1A] border-b border-[#2A2A2A]">
+      <div className="flex items-center gap-1.5 px-4 py-2.5 bg-neutral-100 dark:bg-[#1A1A1A] border-b border-neutral-200 dark:border-[#2A2A2A]">
         <span className="w-3 h-3 rounded-full bg-[#FF5F57]" />
         <span className="w-3 h-3 rounded-full bg-[#FEBC2E]" />
         <span className="w-3 h-3 rounded-full bg-[#28C840]" />
-        <span className="ml-3 text-[11px] text-[#666] select-none">gstack-plus — terminal</span>
+        <span className="ml-3 text-[11px] text-neutral-400 dark:text-[#666] select-none">gstack-plus — terminal</span>
       </div>
 
       {/* Terminal body */}
-      <div className="bg-[#0b0b0b] text-[#EDEDED] p-5 min-h-[260px]">
+      <div className="bg-white dark:bg-[#0b0b0b] text-neutral-800 dark:text-[#EDEDED] p-5 min-h-[260px]">
 
         {/* Prompt line */}
         <div className="mb-3">
-          <span className="text-[#10B981]">$ </span>
-          <span className="text-[#EDEDED]">npx gstack-plus </span>
-          <span className="text-[#FFD700]">{cmd.slice(0, st.typedLen)}</span>
+          <span className="text-emerald-600 dark:text-[#10B981]">$ </span>
+          <span className="text-neutral-500 dark:text-[#EDEDED]">npx gstack-plus </span>
+          <span className="text-amber-600 dark:text-[#FFD700]">{cmd.slice(0, st.typedLen)}</span>
           {st.phase === 'typing' && (
-            <span className="animate-pulse text-[#EDEDED]">▋</span>
+            <span className="animate-pulse text-neutral-500 dark:text-[#EDEDED]">▋</span>
           )}
         </div>
 
@@ -135,9 +135,9 @@ export default function TerminalDemo({ lang }: { lang: Lang }) {
           <div className="mb-3 space-y-0.5">
             {task.scores.slice(0, st.shownLines).map((v, i) => (
               <div key={i} className="flex items-center gap-2">
-                <span className="text-[#888] w-24 shrink-0 text-[12px]">{labels[i]}</span>
-                <span className="text-[#06B6D4]">{bar(v)}</span>
-                <span className="text-[#EDEDED] ml-1">{v}</span>
+                <span className="text-neutral-400 dark:text-[#888] w-24 shrink-0 text-[12px]">{labels[i]}</span>
+                <span className="text-cyan-600 dark:text-[#06B6D4]">{bar(v)}</span>
+                <span className="text-neutral-700 dark:text-[#EDEDED] ml-1">{v}</span>
               </div>
             ))}
           </div>
@@ -146,15 +146,15 @@ export default function TerminalDemo({ lang }: { lang: Lang }) {
         {/* Decision */}
         {st.showDecision && (
           <>
-            <div className="text-[#444] mb-2">────────────────────────────────</div>
+            <div className="text-neutral-300 dark:text-[#444] mb-2">────────────────────────────────</div>
             <div className="mb-0.5">
-              <span className="text-[#888]">Routing decision: </span>
+              <span className="text-neutral-500 dark:text-[#888]">Routing decision: </span>
               <span style={{ color: task.tierColor }} className="font-semibold">{task.tier}</span>
             </div>
-            <div className="text-[#666] text-[12px] mb-3">
+            <div className="text-neutral-400 dark:text-[#666] text-[12px] mb-3">
               {reason}
             </div>
-            <div className="text-[#10B981] text-[12px]">
+            <div className="text-emerald-600 dark:text-[#10B981] text-[12px]">
               ✓ Handoff doc written → ./handoffs/handoff-{new Date().toISOString().slice(0,10)}-x{Math.random().toString(36).slice(2,6)}.md
             </div>
           </>
@@ -162,12 +162,15 @@ export default function TerminalDemo({ lang }: { lang: Lang }) {
       </div>
 
       {/* Task indicator dots */}
-      <div className="flex justify-center gap-1.5 py-2 bg-[#111] border-t border-[#2A2A2A]">
+      <div className="flex justify-center gap-1.5 py-2 bg-neutral-50 dark:bg-[#111] border-t border-neutral-200 dark:border-[#2A2A2A]">
         {TASKS.map((_, i) => (
           <span
             key={i}
-            className="w-1.5 h-1.5 rounded-full transition-colors duration-300"
-            style={{ background: i === st.taskIdx ? '#666' : '#2A2A2A' }}
+            className={`w-1.5 h-1.5 rounded-full transition-colors duration-300 ${
+              i === st.taskIdx
+                ? 'bg-neutral-400 dark:bg-[#666]'
+                : 'bg-neutral-200 dark:bg-[#2A2A2A]'
+            }`}
           />
         ))}
       </div>

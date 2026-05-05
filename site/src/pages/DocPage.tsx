@@ -7,6 +7,7 @@ import Markdown from '@/components/Markdown';
 import MobileDrawer from '@/components/MobileDrawer';
 import DocToc from '@/components/DocToc';
 import LangToggle from '@/components/LangToggle';
+import DarkModeToggle from '@/components/DarkModeToggle';
 import { useLang } from '@/i18n/useLang';
 import { STRINGS } from '@/i18n/strings';
 
@@ -68,6 +69,7 @@ export default function DocPage() {
         </button>
         <Link to="/" className="font-display text-xl">gstack<sup>+</sup></Link>
         <div className="flex items-center gap-2">
+          <DarkModeToggle />
           <LangToggle />
           <a href={REPO_BASE + (item as Item).source} target="_blank" rel="noreferrer"
             className="text-xs text-muted hover:text-ink">Edit ↗</a>
@@ -83,7 +85,7 @@ export default function DocPage() {
         <aside className="hidden lg:block w-72 shrink-0 sticky top-0 h-screen border-r border-neutral-200 dark:border-[#2A2A2A]">
           <div className="px-6 py-6 border-b border-neutral-200 dark:border-[#2A2A2A] flex items-center justify-between">
             <Link to="/" className="font-display text-2xl">gstack<sup>+</sup></Link>
-            <LangToggle />
+            <DarkModeToggle />
           </div>
           <Sidebar />
         </aside>
