@@ -5,6 +5,7 @@ export const STRINGS = {
   nav: {
     home:        { zh: '首頁',   en: 'Home' },
     playground:  { zh: '試玩場', en: 'Playground' },
+    results:     { zh: '實驗結果', en: 'Results' },
     manual:      { zh: '手冊',   en: 'Docs' },
     notes:       { zh: '筆記',   en: 'Notes' },
     experiments: { zh: '實驗',   en: 'Experiments' },

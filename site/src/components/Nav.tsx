@@ -15,9 +15,10 @@ export default function Nav() {
   const t = STRINGS.nav;
 
   const items = [
-    { label: t.home[lang],       to: '/' },
-    { label: t.playground[lang], to: '/playground' },
-    { label: t.manual[lang],     to: '/doc/getting-started' },
+    { label: t.home[lang],        to: '/' },
+    { label: t.playground[lang],  to: '/playground' },
+    { label: t.results[lang],     to: '/results' },
+    { label: t.manual[lang],      to: '/doc/getting-started' },
   ];
 
   const goToQuickTry = () => {
