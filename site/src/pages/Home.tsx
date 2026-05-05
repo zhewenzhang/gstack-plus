@@ -5,7 +5,7 @@ import Hero from '@/components/Hero';
 import QuickTry from '@/components/QuickTry';
 import HomeBelowFold from '@/components/HomeBelowFold';
 
-const SITE_VERSION = '0.4.0';
+const SITE_VERSION = '0.5.0';
 
 export default function Home() {
   const location = useLocation();

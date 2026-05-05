@@ -4,7 +4,7 @@
 
 **Multi-tier model orchestration for AI-augmented development.**
 
-[![npm](https://img.shields.io/npm/v/gstack-plus?style=flat-square&color=000000&label=npm%20v0.4.0)](https://www.npmjs.com/package/gstack-plus)
+[![npm](https://img.shields.io/npm/v/gstack-plus?style=flat-square&color=000000&label=npm%20v0.5.0)](https://www.npmjs.com/package/gstack-plus)
 [![Docs](https://img.shields.io/badge/docs-online-000000?style=flat-square)](https://zhewenzhang.github.io/gstack-plus/)
 [![Playground](https://img.shields.io/badge/playground-try%20it%20live-6F6F6F?style=flat-square)](https://zhewenzhang.github.io/gstack-plus/#/playground)
 [![License](https://img.shields.io/badge/license-MIT-000000?style=flat-square)](./LICENSE)
@@ -44,6 +44,15 @@
 | Cost saving vs All-Opus | **27%** (balanced mix) — **98%** on Tier-Exec tasks |
 | Quality: All-Opus vs Routed | **14.1/15 = 14.1/15** (LLM-as-Judge, blind, Exp-2C) |
 | Most critical scoring dimension | **Judgment** (±1 changes routing 32% of the time) |
+
+**Series 3 Update (2026-05-05) — Prompt optimization + real-world corpus:**
+
+| Experiment | Result |
+|------------|--------|
+| Best Sonnet strategy (S1) | **15.0/15** vs Opus 12.7/15 — Sonnet **wins** with right prompt |
+| Cost of S1 strategy | **$0.006/task** vs Opus $0.045 — **86% cheaper, better quality** |
+| Real-world routing accuracy | **100%** (20/20 tasks from actual git history, Exp-3B) |
+| Corpus distribution | 45% Exec · 35% Mid · 20% Tier-A |
 
 </div>
 

@@ -15,10 +15,10 @@ export const STRINGS = {
   // ─── Hero ───
   hero: {
     pill: {
-      zh: 'v0.4.0 已上線',
-      en: 'v0.4.0 live',
+      zh: 'v0.5.0 已上線',
+      en: 'v0.5.0 live',
     },
-    pillUrl: 'https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.4.0',
+    pillUrl: 'https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.5.0',
     headlineHtml: {
       zh: '對的模型，<em class="italic" style="color:#6F6F6F">做對的事。</em>',
       en: 'Stop sending <em class="italic" style="color:#6F6F6F">every task</em> to the<br/>same model. Route to the <em class="italic" style="color:#6F6F6F">right tier.</em>',
@@ -39,7 +39,7 @@ export const STRINGS = {
 
   // ─── QuickTry ───
   quickTry: {
-    eyebrow: { zh: 'v0.4.0 · 已上線 npm', en: 'v0.4.0 · live on npm' },
+    eyebrow: { zh: 'v0.5.0 · 已上線 npm', en: 'v0.5.0 · live on npm' },
     title:   { zh: '30 秒就能試一下。',  en: 'Try it in 30 seconds.' },
     body: {
       zh: '對任何任務做 5 維評分，立刻得到路由決策與一份預填好的 handoff 文件。基本流程不需要安裝、不需要 API key。',

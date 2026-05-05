@@ -6,6 +6,26 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ---
 
+## [0.5.0] — 2026-05-05
+
+### Added — Experiments (Series 3)
+
+- **Exp-3A Prompt Strategy Comparison**: 4 strategies × 3 Tier-Mid tasks — S1 (role + depth) lets Sonnet beat Opus (15.0 vs 12.7/15) at 14% of the cost ($0.019 vs $0.135). S3 (chain-of-thought + role) also reaches 15.0/15.
+- **Exp-3B Real-world Corpus**: 20 tasks from gstack-plus git history — routing algorithm matches expected tier 20/20 (100% accuracy), with distribution 45% Exec / 35% Mid / 20% Tier-A.
+- **Series 3 report** published bilingual at `/doc/experiment-series-3`
+
+### Added — Playground
+
+- **S1 Enhanced toggle** in Prompt Builder — prepends staff-engineer identity + proactive risk-surfacing primer. Auto-suggests when Tier-Mid is detected. Series 3 finding: enables Sonnet 15.0/15 > Opus 12.7/15.
+- **Boundary case warning** — amber alert for tasks scoring near tier boundaries
+
+### Fixed — Documentation
+
+- Series 2 report patched: latency data table added (Tier-Exec -81%, Tier-Mid -20%), Study Limitations section added, Tier-A variance clarified
+- S1 prompt strategy integrated into handoff templates (`plan-to-exec.md`)
+
+---
+
 ## [0.4.0] — 2026-05-04
 
 ### Added — Documentation Site
@@ -112,6 +132,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ---
 
+[0.5.0]: https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.5.0
 [0.4.0]: https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.4.0
 [0.3.4]: https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.3.4
 [0.3.3]: https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.3.3
