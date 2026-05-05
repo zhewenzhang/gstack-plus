@@ -1,39 +1,8 @@
 import { Link } from 'react-router-dom';
 import CodeBlock from './CodeBlock';
+import TerminalDemo from './TerminalDemo';
 import { useLang } from '@/i18n/useLang';
 import { STRINGS } from '@/i18n/strings';
-
-const SAMPLE_OUTPUT_ZH = `$ npx gstack-plus classify "Refactor auth middleware to support OAuth"
-
-判斷強度  ›  4
-上下文寬度 ›  3
-風險權重  ›  4
-可驗證性  ›  2
-創意密度  ›  3
-
-────────────────────────────────────────────────
-Routing decision: Tier-A
-Reason: Tier-A 條件觸發：judgment=4 ≥ 4, risk=4 ≥ 4
-
-✓ Handoff doc written → ./handoffs/handoff-2026-05-03-x9p2.md
-
-Next: open the handoff doc, fill in Scope Lock + 完成標準, send to your Tier-A model.`;
-
-const SAMPLE_OUTPUT_EN = `$ npx gstack-plus --lang en classify "Refactor auth middleware to support OAuth"
-
-Judgment Strength  ›  4
-Context Width      ›  3
-Risk Weight        ›  4
-Verifiability      ›  2
-Creativity Density ›  3
-
-────────────────────────────────────────────────
-Routing decision: Tier-A
-Reason: Tier-A triggered: judgment=4 >= 4, risk=4 >= 4
-
-✓ Handoff doc written → ./handoffs/handoff-2026-05-03-x9p2.md
-
-Next: open the handoff doc, fill in Scope Lock + Completion Criteria, send to your Tier-A model.`;
 
 export default function QuickTry() {
   const [lang] = useLang();
@@ -83,10 +52,10 @@ gstack-plus classify "Your task description"`} />
             </div>
           </div>
 
-          {/* Right — sample output */}
+          {/* Right — terminal demo */}
           <div>
             <div className="text-xs uppercase tracking-widest text-muted mb-3">{s.sampleEyebrow[lang]}</div>
-            <CodeBlock code={lang === 'en' ? SAMPLE_OUTPUT_EN : SAMPLE_OUTPUT_ZH} caption="" />
+            <TerminalDemo lang={lang} />
           </div>
         </div>
       </div>
