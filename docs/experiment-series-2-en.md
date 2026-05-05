@@ -71,7 +71,23 @@ Tier-Mid tasks routed to Sonnet save 85% on cost, but the LLM judge found a qual
 
 Across all 9 tasks, average quality is identical. Tier-Exec's Mode-B advantage offsets the Tier-Mid Mode-A advantage. This validates gstack-plus's core claim: **routing doesn't reduce aggregate quality.**
 
-### 5. Cost Saving: 27% (Balanced Task Distribution)
+### 5. Tier-Exec Achieves a Triple Win: Faster + Cheaper + Higher Quality
+
+**Latency improvement: Exec -81% | Mid -20% | Tier-A ±0%**
+
+Latency data reveals value beyond cost savings:
+
+| Tier | Mode A (All-Opus) avg latency | Mode B (Routed) avg latency | Improvement |
+|------|---------------------------|----------------------------|-------------|
+| **Tier-Exec** | 8,778 ms | **1,708 ms** | **-81%** |
+| **Tier-Mid** | 11,087 ms | **8,860 ms** | -20% |
+| Tier-A | 19,860 ms | 21,927 ms | ≈ flat |
+
+Qwen returns Tier-Exec answers 5× faster than Opus. In a workflow where a developer handles 10–15 Exec-level tasks per day, the latency savings directly translate to throughput improvement.
+
+**Tier-Exec is the only tier that achieves all three advantages simultaneously**: 98% cost reduction, 81% latency reduction, and higher quality (14.7 vs 13.7).
+
+### 6. Cost Saving: 27% (Balanced Task Distribution)
 
 Series 2 uses an equal distribution (3 Exec + 3 Mid + 3 A) — more representative of real development work. Under this distribution, cost drops 27% ($0.495 → $0.363).
 
@@ -93,6 +109,18 @@ All 9 blind evaluations returned "high confidence," and score differences betwee
 
 The 5 least-stable tasks (60–70% stability) were all borderline cases near tier boundaries. Recommendation: **when in doubt, route up.** A wrongly-executed task costs far more than the marginal price of using a higher tier.
 
+## Study Limitations
+
+Results should be interpreted in context:
+
+1. **Synthetic tasks:** All 9 test tasks were designed for this experiment. Real tasks carry ambiguity, incomplete specs, and business context that synthetic tasks don't capture.
+
+2. **Tier-A quality gap is temperature variance, not a real effect:** Both Mode A and Mode B use Opus for Tier-A tasks, so the A1/A3 quality differences (13/15 vs 15/15) are model output randomness, not evidence that "routed Opus outperforms direct Opus."
+
+3. **Small sample:** 3 tasks per tier. The Tier-Mid quality drop (12.7 vs 15.0) needs more data to confirm.
+
+4. **Single judge model:** LLM-as-Judge uses Claude Haiku; different judge models may produce different score distributions.
+
 ---
 
 ## Next Optimization Priorities
@@ -106,6 +134,31 @@ In priority order:
 3. **Boundary warning in Playground:** When a task's scores are near a tier boundary, prompt the user to consider routing up.
 
 4. **Series 3 experiment:** Collect 30+ naturally-occurring tasks from a real project (non-synthetic) to test whether 100% routing accuracy holds in the wild.
+
+---
+
+## Series 3 Preview
+
+### Exp-3A: Tier-Mid Prompt Optimization Results
+
+| Prompt Strategy | Sonnet Avg | vs Opus | Quality Gap |
+|----------------|-----------|---------|-------------|
+| S0 Baseline (no system prompt) | 13.7/15 | 15.0/15 | -1.3 |
+| S1 Role + depth primer | **15.0/15** | 12.7/15 | **+2.3** ✓ |
+| S2 Structured output format | 13.3/15 | 14.0/15 | -0.7 |
+| S3 Chain-of-thought + role | **15.0/15** | 14.0/15 | **+1.0** ✓ |
+| *Opus baseline* | *14.1/15* | — | |
+
+**Conclusion**: S1 (Role + depth primer) and S3 (Chain-of-thought + role) both make Sonnet **outperform the Opus baseline** on Mid tasks. S1, with the "staff-level engineer" role and "opinionated, surface non-obvious risks" instruction, is the most consistent winner.
+
+### Exp-3B: Real-world Task Corpus
+
+20 real tasks extracted from gstack-plus development history, routed as:
+- **Tier-Exec**: 9 (45%)
+- **Tier-Mid**: 7 (35%)
+- **Tier-A**: 4 (20%)
+
+`experiments/series-2/exp3b-validation-template.md` — awaiting human validation column.
 
 ---
 

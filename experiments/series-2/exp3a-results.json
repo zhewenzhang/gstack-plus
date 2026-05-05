@@ -1,0 +1,312 @@
+{
+  "opusResults": [
+    {
+      "taskId": "M1",
+      "taskName": "Code review for no-pagination API",
+      "strategyId": "OPUS",
+      "strategyName": "Opus baseline",
+      "model": "anthropic/claude-opus-4.7",
+      "tokens": 441,
+      "costUsd": 0.027495,
+      "latencyMs": 5267,
+      "output": "**Review Comment:**\n\n⚠️ **Performance concern: unbounded result set**\n\n`findAll()` loading all users without pagination is a scalability risk. As the `users` table grows, this will:\n\n- Consume increasing memory on the app server (potential OOM)\n- Lock/scan large portions of the table, increasing DB load and latency\n- Saturate network bandwidth between DB and app\n- Degrade response times unpredictably based on data volume\n\n**Suggested fix:** Replace with a paginated API:\n\n```java\nPage<User> findAll(Pageable pageable);\n```\n\nCallers pass `PageRequest.of(page, size)` with a reasonable max size (e.g., cap at 100). If a specific use case truly needs to process every user (e.g., batch job), expose a separate streaming method like `Stream<User> streamAll()` with `@QueryHints` for cursor-based fetching, and document its intended usage.\n\nAlso consider adding a sort parameter for deterministic ordering, and enforce the page-size cap at the controller layer to prevent abuse."
+    },
+    {
+      "taskId": "M2",
+      "taskName": "Config migration plan to Zod",
+      "strategyId": "OPUS",
+      "strategyName": "Opus baseline",
+      "model": "anthropic/claude-opus-4.7",
+      "tokens": 873,
+      "costUsd": 0.060195,
+      "latencyMs": 8644,
+      "output": "# Migration Plan: process.env → Zod-Validated Config\n\n## 1. Migration Steps\n\n1. **Audit usage**: Grep the codebase for `process.env.*` references and catalog every variable, its type, required/optional status, and default values.\n2. **Install dependencies**: `npm install zod`.\n3. **Create `src/config/schema.ts`**: Define a Zod schema mirroring the audit (e.g., `z.object({ PORT: z.coerce.number().default(3000), DATABASE_URL: z.string().url(), NODE_ENV: z.enum(['development','production','test']) })`).\n4. **Create `src/config/index.ts`**: Parse `process.env` via `schema.safeParse()`. On failure, log formatted errors and `process.exit(1)` at startup (fail fast).\n5. **Export typed config**: `export const config = schema.parse(process.env)`.\n6. **Incremental refactor**: Replace `process.env.X` with `config.X` module-by-module. Run tests after each module.\n7. **Update `.env.example`** and README to document required variables.\n8. **Add CI check**: Run a boot-smoke test that ensures the schema parses in each environment.\n9. **Lint rule**: Add ESLint rule banning direct `process.env` access outside `src/config/`.\n\n## 2. Top Risks\n\n- **Startup failures in production**: Missing/misnamed env vars crash the app immediately. Mitigate by validating in staging first and comparing audit against deployed env.\n- **Type coercion surprises**: Strings like `\"false\"` are truthy; use `z.coerce.boolean()` carefully or custom transforms.\n- **Hidden env access**: Third-party libs or dynamic `process.env[key]` lookups may be missed—grep for bracket notation too.\n- **Secret logging**: Zod error output could leak secrets; redact sensitive fields before logging failures.\n\n## 3. Rollback Plan\n\n- Keep the migration behind a feature flag (`USE_VALIDATED_CONFIG=true`) that toggles between the new `config` module and a legacy shim exporting `process.env` directly.\n- Ship incrementally via small PRs so any single change is revertible with `git revert`.\n- Maintain the previous Docker image tag for 1–2 release cycles to enable instant rollback via deploy pipeline."
+    },
+    {
+      "taskId": "M3",
+      "taskName": "API design review: idempotency + errors",
+      "strategyId": "OPUS",
+      "strategyName": "Opus baseline",
+      "model": "anthropic/claude-opus-4.7",
+      "tokens": 702,
+      "costUsd": 0.04713,
+      "latencyMs": 8036,
+      "output": "# Create Order Endpoint Review\n\n## Idempotency\n**Check:** Require an `Idempotency-Key` header (client-generated UUID) and persist the key with the response for a defined TTL (e.g., 24h). Replays with the same key must return the original response, not re-execute the order.\n\n**Avoid:** Using the request body hash alone as the dedup key. Legitimate retries with identical payloads get deduped correctly, but clients intending two separate orders with the same contents get silently merged into one.\n\n## Error Response Structure\n**Check:** Return a consistent, machine-readable schema — ideally RFC 7807 (`application/problem+json`) with `type`, `title`, `status`, `detail`, and a stable `code` field. Include field-level errors as a structured array (`errors: [{field, code, message}]`) for validation failures.\n\n**Avoid:** Leaking internal details (stack traces, SQL errors, internal service names) in `detail` or message fields. Also avoid overloading HTTP 200 with `{\"success\": false}` payloads — use proper status codes (400, 409, 422).\n\n## Rate Limiting\n**Check:** Return standard headers on every response: `RateLimit-Limit`, `RateLimit-Remaining`, `RateLimit-Reset` (per the IETF draft), and `Retry-After` on 429s. Scope limits per API key *and* per user/account to prevent noisy-neighbor abuse.\n\n**Avoid:** Applying a single global limit that treats order creation like a read endpoint. Writes deserve stricter, separately-tuned buckets — and ensure idempotent retries don't each consume quota (check the idempotency cache *before* decrementing).\n\n---\nThese three concerns interact: idempotency caching should happen before rate-limit accounting, and rate-limit rejections should use the same error schema as everything else."
+    }
+  ],
+  "sonnetResults": {
+    "S0": [
+      {
+        "taskId": "M1",
+        "taskName": "Code review for no-pagination API",
+        "strategyId": "S0",
+        "strategyName": "Baseline (no system prompt)",
+        "model": "anthropic/claude-sonnet-4-6",
+        "tokens": 334,
+        "costUsd": 0.00423,
+        "latencyMs": 6160,
+        "output": "## Code Review Comment\n\n**⚠️ Performance Risk: Unbounded Query**\n\nThis implementation will load the entire `users` table into memory on every call. At scale, this will cause significant memory pressure, slow response times, and potential OOM crashes.\n\n```java\n// ❌ Current — dangerous at scale\npublic List<User> findAll() {\n    return userRepository.findAll();\n}\n\n// ✅ Suggested — paginated approach\npublic Page<User> findAll(int page, int size) {\n    Pageable pageable = PageRequest.of(page, Math.min(size, 100));\n    return userRepository.findAll(pageable);\n}\n```\n\n**Specific concerns:**\n- A table with 1M+ rows will attempt to hydrate all records into a single collection\n- No caller should ever *need* all users simultaneously — what's the actual use case here?\n\n**Recommended fix:** Replace with a paginated method accepting `page`/`size` parameters, enforce a max page size (e.g. 100), and update callers accordingly. If this is for a batch job, use a streaming/cursor-based approach instead."
+      },
+      {
+        "taskId": "M2",
+        "taskName": "Config migration plan to Zod",
+        "strategyId": "S0",
+        "strategyName": "Baseline (no system prompt)",
+        "model": "anthropic/claude-sonnet-4-6",
+        "tokens": 622,
+        "costUsd": 0.008538,
+        "latencyMs": 14212,
+        "output": "# Config Migration Plan: process.env → Zod-Validated Config\n\n## Migration Steps\n\n**1. Install & scaffold (Day 1)**\n```bash\nnpm install zod\ntouch src/config.ts\n```\n\n**2. Build the config module**\n```typescript\n// src/config.ts\nimport { z } from \"zod\";\n\nconst schema = z.object({\n  PORT: z.coerce.number().default(3000),\n  DATABASE_URL: z.string().url(),\n  NODE_ENV: z.enum([\"development\", \"production\", \"test\"]),\n  API_KEY: z.string().min(1),\n});\n\nconst parsed = schema.safeParse(process.env);\n\nif (!parsed.success) {\n  console.error(\"Invalid config:\", parsed.error.flatten());\n  process.exit(1);          // fail-fast at startup\n}\n\nexport const config = parsed.data;\n```\n\n**3. Incremental replacement**\n- Replace `process.env.X` calls file-by-file, starting with high-traffic modules\n- Use IDE find-and-replace: `process\\.env\\.(\\w+)` → `config.$1`\n- Keep old calls temporarily behind a feature flag if needed\n\n**4. Validate in CI**\n- Add a startup smoke-test that imports `config` in the test suite\n- Block merges if `schema.parse` throws\n\n---\n\n## Top Risks\n\n| Risk | Mitigation |\n|------|-----------|\n| **Silent type coercions** break logic (e.g., `\"0\"` → `false`) | Audit coerce usage; write unit tests per field |\n| **Missing env vars in production** cause `process.exit(1)` | Audit all deployment environments *before* switching |\n| **Circular imports** if config imports app modules | Keep `config.ts` dependency-free |\n\n---\n\n## Rollback Plan\n\n1. **Immediate:** revert the `config.ts` import in entry point; `process.env` calls still exist during incremental migration\n2. **Git tag** `pre-config-migration` before starting — one `git revert` restores baseline\n3. **Canary deploy** the change to one instance first; monitor startup logs for `process.exit` before full rollout\n\n> **Rule of thumb:** the migration is safely reversible until Step 3 is 100% complete."
+      },
+      {
+        "taskId": "M3",
+        "taskName": "API design review: idempotency + errors",
+        "strategyId": "S0",
+        "strategyName": "Baseline (no system prompt)",
+        "model": "anthropic/claude-sonnet-4-6",
+        "tokens": 454,
+        "costUsd": 0.00603,
+        "latencyMs": 25611,
+        "output": "# REST API Design Review: Create Order Endpoint\n\n---\n\n## 1. Idempotency\n\n**Check:** Verify the endpoint accepts and honors an `Idempotency-Key` header. The server should store the key and return the *identical* response if the same key is resubmitted, preventing duplicate orders from network retries.\n\n**Avoid:** Don't rely solely on client-generated order IDs as an idempotency mechanism without server-side deduplication. If the first request times out and the client retries, you can silently create two orders — a costly mistake in e-commerce.\n\n---\n\n## 2. Error Response Structure\n\n**Check:** Confirm every error response returns a consistent JSON body with predictable fields — at minimum: `status`, `code` (machine-readable), `message` (human-readable), and a `traceId` for debugging. Clients should never have to parse plain-text errors.\n\n**Avoid:** Don't let validation errors collapse into a single generic message like `\"Invalid request\"`. Return a structured `errors` array that maps each violation to its specific field (e.g., `\"field\": \"quantity\", \"issue\": \"must be greater than 0\"`). Silent field omission wastes debugging time.\n\n---\n\n## 3. Rate Limiting\n\n**Check:** Ensure rate-limit responses return `429 Too Many Requests` with a `Retry-After` header so clients can back off intelligently rather than hammering the endpoint.\n\n**Avoid:** Don't apply a single global rate limit across all consumers. A misconfigured integration from one client can starve legitimate traffic. Use per-API-key or per-account limits, and document those thresholds clearly in your API reference."
+      }
+    ],
+    "S1": [
+      {
+        "taskId": "M1",
+        "taskName": "Code review for no-pagination API",
+        "strategyId": "S1",
+        "strategyName": "Role + depth primer",
+        "model": "anthropic/claude-sonnet-4-6",
+        "tokens": 358,
+        "costUsd": 0.00381,
+        "latencyMs": 8481,
+        "output": "## Code Review Comment\n\n**🚨 Performance Risk: Unbounded Query**\n\nThis will load the entire `users` table into memory in a single query. At current growth rates, this will cause OOM crashes and DB timeouts well before you notice — it's a silent time bomb that only surfaces under production load.\n\n**Specific fix:** Replace with cursor-based pagination:\n\n```typescript\n// Instead of this:\nfindAll(): Promise<User[]>\n\n// Do this:\nfindAll(cursor?: string, limit = 100): Promise<{ data: User[]; nextCursor: string | null }>\n```\n\nUse `WHERE id > :cursor LIMIT :limit` with an indexed `id` column for O(1) page seeks. Avoid `OFFSET`-based pagination — it performs a full scan to the offset position and degrades linearly.\n\n**Also consider:** Does the caller actually need all users? If this is feeding a dropdown or report, a search endpoint or async export job is likely the right solution instead."
+      },
+      {
+        "taskId": "M2",
+        "taskName": "Config migration plan to Zod",
+        "strategyId": "S1",
+        "strategyName": "Role + depth primer",
+        "model": "anthropic/claude-sonnet-4-6",
+        "tokens": 674,
+        "costUsd": 0.008538,
+        "latencyMs": 13976,
+        "output": "## Migration Plan: process.env → Zod-Validated Config\n\n### Migration Steps\n\n1. **Install Zod** (`npm install zod`) and create `src/config.ts`.\n\n2. **Define the schema** — map every `process.env` reference in the codebase to a Zod schema with explicit types, defaults, and constraints:\n   ```typescript\n   const schema = z.object({\n     PORT: z.coerce.number().int().min(1024).default(3000),\n     DATABASE_URL: z.string().url(),\n     NODE_ENV: z.enum(['development', 'staging', 'production']),\n   });\n   export const config = schema.parse(process.env);\n   ```\n\n3. **Parse at startup, fail fast** — `schema.parse()` runs once at boot. A bad env throws immediately, before any request is served.\n\n4. **Grep and replace** — find all `process.env.X` callsites and replace with `config.X`. Do this file-by-file in a single PR so the diff is auditable.\n\n5. **Delete dead env vars** — remove any `process.env` references that were unused; Zod's `strict()` mode can catch undeclared keys if you want enforcement.\n\n6. **Update CI/CD** — ensure all environments (dev, staging, prod, test) have required vars declared; add a smoke-test step that boots the app to validate config on deploy.\n\n---\n\n### Top Risks\n\n- **Silent coercion surprises** — `z.coerce.number()` turns `\"abc\"` into `NaN` without throwing. Use `.int()` or custom refinements to catch this.\n- **Missing vars in test environments** — tests that never booted the full app will now fail at import time. Stub `config` in unit tests via `jest.mock`.\n- **Accidental secret logging** — Zod's error messages include the raw value. Sanitize error output before logging in production.\n\n---\n\n### Rollback Plan\n\nThe config module is a single file. If a production incident is traced to it, revert the `config.ts` commit and restore `process.env` callsites via the previous git tag — deploy takes under 5 minutes. Keep the old `process.env` pattern in a branch until one full release cycle confirms stability."
+      },
+      {
+        "taskId": "M3",
+        "taskName": "API design review: idempotency + errors",
+        "strategyId": "S1",
+        "strategyName": "Role + depth primer",
+        "model": "anthropic/claude-sonnet-4-6",
+        "tokens": 552,
+        "costUsd": 0.00672,
+        "latencyMs": 22534,
+        "output": "## Code Review Feedback: Create Order Endpoint\n\n---\n\n### 1. Idempotency\n**Check:** Require clients to supply an `Idempotency-Key` header (a client-generated UUID). Store the key with the resulting order and replay the cached response for duplicate requests within a TTL (24 hours is standard).\n\n**Avoid:** Don't derive idempotency from business fields like `(customer_id + product_id + timestamp)`. Clock skew and retry timing make this unreliable. You'll either create duplicates or incorrectly block legitimate separate orders.\n\n---\n\n### 2. Error Response Structure\n**Check:** Return a consistent machine-readable body for every 4xx/5xx — minimally `{ \"error\": { \"code\": \"ORDER_INSUFFICIENT_INVENTORY\", \"message\": \"...\", \"request_id\": \"...\" } }`. The `code` field lets clients branch on error type without parsing strings.\n\n**Avoid:** Don't mix response shapes — e.g., returning a flat `{ \"message\": \"...\" }` for validation errors but a nested object for downstream failures. Inconsistency forces clients to write defensive parsing for every call site, and it *will* cause silent bugs in production clients.\n\n---\n\n### 3. Rate Limiting\n**Check:** Return `Retry-After` (seconds) in the `429` response header alongside `X-RateLimit-Limit`, `X-RateLimit-Remaining`, and `X-RateLimit-Reset`. Clients need this to back off correctly without guessing.\n\n**Avoid:** Don't apply a single global rate limit per API key. Order creation is a write operation with real downstream cost (payment processing, inventory locks). Scope the limit specifically to `POST /orders` — a misconfigured client shouldn't be able to hammer this endpoint under the cover of read-heavy quota."
+      }
+    ],
+    "S2": [
+      {
+        "taskId": "M1",
+        "taskName": "Code review for no-pagination API",
+        "strategyId": "S2",
+        "strategyName": "Structured output format",
+        "model": "anthropic/claude-sonnet-4-6",
+        "tokens": 424,
+        "costUsd": 0.004476,
+        "latencyMs": 7892,
+        "output": "## Problem\n`findAll()` fetches the entire users table into memory at once, which will cause out-of-memory errors and slow response times as the dataset grows. A table with 500k+ rows can easily exhaust heap space.\n\n## Root Cause\nNo `LIMIT`, pagination, or streaming mechanism is applied to the query, so the database returns an unbounded result set.\n\n## Recommended Fix\nReplace with cursor-based pagination using a `limit`/`after` pattern:\n\n```java\n// Instead of:\nuserRepository.findAll();\n\n// Use:\nuserRepository.findAll(PageRequest.of(page, 100, Sort.by(\"id\")));\n```\n\nIf full dataset access is genuinely required (e.g., a batch job), use a database cursor or streaming query (`Stream<User>`) to process rows incrementally without loading all into memory.\n\n## Watch-outs\n- Callers of this method may assume they receive a complete list — audit all call sites before changing the signature.\n- Streaming queries require the transaction to remain open for the full iteration.\n- Add a default max-page-size guard to prevent `?size=99999999` abuse."
+      },
+      {
+        "taskId": "M2",
+        "taskName": "Config migration plan to Zod",
+        "strategyId": "S2",
+        "strategyName": "Structured output format",
+        "model": "anthropic/claude-sonnet-4-6",
+        "tokens": 676,
+        "costUsd": 0.008244,
+        "latencyMs": 11255,
+        "output": "## Problem\nScattered `process.env` calls create silent failures when environment variables are missing or malformed, which causes unpredictable runtime errors instead of fast, explicit startup failures.\n\n## Root Cause\n`process.env` returns `undefined` silently for missing keys and always returns strings, so type mismatches and missing required values go undetected until they cause downstream failures.\n\n## Recommended Fix\n\n**Migration Steps:**\n\n1. **Audit** — grep codebase for all `process.env` references: `grep -r \"process\\.env\" src/`\n2. **Install Zod** — `npm install zod`\n3. **Create `src/config.ts`** — define and validate schema at startup:\n```typescript\nimport { z } from 'zod';\n\nconst schema = z.object({\n  PORT: z.coerce.number().default(3000),\n  DATABASE_URL: z.string().url(),\n  NODE_ENV: z.enum(['development', 'production', 'test']),\n});\n\nexport const config = schema.parse(process.env);\n```\n4. **Replace incrementally** — swap `process.env.X` calls module-by-module, not all at once. Start with the least-critical service files.\n5. **Fail fast** — ensure `config.ts` is imported before any other module in your entrypoint (`index.ts`).\n6. **Update CI** — add `.env.example` validation to your pipeline.\n\n## Watch-outs\n\n1. **`z.coerce.number()` on empty strings** — `\"\"` coerces to `0`, not an error. Use `.min(1)` or add `.refine()` to guard against empty-string env vars passed explicitly.\n\n2. **Test environment leakage** — your test runner may inherit real env vars from the shell. Use a dedicated `.env.test` file and reset `process.env` explicitly in test setup to avoid false-passing tests.\n\n3. **Rollback plan** — keep `process.env` calls intact in a separate git branch until the new config module is proven stable in staging. Rollback = revert `config.ts` import in `index.ts` and redeploy; no infrastructure changes required."
+      },
+      {
+        "taskId": "M3",
+        "taskName": "API design review: idempotency + errors",
+        "strategyId": "S2",
+        "strategyName": "Structured output format",
+        "model": "anthropic/claude-sonnet-4-6",
+        "tokens": 643,
+        "costUsd": 0.007761,
+        "latencyMs": 12597,
+        "output": "## Problem\nThe \"create order\" endpoint risks duplicate orders, inconsistent error handling, and abuse without deliberate design across three critical areas.\n\n## Root Cause\nREST POST endpoints have no built-in protections against retries, non-standard error shapes, or client over-requesting — each must be explicitly engineered.\n\n## Recommended Fix\n\n**Idempotency**\n- ✅ Check: Require clients to send a unique `Idempotency-Key` header; cache the response for that key for 24 hours so retries return the same result without re-executing.\n- ❌ Avoid: Never rely on client-side deduplication alone. Network timeouts cause clients to retry, creating ghost orders if the server has no key-matching logic.\n\n**Error Response Structure**\n- ✅ Check: Return a consistent JSON error envelope on every failure — minimally `{ \"code\": \"INSUFFICIENT_STOCK\", \"message\": \"...\", \"traceId\": \"...\" }` — including 4xx and 5xx.\n- ❌ Avoid: Don't let framework defaults leak raw stack traces or HTML error pages to API consumers. Unstructured errors break client parsing and expose internals.\n\n**Rate Limiting**\n- ✅ Check: Apply per-user (not just per-IP) rate limits and return `429 Too Many Requests` with a `Retry-After` header so clients back off gracefully.\n- ❌ Avoid: Don't set a single global limit without per-tenant scoping. A single high-volume client will exhaust the shared pool and deny service to all other users.\n\n## Watch-outs\n- Idempotency key storage must be atomic — a race condition between \"key exists?\" and \"store key\" causes duplicate processing under concurrent retries.\n- A `202 Accepted` async pattern changes idempotency semantics; ensure the cached response is the acknowledgment, not the final order state.\n- Rate limit headers (`X-RateLimit-Remaining`) should be returned on *every* response, not only on `429`, so clients self-throttle proactively."
+      }
+    ],
+    "S3": [
+      {
+        "taskId": "M1",
+        "taskName": "Code review for no-pagination API",
+        "strategyId": "S3",
+        "strategyName": "Chain-of-thought + role",
+        "model": "anthropic/claude-sonnet-4-6",
+        "tokens": 375,
+        "costUsd": 0.004077,
+        "latencyMs": 7120,
+        "output": "## Code Review Comment\n\n**🚨 Performance Risk: Unbounded Query**\n\n`findAll()` with no pagination will load the entire `users` table into memory in a single query. At scale, this causes:\n- **OOM crashes** if the dataset grows large\n- **Long-held DB connections** blocking other requests\n- **Slow response times** affecting unrelated endpoints\n\n**Suggested fix — add mandatory pagination:**\n\n```java\n// Instead of:\npublic List<User> findAll() { ... }\n\n// Use:\npublic Page<User> findAll(Pageable pageable) {\n    return userRepository.findAll(pageable);\n}\n\n// Caller enforces a reasonable cap:\nservice.findAll(PageRequest.of(0, 100, Sort.by(\"id\")));\n```\n\nIf you genuinely need all records (e.g., a batch job), use a **streaming cursor** (`Stream<User>`) or process in chunks to avoid materializing the full result set in memory.\n\nWhat's the intended use case here? That'll determine the right approach."
+      },
+      {
+        "taskId": "M2",
+        "taskName": "Config migration plan to Zod",
+        "strategyId": "S3",
+        "strategyName": "Chain-of-thought + role",
+        "model": "anthropic/claude-sonnet-4-6",
+        "tokens": 699,
+        "costUsd": 0.008925,
+        "latencyMs": 12676,
+        "output": "## Migration Plan: process.env → Zod-Validated Config\n\n### Migration Steps\n\n**1. Install & scaffold (Day 1)**\n```bash\nnpm install zod\n```\nCreate `src/config.ts`:\n```typescript\nimport { z } from 'zod';\n\nconst ConfigSchema = z.object({\n  PORT: z.coerce.number().default(3000),\n  DATABASE_URL: z.string().url(),\n  NODE_ENV: z.enum(['development', 'staging', 'production']),\n  API_KEY: z.string().min(1),\n});\n\nexport const config = ConfigSchema.parse(process.env);\nexport type Config = z.infer<typeof ConfigSchema>;\n```\n\n**2. Validate early — fail fast (Day 1)**\nImport `config.ts` as the **first line** of your entrypoint (`index.ts`). Zod throws at startup if env is invalid, not mid-request.\n\n**3. Replace call sites incrementally (Days 2–3)**\nUse codemod or grep to replace `process.env.X` → `config.X`. Do it module-by-module, not all at once. Commit per module.\n\n**4. Block direct process.env access (Day 4)**\nAdd an ESLint rule to enforce the pattern:\n```json\n\"no-restricted-syntax\": [\"error\", { \"selector\": \"MemberExpression[object.name='process'][property.name='env']\" }]\n```\n\n---\n\n### Top Risks\n\n| Risk | Mitigation |\n|---|---|\n| **Undocumented env vars** missed by schema | Audit with `grep -r \"process.env\"` before Step 3 |\n| **Type coercion surprises** (`\"0\"` → falsy number) | Add `.refine()` checks for edge cases |\n| **CI/CD missing vars** caught only at deploy time | Run `ts-node src/config.ts` as a pre-deploy check |\n| **Optional vars treated as required** | Use `.optional()` or `.default()` explicitly |\n\n---\n\n### Rollback Plan\n\n- Each module-level commit is independently revertable\n- Keep `process.env` calls in place (commented) until full validation coverage is confirmed in production for 48 hours\n- Feature flag: if `USE_CONFIG_MODULE=false`, bypass Zod and fall back to direct `process.env` access during transition"
+      },
+      {
+        "taskId": "M3",
+        "taskName": "API design review: idempotency + errors",
+        "strategyId": "S3",
+        "strategyName": "Chain-of-thought + role",
+        "model": "anthropic/claude-sonnet-4-6",
+        "tokens": 555,
+        "costUsd": 0.006777,
+        "latencyMs": 11439,
+        "output": "## REST API Review: Create Order Endpoint\n\n---\n\n### 1. Idempotency\n\n**Check:** Require clients to supply an `Idempotency-Key` header (UUID v4). Store the key with the resulting order ID and return the **cached response** on duplicate requests within a defined TTL (e.g., 24 hours).\n\n**Avoid:** Using the order payload itself as an implicit deduplication key. Business fields like price or quantity can legitimately repeat across distinct orders — silently deduplicating on content will drop valid requests without any signal to the caller.\n\n---\n\n### 2. Error Response Structure\n\n**Check:** Return a consistent machine-readable body for every 4xx/5xx — at minimum: `code` (stable string enum, e.g., `INSUFFICIENT_INVENTORY`), `message` (human-readable), and `request_id` for traceability. Follow [RFC 9457 Problem Details](https://www.rfc-editor.org/rfc/rfc9457) if standardization matters.\n\n**Avoid:** Leaking internal implementation details — stack traces, ORM error messages, or database constraint names — in the response body. These expose attack surface and break the abstraction boundary. Log them server-side; surface only the `request_id`.\n\n---\n\n### 3. Rate Limiting\n\n**Check:** Return `429 Too Many Requests` with a `Retry-After` header (seconds until reset) and `X-RateLimit-Limit` / `X-RateLimit-Remaining` headers on every response so clients can self-throttle proactively.\n\n**Avoid:** Applying a single global rate limit per API key. Order creation is high-value — apply **per-user or per-account** limits to prevent one tenant from starving others, and consider a tighter burst limit separate from the sustained-rate limit."
+      }
+    ]
+  },
+  "judgeResults": {
+    "S0": [
+      {
+        "taskId": "M1",
+        "totalSonnet": 14,
+        "totalOpus": 15,
+        "winner": "B",
+        "diff": "Response A provides more detailed context and additional recommendations around sorting and controller-layer enforcement."
+      },
+      {
+        "taskId": "M2",
+        "totalSonnet": 12,
+        "totalOpus": 15,
+        "winner": "B",
+        "diff": "Response A provides a more comprehensive risk analysis and explicit migration strategy with greater detail around potential edge cases and failure modes."
+      },
+      {
+        "taskId": "M3",
+        "totalSonnet": 15,
+        "totalOpus": 15,
+        "winner": "tie",
+        "diff": "Response B provides a holistic meta-insight about endpoint design interactions"
+      }
+    ],
+    "S1": [
+      {
+        "taskId": "M1",
+        "totalSonnet": 15,
+        "totalOpus": 12,
+        "winner": "A",
+        "diff": "Response A provides more precise, targeted pagination strategy with explicit cursor-based approach"
+      },
+      {
+        "taskId": "M2",
+        "totalSonnet": 15,
+        "totalOpus": 12,
+        "winner": "A",
+        "diff": "Response A provides more explicit code examples and slightly more detailed risk mitigation strategies."
+      },
+      {
+        "taskId": "M3",
+        "totalSonnet": 15,
+        "totalOpus": 14,
+        "winner": "A",
+        "diff": "Response A provides marginally more concrete, prescriptive guidance with slightly tighter technical specificity."
+      }
+    ],
+    "S2": [
+      {
+        "taskId": "M1",
+        "totalSonnet": 13,
+        "totalOpus": 15,
+        "winner": "B",
+        "diff": "Response A provides more detailed performance reasoning and a more prescriptive code solution with nuanced implementation guidance"
+      },
+      {
+        "taskId": "M2",
+        "totalSonnet": 12,
+        "totalOpus": 15,
+        "winner": "B",
+        "diff": "Response A provides a more comprehensive migration plan with additional details like ESLint rules and specific CI/deployment considerations."
+      },
+      {
+        "taskId": "M3",
+        "totalSonnet": 15,
+        "totalOpus": 12,
+        "winner": "A",
+        "diff": "Response A provides more detailed implementation guidance and anticipates complex edge cases."
+      }
+    ],
+    "S3": [
+      {
+        "taskId": "M1",
+        "totalSonnet": 15,
+        "totalOpus": 15,
+        "winner": "B",
+        "diff": "Response A provides more detailed implementation guidance with additional context around enforcement and edge case handling."
+      },
+      {
+        "taskId": "M2",
+        "totalSonnet": 15,
+        "totalOpus": 12,
+        "winner": "A",
+        "diff": "Response A provides more detailed code examples and a more prescriptive step-by-step approach to the migration."
+      },
+      {
+        "taskId": "M3",
+        "totalSonnet": 15,
+        "totalOpus": 15,
+        "winner": "B",
+        "diff": "Response A goes slightly deeper on the interaction between idempotency, error handling, and rate limiting in the closing paragraph."
+      }
+    ]
+  },
+  "strategies": [
+    {
+      "id": "S0",
+      "name": "Baseline (no system prompt)",
+      "system": null
+    },
+    {
+      "id": "S1",
+      "name": "Role + depth primer",
+      "system": "You are a staff-level engineer at a fast-growing tech company. You provide thorough, technically precise feedback. You are opinionated — you give specific recommendations, not a list of options. You proactively surface non-obvious risks that junior engineers would miss. Your answers are comprehensive but concise."
+    },
+    {
+      "id": "S2",
+      "name": "Structured output format",
+      "system": "Structure every response as:\n## Problem\n(1-2 sentences: what is wrong and why it matters)\n\n## Root Cause\n(1 sentence: the underlying technical issue)\n\n## Recommended Fix\n(specific, actionable solution with example if helpful)\n\n## Watch-outs\n(1-3 non-obvious risks or edge cases to monitor)\n\nBe specific and direct. Avoid vague language."
+    },
+    {
+      "id": "S3",
+      "name": "Chain-of-thought + role",
+      "system": "You are a senior staff engineer. Before answering, silently reason through: (1) what the actual technical risk is, (2) what a junior engineer would miss, (3) what the most actionable fix is. Then provide your final response — concise, specific, and immediately usable."
+    }
+  ],
+  "tasks": [
+    {
+      "id": "M1",
+      "name": "Code review for no-pagination API",
+      "userPrompt": "You are a senior engineer reviewing a PR. The PR adds a new UserService.findAll() that loads all users from the database with no pagination or limit. Write a concise code review comment (max 150 words) that explains the performance risk and suggests a specific fix."
+    },
+    {
+      "id": "M2",
+      "name": "Config migration plan to Zod",
+      "userPrompt": "Create a brief migration plan (max 300 words) to move a Node.js app's configuration from raw process.env calls to a structured config object validated with Zod. Cover: (1) migration steps, (2) top risks, (3) rollback plan."
+    },
+    {
+      "id": "M3",
+      "name": "API design review: idempotency + errors",
+      "userPrompt": "You are reviewing a REST API design for a \"create order\" endpoint. Write targeted feedback (max 250 words) covering three areas: idempotency, error response structure, and rate limiting. For each area, name one thing to check and one common mistake to avoid."
+    }
+  ]
+}
