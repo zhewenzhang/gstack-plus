@@ -110,6 +110,7 @@ export default function Playground() {
   const [selectedRole, setSelectedRole] = useState<RoleId>('developer');
   const [selectedFlow, setSelectedFlow] = useState<FlowId>('execute');
   const [promptCopied, setPromptCopied] = useState(false);
+  const [enhanced, setEnhanced] = useState(false);
   const [openHint, setOpenHint] = useState<string | null>(null);
 
   // ─── URL state sync (HashRouter-safe) ───
@@ -449,6 +450,42 @@ else                                  → Tier-Mid`}
             </div>
           </div>
 
+          {/* Step 2.5: Enhanced Mode Toggle */}
+          <div className="mb-8">
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => setEnhanced(e => !e)}
+                className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 transition-colors ${
+                  enhanced ? 'border-amber-500 bg-amber-500' : 'border-neutral-300 bg-neutral-200'
+                }`}
+                role="switch"
+                aria-checked={enhanced}
+              >
+                <span className={`pointer-events-none inline-block h-3.5 w-3.5 translate-y-[-1px] rounded-full bg-white shadow transition-transform ${enhanced ? 'translate-x-4' : 'translate-x-0'}`} />
+              </button>
+              <div>
+                <span className="text-xs font-medium text-ink">
+                  {lang === 'zh' ? 'S1 增強模式' : 'S1 Enhanced'}
+                </span>
+                {enhanced && (
+                  <span className="ml-2 text-[10px] px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-700">
+                    {lang === 'zh' ? 'Sonnet 15.0/15 > Opus 12.7/15' : 'Sonnet 15.0/15 > Opus 12.7/15'}
+                  </span>
+                )}
+              </div>
+            </div>
+            <p className="mt-1.5 text-[11px] text-muted max-w-xl">
+              {lang === 'zh'
+                ? '在角色說明前加入「資深工程師身份 + 主動揭示風險」的系統提示。Series 3 實驗顯示這讓 Sonnet 超過 Opus（15.0 vs 12.7/15），節省 86% 費用。適用 Tier-Mid 任務。'
+                : 'Prepends a staff-engineer identity + proactive risk surfacing primer before the role instructions. Series 3 shows this lets Sonnet beat Opus (15.0 vs 12.7/15) at 14% of the cost. Best for Tier-Mid tasks.'}
+            </p>
+            {!enhanced && decision.tier === 'Tier-Mid' && (
+              <p className="mt-1.5 text-[11px] text-amber-600">
+                {lang === 'zh' ? '💡 偵測到 Tier-Mid — 建議開啟 S1 增強模式' : '💡 Tier-Mid detected — S1 Enhanced recommended'}
+              </p>
+            )}
+          </div>
+
           {/* Step 3: Generated Prompt */}
           <div>
             <div className="flex items-center justify-between mb-3">
@@ -457,7 +494,7 @@ else                                  → Tier-Mid`}
               </div>
               <button
                 onClick={async () => {
-                  const prompt = buildPrompt(task, scoring, decision.tier, selectedRole, selectedFlow, lang);
+                  const prompt = buildPrompt(task, scoring, decision.tier, selectedRole, selectedFlow, lang, enhanced);
                   try {
                     await navigator.clipboard.writeText(prompt);
                     setPromptCopied(true);
@@ -472,7 +509,7 @@ else                                  → Tier-Mid`}
               </button>
             </div>
             <pre className="bg-neutral-50 border border-neutral-200 rounded-xl p-5 text-xs font-mono leading-relaxed overflow-auto max-h-96 whitespace-pre-wrap">
-              {buildPrompt(task, scoring, decision.tier, selectedRole, selectedFlow, lang)}
+              {buildPrompt(task, scoring, decision.tier, selectedRole, selectedFlow, lang, enhanced)}
             </pre>
             <p className="mt-3 text-xs text-muted">
               {lang === 'zh'

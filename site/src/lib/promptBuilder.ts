@@ -154,6 +154,9 @@ export const FLOWS: Flow[] = [
   },
 ];
 
+// ─── S1 Depth Primer (from Series 3 Exp-3A — best Sonnet strategy) ───────────
+export const S1_DEPTH_PRIMER = `You are a staff-level engineer at a fast-growing tech company. You provide thorough, technically precise feedback. You are opinionated — you give specific recommendations, not a list of options. You proactively surface non-obvious risks that junior engineers would miss. Your answers are comprehensive but concise.`;
+
 // ─── Prompt Generator ────────────────────────────────────────────────────────
 export function buildPrompt(
   task: string,
@@ -162,6 +165,7 @@ export function buildPrompt(
   roleId: RoleId,
   flowId: FlowId,
   lang: 'zh' | 'en',
+  enhanced = false,
 ): string {
   const role = ROLES.find(r => r.id === roleId)!;
   const flow = FLOWS.find(f => f.id === flowId)!;
@@ -169,15 +173,19 @@ export function buildPrompt(
   const roleName = lang === 'en' ? role.labelEn : role.label;
   const flowName = lang === 'en' ? flow.labelEn : flow.label;
 
+  const aboutYouSection = enhanced
+    ? `${S1_DEPTH_PRIMER}\n\n${role.instructions}`
+    : role.instructions;
+
   return `# Role: ${roleName}
 # Flow: ${flowName}
-# Tier: ${tier}
+# Tier: ${tier}${enhanced ? ' [S1 Enhanced]' : ''}
 
 ---
 
 ## About You
 
-${role.instructions}
+${aboutYouSection}
 
 ---
 
