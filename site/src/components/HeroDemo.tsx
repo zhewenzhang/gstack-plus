@@ -149,17 +149,17 @@ export default function HeroDemo({ lang }: { lang: Lang }) {
   const labels = lang === 'en' ? DIM_EN : DIM_ZH;
 
   return (
-    <div className="rounded-2xl overflow-hidden border border-[#2A2A2A] shadow-2xl font-mono text-[12px] leading-relaxed bg-[#0b0b0b]">
+    <div className="rounded-2xl overflow-hidden border border-neutral-200 dark:border-[#2A2A2A] shadow-2xl font-mono text-[12px] leading-relaxed bg-white dark:bg-[#0b0b0b]">
 
       {/* ── Window chrome ── */}
-      <div className="flex items-center justify-between px-4 py-2.5 bg-[#141414] border-b border-[#2A2A2A]">
+      <div className="flex items-center justify-between px-4 py-2.5 bg-neutral-100 dark:bg-[#141414] border-b border-neutral-200 dark:border-[#2A2A2A]">
         <div className="flex items-center gap-1.5">
           <span className="w-3 h-3 rounded-full bg-[#FF5F57]" />
           <span className="w-3 h-3 rounded-full bg-[#FEBC2E]" />
           <span className="w-3 h-3 rounded-full bg-[#28C840]" />
-          <span className="ml-3 text-[11px] text-[#555] select-none">gstack+ — router session</span>
+          <span className="ml-3 text-[11px] text-neutral-400 dark:text-[#555] select-none">gstack+ — router session</span>
         </div>
-        <div className="flex items-center gap-1 text-[10px] text-[#444]">
+        <div className="flex items-center gap-1 text-[10px] text-neutral-400 dark:text-[#444]">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block" />
           live
         </div>
@@ -170,17 +170,17 @@ export default function HeroDemo({ lang }: { lang: Lang }) {
 
         {/* Left: current task being classified */}
         <div className="p-5 flex flex-col">
-          <div className="text-[10px] uppercase tracking-widest text-[#555] mb-3">
+          <div className="text-[10px] uppercase tracking-widest text-neutral-400 dark:text-[#555] mb-3">
             {lang === 'zh' ? '當前任務' : 'classifying'}
           </div>
 
           {/* Prompt */}
           <div className="mb-3">
-            <span className="text-[#10B981]">$ </span>
-            <span className="text-[#888]">npx gstack-plus </span>
-            <span className="text-[#FFD700]">{cmd.slice(0, st.typedLen)}</span>
+            <span className="text-emerald-600 dark:text-[#10B981]">$ </span>
+            <span className="text-neutral-500 dark:text-[#888]">npx gstack-plus </span>
+            <span className="text-amber-600 dark:text-[#FFD700]">{cmd.slice(0, st.typedLen)}</span>
             {st.phase === 'typing' && (
-              <span className="animate-pulse text-[#EDEDED]">▋</span>
+              <span className="animate-pulse text-neutral-500 dark:text-[#EDEDED]">▋</span>
             )}
           </div>
 
@@ -189,9 +189,9 @@ export default function HeroDemo({ lang }: { lang: Lang }) {
             <div className="space-y-1 mb-3">
               {task.scores.slice(0, st.shownLines).map((v, i) => (
                 <div key={i} className="flex items-center gap-2">
-                  <span className="text-[#555] w-10 shrink-0 text-[10px]">{labels[i]}</span>
-                  <span className="text-[#06B6D4] text-[11px] tracking-[-1px]">{bar(v)}</span>
-                  <span className="text-[#888]">{v}</span>
+                  <span className="text-neutral-400 dark:text-[#555] w-10 shrink-0 text-[10px]">{labels[i]}</span>
+                  <span className="text-cyan-600 dark:text-[#06B6D4] text-[11px] tracking-[-1px]">{bar(v)}</span>
+                  <span className="text-neutral-600 dark:text-[#888]">{v}</span>
                 </div>
               ))}
             </div>
@@ -199,8 +199,8 @@ export default function HeroDemo({ lang }: { lang: Lang }) {
 
           {/* Routing decision */}
           {st.showDecision && (
-            <div className="mt-auto border border-[#2A2A2A] rounded-lg p-3 bg-[#111]">
-              <div className="text-[10px] text-[#555] mb-1">
+            <div className="mt-auto border border-neutral-200 dark:border-[#2A2A2A] rounded-lg p-3 bg-neutral-50 dark:bg-[#111]">
+              <div className="text-[10px] text-neutral-400 dark:text-[#555] mb-1">
                 {lang === 'zh' ? '路由決定' : 'routing decision'}
               </div>
               <div className="flex items-center justify-between">
@@ -208,13 +208,13 @@ export default function HeroDemo({ lang }: { lang: Lang }) {
                   {task.tier}
                 </span>
                 {task.costLabel !== '—' && (
-                  <span className="text-[10px] text-[#555]">
+                  <span className="text-[10px] text-neutral-400 dark:text-[#555]">
                     {lang === 'zh' ? '節省' : 'saved'}{' '}
                     <span className="text-emerald-500">{task.costLabel}</span>
                   </span>
                 )}
               </div>
-              <div className="text-[10px] text-[#444] mt-1.5 truncate">
+              <div className="text-[10px] text-neutral-400 dark:text-[#444] mt-1.5 truncate">
                 ✓ ./handoffs/{task.handoff}
               </div>
             </div>
@@ -222,17 +222,17 @@ export default function HeroDemo({ lang }: { lang: Lang }) {
         </div>
 
         {/* Divider */}
-        <div className="bg-[#2A2A2A]" />
+        <div className="bg-neutral-200 dark:bg-[#2A2A2A]" />
 
         {/* Right: routing history */}
         <div className="p-5 flex flex-col">
-          <div className="text-[10px] uppercase tracking-widest text-[#555] mb-3">
+          <div className="text-[10px] uppercase tracking-widest text-neutral-400 dark:text-[#555] mb-3">
             {lang === 'zh' ? '路由記錄' : 'routing log'}
           </div>
 
           {history.length === 0 ? (
             <div className="flex-1 flex items-center justify-center">
-              <span className="text-[#333] text-[11px]">
+              <span className="text-neutral-400 dark:text-[#333] text-[11px]">
                 {lang === 'zh' ? '等待首個任務完成…' : 'waiting for first task…'}
               </span>
             </div>
@@ -241,7 +241,7 @@ export default function HeroDemo({ lang }: { lang: Lang }) {
               {history.map(e => (
                 <div
                   key={e.key}
-                  className="border border-[#222] rounded-lg p-2.5 bg-[#0f0f0f]"
+                  className="border border-neutral-200 dark:border-[#222] rounded-lg p-2.5 bg-neutral-50 dark:bg-[#0f0f0f]"
                   style={{
                     opacity:    e.visible ? 1 : 0,
                     transform:  e.visible ? 'translateY(0)' : 'translateY(-8px)',
@@ -259,7 +259,7 @@ export default function HeroDemo({ lang }: { lang: Lang }) {
                       <span className="text-[10px] text-emerald-500">{e.costLabel}</span>
                     )}
                   </div>
-                  <div className="text-[#555] text-[10px] truncate">{e.cmdShort}</div>
+                  <div className="text-neutral-400 dark:text-[#555] text-[10px] truncate">{e.cmdShort}</div>
                 </div>
               ))}
             </div>
@@ -268,17 +268,20 @@ export default function HeroDemo({ lang }: { lang: Lang }) {
       </div>
 
       {/* ── Footer progress dots ── */}
-      <div className="flex items-center justify-between px-5 py-2 bg-[#0f0f0f] border-t border-[#1A1A1A]">
+      <div className="flex items-center justify-between px-5 py-2 bg-neutral-50 dark:bg-[#0f0f0f] border-t border-neutral-200 dark:border-[#1A1A1A]">
         <div className="flex gap-1.5">
           {TASKS.map((_, i) => (
             <span
               key={i}
-              className="w-1.5 h-1.5 rounded-full transition-colors duration-300"
-              style={{ background: i === st.taskIdx ? '#555' : '#222' }}
+              className={`w-1.5 h-1.5 rounded-full transition-colors duration-300 ${
+                i === st.taskIdx
+                  ? 'bg-neutral-400 dark:bg-[#555]'
+                  : 'bg-neutral-200 dark:bg-[#222]'
+              }`}
             />
           ))}
         </div>
-        <span className="text-[10px] text-[#333]">gstack-plus v0.5.0</span>
+        <span className="text-[10px] text-neutral-400 dark:text-[#333]">gstack-plus v0.5.0</span>
       </div>
     </div>
   );

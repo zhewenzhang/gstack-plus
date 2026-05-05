@@ -1,7 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import { NAV, type Item } from '@/content/manifest';
 import { useLang } from '@/i18n/useLang';
-import LangToggle from '@/components/LangToggle';
 
 function groupBySubgroup(items: Item[]): { name: string | null; items: Item[] }[] {
   const result: { name: string | null; items: Item[] }[] = [];
@@ -22,11 +21,10 @@ export default function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
   const [lang] = useLang();
   return (
     <aside className="h-full w-full overflow-y-auto px-6 py-8 lg:py-10">
-      <div className="flex items-center justify-between mb-6">
+      <div className="mb-6">
         <div className="font-display text-lg text-ink">
           {lang === 'en' ? 'Navigation' : '導航'}
         </div>
-        <LangToggle />
       </div>
       {NAV.map(section => {
         const grouped = groupBySubgroup(section.items);

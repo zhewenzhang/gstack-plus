@@ -85,7 +85,10 @@ export default function DocPage() {
         <aside className="hidden lg:block w-72 shrink-0 sticky top-0 h-screen border-r border-neutral-200 dark:border-[#2A2A2A]">
           <div className="px-6 py-6 border-b border-neutral-200 dark:border-[#2A2A2A] flex items-center justify-between">
             <Link to="/" className="font-display text-2xl">gstack<sup>+</sup></Link>
-            <DarkModeToggle />
+            <div className="flex items-center gap-2">
+              <LangToggle />
+              <DarkModeToggle />
+            </div>
           </div>
           <Sidebar />
         </aside>
