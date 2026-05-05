@@ -269,6 +269,13 @@ export const NAV: Section[] = [
         sourceEn: 'docs/experiment-series-2-en.md',
         description: '30 任務路由穩定性 + 9 任務成本對比 + LLM-as-Judge 盲評，三個實驗驗證方法論有效性',
         descriptionEn: '30-task routing stability + 9-task cost benchmark + LLM-as-Judge blind eval — three experiments validate the methodology' },
+      { order: 702, slug: 'experiment-series-3',
+        title: '實驗 Series 3：Prompt 優化 × 真實語料庫',
+        titleEn: 'Experiment Series 3: Prompt Optimization × Real-World Corpus',
+        source: 'docs/experiment-series-3.md',
+        sourceEn: 'docs/experiment-series-3-en.md',
+        description: '4 種 Prompt 策略讓 Sonnet 反超 Opus（15.0 vs 12.7/15，省 86% 成本）+ 20 個真實任務路由 100% 準確',
+        descriptionEn: 'S1 prompt strategy lets Sonnet beat Opus (15.0 vs 12.7/15, 86% cost saving) + 100% routing accuracy on 20 real tasks' },
     ],
   },
 ];
