@@ -1,44 +1,12 @@
-import { useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLang } from '@/i18n/useLang';
 import { STRINGS } from '@/i18n/strings';
-
-const VIDEO_URL = 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260328_083109_283f3553-e28f-428b-a723-d639c617eb2b.mp4';
+import HeroDemo from './HeroDemo';
 
 export default function Hero() {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const rafRef = useRef<number>(0);
   const navigate = useNavigate();
   const [lang] = useLang();
   const s = STRINGS.hero;
-
-  useEffect(() => {
-    const v = videoRef.current;
-    if (!v) return;
-    v.muted = true; v.playsInline = true; v.autoplay = true;
-    v.play().catch(() => {});
-    const tick = () => {
-      if (!v.duration || isNaN(v.duration)) {
-        rafRef.current = requestAnimationFrame(tick); return;
-      }
-      const t = v.currentTime, d = v.duration;
-      let opacity = 1;
-      if (t < 0.5) opacity = t / 0.5;
-      else if (t > d - 0.5) opacity = Math.max(0, (d - t) / 0.5);
-      v.style.opacity = String(opacity);
-      rafRef.current = requestAnimationFrame(tick);
-    };
-    const onEnded = () => {
-      v.style.opacity = '0';
-      setTimeout(() => { v.currentTime = 0; v.play().catch(() => {}); }, 100);
-    };
-    v.addEventListener('ended', onEnded);
-    rafRef.current = requestAnimationFrame(tick);
-    return () => {
-      cancelAnimationFrame(rafRef.current);
-      v.removeEventListener('ended', onEnded);
-    };
-  }, []);
 
   return (
     <section className="relative pt-6 sm:pt-10 pb-12 sm:pb-20">
@@ -106,21 +74,13 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* video band */}
-      <div className="relative mt-20 sm:mt-28 max-w-6xl mx-auto px-4 sm:px-6 pb-0">
-        <div className="relative overflow-hidden rounded-2xl bg-neutral-100 dark:bg-[#161616] shadow-sm">
-          <video
-            ref={videoRef}
-            src={VIDEO_URL}
-            className="w-full h-auto block"
-            style={{ opacity: 0, transition: 'opacity 0.05s linear' }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-white/20 dark:from-black/40 via-transparent to-transparent" />
-        </div>
+      {/* terminal demo band */}
+      <div className="relative mt-20 sm:mt-28 max-w-5xl mx-auto px-4 sm:px-6 pb-0">
+        <HeroDemo lang={lang} />
         <p className="text-center text-xs text-muted mt-3 tracking-wide">
           {lang === 'zh'
-            ? <>gstack<sup>+</sup> 實機演示錄像</>
-            : <>gstack<sup>+</sup> in action — live demo recording</>}
+            ? <>gstack<sup>+</sup> 路由器 — 即時演示</>
+            : <>gstack<sup>+</sup> router — live demo</>}
         </p>
       </div>
     </section>
