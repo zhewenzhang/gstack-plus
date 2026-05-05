@@ -115,7 +115,7 @@ export default function PentagonChart({ scoring, tier, lang }: Props) {
             textAnchor={anchor}
             dominantBaseline="middle"
             fontSize="8"
-            fill="#6b7280"
+            fill="var(--muted)"
             fontFamily="system-ui, sans-serif"
           >
             {labels[i]}

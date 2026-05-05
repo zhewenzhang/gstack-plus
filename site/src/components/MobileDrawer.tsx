@@ -23,13 +23,13 @@ export default function MobileDrawer({
         }`}
       />
       <div
-        className={`fixed top-0 left-0 bottom-0 w-[82vw] max-w-sm bg-white z-50 shadow-xl transition-transform lg:hidden ${
+        className={`fixed top-0 left-0 bottom-0 w-[82vw] max-w-sm bg-background z-50 shadow-xl transition-transform lg:hidden ${
           open ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full hover:bg-neutral-100"
+          className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full hover:bg-neutral-100 dark:hover:bg-[#1e1e1e]"
           aria-label="Close menu"
         >
           ✕

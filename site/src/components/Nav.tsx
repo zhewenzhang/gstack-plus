@@ -3,6 +3,7 @@ import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import MobileDrawer from './MobileDrawer';
 import Sidebar from './Sidebar';
 import LangToggle from './LangToggle';
+import DarkModeToggle from './DarkModeToggle';
 import { useLang } from '@/i18n/useLang';
 import { STRINGS } from '@/i18n/strings';
 
@@ -29,7 +30,7 @@ export default function Nav() {
 
   return (
     <>
-      <nav className="relative z-20 max-w-7xl mx-auto flex justify-between items-center px-5 sm:px-8 py-5 sm:py-6">
+      <nav className="relative z-20 max-w-7xl mx-auto flex justify-between items-center px-5 sm:px-8 py-5 sm:py-6 bg-background">
         <div className="flex items-center gap-3">
           <button
             onClick={() => setOpen(true)}
@@ -72,10 +73,11 @@ export default function Nav() {
         </div>
 
         <div className="flex items-center gap-3">
+          <DarkModeToggle />
           <LangToggle />
           <button
             onClick={goToQuickTry}
-            className="rounded-full px-4 sm:px-6 py-2 sm:py-2.5 text-xs sm:text-sm bg-ink text-white transition-transform hover:scale-[1.03] whitespace-nowrap"
+            className="rounded-full px-4 sm:px-6 py-2 sm:py-2.5 text-xs sm:text-sm bg-ink text-white dark:text-black transition-transform hover:scale-[1.03] whitespace-nowrap"
           >
             {t.getStarted[lang]}
           </button>

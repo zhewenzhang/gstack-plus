@@ -47,7 +47,7 @@ export default function Hero() {
         <a
           href={s.pillUrl}
           target="_blank" rel="noreferrer"
-          className="inline-flex items-center gap-2 px-3 py-1 mb-6 rounded-full border border-neutral-200 bg-white text-[11px] uppercase tracking-wider hover:border-ink transition-colors animate-fade-rise"
+          className="inline-flex items-center gap-2 px-3 py-1 mb-6 rounded-full border border-neutral-200 dark:border-[#2A2A2A] bg-background text-[11px] uppercase tracking-wider hover:border-ink transition-colors animate-fade-rise"
         >
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
           <span className="text-ink">{s.pill[lang]}</span>
@@ -55,14 +55,13 @@ export default function Hero() {
         </a>
 
         <h1
-          className="font-display font-normal animate-fade-rise text-[2.5rem] leading-[1.05] sm:text-6xl md:text-7xl lg:text-8xl max-w-5xl"
-          style={{ letterSpacing: '-0.04em', color: '#000000' }}
+          className="font-display font-normal animate-fade-rise text-[2.5rem] leading-[1.05] sm:text-6xl md:text-7xl lg:text-8xl max-w-5xl text-ink"
+          style={{ letterSpacing: '-0.04em' }}
           dangerouslySetInnerHTML={{ __html: s.headlineHtml[lang] }}
         />
 
         <p
-          className="font-body text-base sm:text-lg max-w-2xl mt-6 sm:mt-8 leading-relaxed animate-fade-rise-delay px-2"
-          style={{ color: '#6F6F6F' }}
+          className="font-body text-base sm:text-lg max-w-2xl mt-6 sm:mt-8 leading-relaxed animate-fade-rise-delay px-2 text-muted"
         >
           {s.sub[lang]}
         </p>
@@ -70,13 +69,13 @@ export default function Hero() {
         <div className="flex flex-col sm:flex-row gap-3 mt-8 sm:mt-10 animate-fade-rise-delay-2">
           <button
             onClick={() => navigate('/playground')}
-            className="rounded-full px-8 sm:px-12 py-4 sm:py-5 text-sm sm:text-base bg-ink text-white transition-transform hover:scale-[1.03] cursor-pointer"
+            className="rounded-full px-8 sm:px-12 py-4 sm:py-5 text-sm sm:text-base bg-ink text-white dark:text-black transition-transform hover:scale-[1.03] cursor-pointer"
           >
             {s.ctaPrimary[lang]}
           </button>
           <button
             onClick={() => document.getElementById('quick-try')?.scrollIntoView({ behavior: 'smooth' })}
-            className="rounded-full px-8 sm:px-12 py-4 sm:py-5 text-sm sm:text-base border border-neutral-300 text-ink hover:bg-neutral-50 transition-colors cursor-pointer"
+            className="rounded-full px-8 sm:px-12 py-4 sm:py-5 text-sm sm:text-base border border-neutral-300 dark:border-[#383838] text-ink hover:bg-neutral-50 dark:hover:bg-[#1a1a1a] transition-colors cursor-pointer"
           >
             {s.ctaSecondary[lang]}
           </button>
@@ -116,7 +115,7 @@ export default function Hero() {
             className="w-full h-auto block"
             style={{ opacity: 0, transition: 'opacity 0.05s linear' }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-white/20 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-white/20 dark:from-black/40 via-transparent to-transparent" />
         </div>
         <p className="text-center text-xs text-muted mt-3 tracking-wide">
           {lang === 'zh'

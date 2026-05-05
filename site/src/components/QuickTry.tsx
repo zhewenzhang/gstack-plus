@@ -40,7 +40,7 @@ export default function QuickTry() {
   const s = STRINGS.quickTry;
 
   return (
-    <section className="bg-neutral-50 border-y border-neutral-200">
+    <section className="bg-surface border-y border-neutral-200 dark:border-[#2A2A2A]">
       <div className="max-w-6xl mx-auto px-5 sm:px-8 py-16 sm:py-20">
         <div className="grid lg:grid-cols-[1fr_1.4fr] gap-10 lg:gap-16 items-start">
           {/* Left — copy + install */}

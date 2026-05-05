@@ -207,7 +207,7 @@ export default function Playground() {
                 <button
                   key={p.label}
                   onClick={() => { setTask(p.task); setScoring(p.scoring); }}
-                  className={`px-3 py-1.5 text-xs rounded-full border bg-white hover:bg-neutral-50 transition-colors ${tierColor}`}
+                  className={`px-3 py-1.5 text-xs rounded-full border bg-background hover:bg-surface transition-colors ${tierColor}`}
                 >
                   {p.label}
                 </button>
@@ -261,7 +261,7 @@ export default function Playground() {
                     {lang === 'en' ? d.hintEn : d.hint}
                   </div>
                   {openHint === d.key && (
-                    <div className="mt-2 rounded-lg bg-neutral-50 border border-neutral-200 p-3 space-y-2">
+                    <div className="mt-2 rounded-lg bg-surface border border-neutral-200 dark:border-[#2A2A2A] p-3 space-y-2">
                       {d.examples.map(ex => (
                         <div key={ex.score} className="flex gap-2 text-[11px]">
                           <span className="font-display font-bold text-ink w-4 shrink-0">{ex.score}</span>
@@ -342,7 +342,7 @@ export default function Playground() {
             <div className="mt-6 flex flex-wrap gap-3">
               <button
                 onClick={copyShareUrl}
-                className="rounded-full px-6 py-3 text-sm border border-neutral-300 text-ink hover:bg-neutral-50 transition-colors"
+                className="rounded-full px-6 py-3 text-sm border border-neutral-300 dark:border-[#383838] text-ink hover:bg-neutral-50 dark:hover:bg-[#1a1a1a] transition-colors"
               >
                 {shareCopied
                   ? (lang === 'zh' ? '✓ 已複製' : '✓ Link copied')
@@ -356,7 +356,7 @@ export default function Playground() {
               </button>
               <Link
                 to="/doc/cli"
-                className="rounded-full px-6 py-3 text-sm border border-neutral-300 text-ink hover:bg-neutral-50 transition-colors"
+                className="rounded-full px-6 py-3 text-sm border border-neutral-300 dark:border-[#383838] text-ink hover:bg-neutral-50 dark:hover:bg-[#1a1a1a] transition-colors"
               >
                 {lang === 'zh' ? '改用 CLI →' : 'Use the CLI instead →'}
               </Link>
@@ -366,7 +366,7 @@ export default function Playground() {
               <div className="font-medium text-ink mb-1">
                 {lang === 'zh' ? '路由規則' : 'Routing rules'}
               </div>
-              <code className="block bg-neutral-100 p-2 rounded text-[11px] font-mono whitespace-pre">
+              <code className="block bg-neutral-100 dark:bg-[#1e1e1e] p-2 rounded text-[11px] font-mono whitespace-pre">
 {`judgment≥4 OR risk≥4 OR creativity≥4 → Tier-A
 judgment≤2 AND context≤2 AND verif≥4  → Tier-Exec
 else                                  → Tier-Mid`}
@@ -378,7 +378,7 @@ else                                  → Tier-Mid`}
 
       {/* ── Prompt Builder ───────────────────────────────────────── */}
       <div className="max-w-6xl mx-auto px-5 sm:px-8 pb-16 pt-4">
-        <div className="border-t border-neutral-200 pt-12">
+        <div className="border-t border-neutral-200 dark:border-[#2A2A2A] pt-12">
           <div className="text-xs uppercase tracking-widest text-muted mb-2">Prompt Builder</div>
           <h2 className="font-display text-2xl sm:text-3xl text-ink mb-2">
             {lang === 'zh' ? '生成可直接使用的 Prompt' : 'Generate a ready-to-use prompt'}
@@ -401,8 +401,8 @@ else                                  → Tier-Mid`}
                   onClick={() => setSelectedRole(r.id)}
                   className={`rounded-xl border p-3 text-left transition-colors ${
                     selectedRole === r.id
-                      ? 'border-ink bg-neutral-50'
-                      : 'border-neutral-200 hover:border-neutral-400'
+                      ? 'border-ink bg-surface'
+                      : 'border-neutral-200 dark:border-[#2A2A2A] hover:border-neutral-400'
                   }`}
                 >
                   <div className="text-xs font-medium text-ink mb-1">
@@ -508,7 +508,7 @@ else                                  → Tier-Mid`}
                   : (lang === 'zh' ? '複製 Prompt' : 'Copy prompt')}
               </button>
             </div>
-            <pre className="bg-neutral-50 border border-neutral-200 rounded-xl p-5 text-xs font-mono leading-relaxed overflow-auto max-h-96 whitespace-pre-wrap">
+            <pre className="bg-surface border border-neutral-200 dark:border-[#2A2A2A] rounded-xl p-5 text-xs font-mono leading-relaxed overflow-auto max-h-96 whitespace-pre-wrap">
               {buildPrompt(task, scoring, decision.tier, selectedRole, selectedFlow, lang, enhanced)}
             </pre>
             <p className="mt-3 text-xs text-muted">

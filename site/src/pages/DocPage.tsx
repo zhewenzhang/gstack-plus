@@ -59,7 +59,7 @@ export default function DocPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Top bar (mobile) */}
-      <div className="lg:hidden sticky top-0 z-30 bg-white/85 backdrop-blur border-b border-neutral-200 flex items-center justify-between px-4 py-3">
+      <div className="lg:hidden sticky top-0 z-30 bg-background/85 backdrop-blur border-b border-neutral-200 dark:border-[#2A2A2A] flex items-center justify-between px-4 py-3">
         <button onClick={() => setDrawerOpen(true)} aria-label="Open sidebar"
           className="w-9 h-9 flex flex-col justify-center items-center gap-[5px]">
           <span className="block w-5 h-[1.5px] bg-ink" />
@@ -80,8 +80,8 @@ export default function DocPage() {
 
       <div className="flex max-w-[1500px] mx-auto">
         {/* Desktop sidebar */}
-        <aside className="hidden lg:block w-72 shrink-0 sticky top-0 h-screen border-r border-neutral-200">
-          <div className="px-6 py-6 border-b border-neutral-200 flex items-center justify-between">
+        <aside className="hidden lg:block w-72 shrink-0 sticky top-0 h-screen border-r border-neutral-200 dark:border-[#2A2A2A]">
+          <div className="px-6 py-6 border-b border-neutral-200 dark:border-[#2A2A2A] flex items-center justify-between">
             <Link to="/" className="font-display text-2xl">gstack<sup>+</sup></Link>
             <LangToggle />
           </div>
@@ -136,9 +136,9 @@ export default function DocPage() {
               {md ? <Markdown source={md} /> : <p className="text-muted">{s.mdLoading[lang]}</p>}
 
               {/* prev / next */}
-              <div className="mt-16 pt-8 border-t border-neutral-200 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="mt-16 pt-8 border-t border-neutral-200 dark:border-[#2A2A2A] grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {prev ? (
-                  <Link to={`/doc/${prev.slug}`} className="group block rounded-xl border border-neutral-200 hover:border-ink transition-colors p-4">
+                  <Link to={`/doc/${prev.slug}`} className="group block rounded-xl border border-neutral-200 dark:border-[#2A2A2A] hover:border-ink transition-colors p-4">
                     <div className="text-[11px] uppercase tracking-wider text-muted mb-1.5">
                       {s.prev[lang]}
                     </div>
@@ -148,7 +148,7 @@ export default function DocPage() {
                   </Link>
                 ) : <div />}
                 {next ? (
-                  <Link to={`/doc/${next.slug}`} className="group block rounded-xl border border-neutral-200 hover:border-ink transition-colors p-4 sm:text-right">
+                  <Link to={`/doc/${next.slug}`} className="group block rounded-xl border border-neutral-200 dark:border-[#2A2A2A] hover:border-ink transition-colors p-4 sm:text-right">
                     <div className="text-[11px] uppercase tracking-wider text-muted mb-1.5">
                       {s.next[lang]}
                     </div>

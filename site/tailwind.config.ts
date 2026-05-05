@@ -1,6 +1,7 @@
 import type { Config } from 'tailwindcss';
 export default {
   content: ['./index.html', './src/**/*.{ts,tsx}'],
+  darkMode: 'class',
   theme: {
     extend: {
       fontFamily: {
@@ -8,9 +9,10 @@ export default {
         body: ['Inter', 'sans-serif'],
       },
       colors: {
-        ink: '#000000',
-        muted: '#6F6F6F',
-        background: '#FFFFFF',
+        ink: 'var(--ink)',
+        muted: 'var(--muted)',
+        background: 'var(--bg)',
+        surface: 'var(--surface)',
       },
       animation: {
         'fade-rise': 'fadeRise 0.8s ease-out both',

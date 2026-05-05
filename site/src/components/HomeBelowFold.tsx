@@ -32,7 +32,7 @@ export default function HomeBelowFold() {
             <Link
               key={p.slug}
               to={`/doc/${p.slug}`}
-              className="group block rounded-xl border border-neutral-200 hover:border-ink transition-colors p-5 bg-white"
+              className="group block rounded-xl border border-neutral-200 dark:border-[#2A2A2A] hover:border-ink transition-colors p-5 bg-surface"
             >
               <div className="font-display text-2xl text-muted group-hover:text-ink transition-colors mb-2">
                 {p.step}
@@ -57,7 +57,7 @@ export default function HomeBelowFold() {
               <Link
                 key={section.id}
                 to={`/doc/${first.slug}`}
-                className="group block rounded-xl border border-neutral-200 hover:border-ink transition-colors p-5 bg-white"
+                className="group block rounded-xl border border-neutral-200 dark:border-[#2A2A2A] hover:border-ink transition-colors p-5 bg-surface"
               >
                 <div className="font-display text-xl text-ink mb-2">
                   {lang === 'en' && section.titleEn ? section.titleEn : section.title}
