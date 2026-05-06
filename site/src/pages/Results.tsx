@@ -74,6 +74,21 @@ const S4_DOMAINS = [
   { nameZh: 'DevOps', nameEn: 'DevOps',          correct: 5, total: 5, tasks: ['Tier-Exec ×2', 'Tier-Mid ×1', 'Tier-A ×2'] },
 ];
 
+const S5_MATRIX = [
+  { taskZh: 'T1 Tier-Exec', taskEn: 'T1 Tier-Exec', tierColor: '#10B981',
+    haiku: 14, sonnet: 15, opus: 15,
+    noteZh: 'ESLint 規則：Haiku 僅差 1 分，完全足夠',
+    noteEn: 'ESLint rule: Haiku only 1pt behind, fully sufficient' },
+  { taskZh: 'T2 Tier-Mid',  taskEn: 'T2 Tier-Mid',  tierColor: '#06B6D4',
+    haiku: 14, sonnet: 13, opus: 13,
+    noteZh: 'OAuth 重構：Haiku 反超（Sonnet/Opus 因 token 截斷失分）',
+    noteEn: 'OAuth refactor: Haiku leads (Sonnet/Opus truncated by token limit)' },
+  { taskZh: 'T3 Tier-A',    taskEn: 'T3 Tier-A',    tierColor: '#D946EF',
+    haiku: 10, sonnet: 12, opus: 12,
+    noteZh: 'SSO+MFA 架構設計：Haiku 落後 2 分，Opus 風險意識 3/3',
+    noteEn: 'SSO+MFA design: Haiku -2pts, Opus leads on risk awareness (3/3)' },
+];
+
 // ── 子元件 ──────────────────────────────────────────────────────────────────
 
 function ScoreDots({ score, max = 5 }: { score: number; max?: number }) {
@@ -464,6 +479,103 @@ export default function Results() {
             {zh
               ? 'gstack-plus 5 維度評分框架在前端、後端、數據工程、DevOps 四個技術領域 20/20 = 100% 路由準確。AI 代理獨立評分與人工基準完全一致（Δ = 0），證明框架定義足夠清晰，可在無需領域特殊訓練的情況下跨域通用。'
               : 'The gstack-plus 5-dimension scoring framework achieves 20/20 = 100% routing accuracy across Frontend, Backend, Data Engineering, and DevOps. AI agent scores matched the human baseline exactly (Δ = 0), proving the framework is clear enough to be applied cross-domain without domain-specific training.'}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Series 5 ── */}
+      <section className="max-w-5xl mx-auto px-5 sm:px-8 pb-24 border-t border-neutral-200 dark:border-[#2A2A2A] pt-16">
+        <div className="mb-10">
+          <div className="text-xs uppercase tracking-widest text-muted mb-2">{zh ? '系列五 · 2026-05-06' : 'Series 5 · 2026-05-06'}</div>
+          <h2 className="font-display text-2xl sm:text-3xl text-ink mb-3">
+            {zh ? '多模型品質矩陣：Haiku 比預期更強' : 'Multi-Model Quality Matrix: Haiku Stronger Than Expected'}
+          </h2>
+          <p className="text-muted text-sm max-w-2xl leading-relaxed">
+            {zh
+              ? '3 個基準任務（Tier-Exec / Mid / A）× 3 個 Claude 模型，由 Opus 4.7 擔任 LLM-as-Judge 統一評分（滿分 15）。Haiku 在簡單任務的表現超出預期，Opus 在高複雜度任務的風險推理能力仍有優勢。'
+              : '3 benchmark tasks (Tier-Exec / Mid / A) × 3 Claude models, scored by Opus 4.7 as LLM-as-Judge (max 15). Haiku outperforms expectations on simpler tasks; Opus retains a risk-reasoning advantage on complex ones.'}
+          </p>
+        </div>
+
+        {/* Quality matrix */}
+        <div className="space-y-3 mb-8">
+          {S5_MATRIX.map((row) => (
+            <div key={row.taskEn} className="rounded-xl border border-neutral-200 dark:border-[#2A2A2A] bg-surface p-4">
+              <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
+                <span className="text-sm font-semibold text-ink">{zh ? row.taskZh : row.taskEn}</span>
+                <div className="flex items-center gap-4 text-xs font-mono">
+                  <span className="text-muted">Haiku <span className="font-semibold text-ink">{row.haiku}/15</span></span>
+                  <span className="text-muted">Sonnet <span className="font-semibold text-ink">{row.sonnet}/15</span></span>
+                  <span className="text-muted">Opus <span className="font-semibold text-ink">{row.opus}/15</span></span>
+                </div>
+              </div>
+              {/* Score bars */}
+              <div className="space-y-1.5 mb-2">
+                {[
+                  { label: 'Haiku 3.5', score: row.haiku, color: '#6F6F6F' },
+                  { label: 'Sonnet 4.6', score: row.sonnet, color: '#06B6D4' },
+                  { label: 'Opus 4.7', score: row.opus, color: row.tierColor },
+                ].map(({ label, score, color }) => (
+                  <div key={label} className="flex items-center gap-2">
+                    <span className="text-[11px] text-muted w-20 shrink-0">{label}</span>
+                    <div className="flex-1 h-1.5 bg-neutral-100 dark:bg-[#2A2A2A] rounded-full overflow-hidden">
+                      <div className="h-full rounded-full" style={{ width: `${(score / 15) * 100}%`, background: color }} />
+                    </div>
+                    <span className="text-[11px] font-mono text-muted w-8 text-right">{score}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="text-[11px] text-muted">{zh ? row.noteZh : row.noteEn}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Dimension heatmap */}
+        <div className="rounded-xl border border-neutral-200 dark:border-[#2A2A2A] bg-surface p-5 mb-8">
+          <div className="text-xs text-muted uppercase tracking-wider mb-4">
+            {zh ? '各維度平均分（3 任務平均，滿分 3）' : 'Avg score per dimension (3-task avg, max 3)'}
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs">
+              <thead>
+                <tr className="text-muted">
+                  <th className="text-left py-1 pr-4 font-normal">{zh ? '維度' : 'Dimension'}</th>
+                  <th className="text-center py-1 px-3 font-normal">Haiku</th>
+                  <th className="text-center py-1 px-3 font-normal">Sonnet</th>
+                  <th className="text-center py-1 px-3 font-normal">Opus</th>
+                </tr>
+              </thead>
+              <tbody className="font-mono">
+                {([
+                  { dimZh: '技術正確性', dimEn: 'Correctness',    h: 2.7, s: 2.7, o: 2.7 },
+                  { dimZh: '完整性',     dimEn: 'Completeness',   h: 2.0, s: 2.0, o: 2.0 },
+                  { dimZh: '清晰度',     dimEn: 'Clarity',        h: 2.7, s: 2.3, o: 2.7 },
+                  { dimZh: '風險意識',   dimEn: 'Risk Awareness', h: 2.0, s: 2.3, o: 2.7 },
+                  { dimZh: '實用價值',   dimEn: 'Practical Value',h: 2.3, s: 2.0, o: 2.0 },
+                ] as const).map((row) => (
+                  <tr key={row.dimEn} className="border-t border-neutral-100 dark:border-[#222]">
+                    <td className="py-1.5 pr-4 text-muted font-sans text-xs">{zh ? row.dimZh : row.dimEn}</td>
+                    <td className="text-center py-1.5 px-3 text-ink">{row.h.toFixed(1)}</td>
+                    <td className="text-center py-1.5 px-3 text-ink">{row.s.toFixed(1)}</td>
+                    <td className="text-center py-1.5 px-3" style={{ color: row.o > row.h && row.o > row.s ? '#7C3AED' : 'inherit' }}>
+                      {row.o.toFixed(1)}{row.o > row.h && row.o > row.s ? ' ↑' : ''}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Series 5 insight */}
+        <div className="px-5 py-4 rounded-xl border border-violet-200 dark:border-violet-900 bg-violet-50 dark:bg-violet-950/30">
+          <div className="text-xs font-semibold text-violet-700 dark:text-violet-400 mb-1">
+            {zh ? '關鍵發現' : 'Key finding'}
+          </div>
+          <div className="text-sm text-violet-800 dark:text-violet-300">
+            {zh
+              ? 'Haiku 在 Tier-Exec 和 Tier-Mid 任務上的表現超出預期（14/15），說明路由到廉價模型的節省空間比預計更大。Opus 唯一的系統性優勢在於「風險意識」維度（2.7 vs Haiku 2.0），這在 Tier-A 架構設計任務中最為關鍵。max_tokens 截斷是本次實驗的主要干擾因素，建議未來實驗將限制提升至 2048+。'
+              : 'Haiku performs better than expected on Tier-Exec and Tier-Mid tasks (14/15), suggesting greater cost-saving potential when routing to cheaper models. Opus\'s only systematic advantage is in "Risk Awareness" (2.7 vs Haiku 2.0), which matters most for Tier-A architecture tasks. Token truncation was the key confound — future experiments should raise max_tokens to 2048+.'}
           </div>
         </div>
       </section>
