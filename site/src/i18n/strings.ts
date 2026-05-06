@@ -28,14 +28,40 @@ export const STRINGS = {
       zh: '多層 AI 模型編排框架。把每個任務按 5 維評分路由到對應 Tier — Opus 做判斷、Sonnet 做審查、Exec 做執行。質量不打折，成本砍一半。',
       en: 'A multi-tier model orchestration framework. Route every task to the right model: Tier-A for judgment, Tier-Mid for review, Tier-Exec for execution.',
     },
+    subtitle: {
+      zh: '6 個實驗系列，70 個任務驗證：46% 成本削減、零品質損失、100% 路由準確率。正確的 Prompt 讓 Sonnet 比 Opus 便宜 86% 且品質更高。',
+      en: 'Validated across 6 experiment series and 70 tasks: 46% cost reduction, zero quality loss, 100% routing accuracy. The right prompt makes Sonnet 86% cheaper than Opus—with better quality.',
+    },
     ctaPrimary:   { zh: '打開試玩場',  en: 'Open Playground' },
     ctaSecondary: { zh: '試 CLI 命令', en: 'Try the CLI' },
     ctaTertiary:  { zh: '看完整文檔 →', en: 'Read the docs →' },
-    stats: {
-      cost:  { zh: '成本降低', en: 'cost reduction' },
-      tiers: { zh: '模型層級', en: 'model tiers' },
-      dims:  { zh: '評分維度', en: 'scoring dimensions' },
-    },
+    stats: [
+      { zh: '−46% 整體成本', en: '−46% Overall Cost' },
+      { zh: '100% 路由準確率', en: '100% Routing Accuracy' },
+      { zh: '6 個實驗系列', en: '6 Experiment Series' },
+      { zh: '5 維度評分', en: '5-Dimension Scoring' },
+    ],
+    statsNotes: [
+      { zh: '70 個任務驗證', en: '70 tasks validated' },
+      { zh: '跨 4 個技術領域', en: 'across 4 domains' },
+      { zh: '包含 Series 1–6', en: 'Series 1–6 complete' },
+      { zh: '零評分偏差', en: 'zero scoring deviation' },
+    ],
+  },
+
+  // ─── Key Findings ───
+  findings: {
+    title: { zh: '6 個核心發現', en: '6 Key Findings' },
+    subtitle: { zh: '來自 6 個獨立實驗系列的量化結論', en: 'Quantified conclusions from 6 independent experiment series' },
+    cta: { zh: '查看完整發現 →', en: 'Read Full Findings →' },
+    cards: [
+      { id: 'F1', num: '−46%', zh: '路由削減 46%–99% 成本，依 Tier 分佈', en: 'Routing cuts 46–99% of costs, distributed by tier' },
+      { id: 'F2', num: '+18%', zh: '正確 Prompt 下 Sonnet 超越 Opus，省 86%', en: 'Right prompt: Sonnet beats Opus at −86% cost' },
+      { id: 'F3', num: '100%', zh: '70 個任務，3 個驗證集，路由準確率 100%', en: '100% routing accuracy across 70 tasks, 3 validation sets' },
+      { id: 'F4', num: 'Δ=0', zh: '5 維度框架跨 4 個技術領域評分偏差為零', en: 'Zero scoring deviation across 4 technical domains' },
+      { id: 'F5', num: '14/15', zh: 'Haiku 在 Tier-Exec/Mid 任務能力被低估', en: 'Haiku is underestimated for Exec/Mid tasks' },
+      { id: 'F6', num: '33%', zh: 'R 和 J 是路由最脆弱的兩個維度', en: 'R and J are the two most fragile routing dimensions' },
+    ],
   },
 
   // ─── QuickTry ───

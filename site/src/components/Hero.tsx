@@ -29,9 +29,9 @@ export default function Hero() {
         />
 
         <p
-          className="font-body text-base sm:text-lg max-w-2xl mt-6 sm:mt-8 leading-relaxed animate-fade-rise-delay px-2 text-muted"
+          className="font-body text-sm sm:text-base max-w-2xl mt-6 sm:mt-8 leading-relaxed animate-fade-rise-delay px-2 text-muted"
         >
-          {s.sub[lang]}
+          {s.subtitle?.[lang] ?? s.sub[lang]}
         </p>
 
         <div className="flex flex-col sm:flex-row gap-3 mt-8 sm:mt-10 animate-fade-rise-delay-2">
@@ -55,22 +55,14 @@ export default function Hero() {
           </Link>
         </div>
 
-        {/* amber stats bar */}
-        <div className="flex flex-wrap justify-center items-center gap-8 sm:gap-14 mt-10 sm:mt-12 animate-fade-rise-delay-2">
-          <div className="text-center">
-            <div className="font-display text-3xl sm:text-4xl" style={{ color: '#F59E0B' }}>46%</div>
-            <div className="text-xs text-muted mt-1 tracking-wide">{s.stats.cost[lang]}</div>
-          </div>
-          <div className="w-px h-10 bg-neutral-200 dark:bg-[#2A2A2A]" />
-          <div className="text-center">
-            <div className="font-display text-3xl sm:text-4xl" style={{ color: '#F59E0B' }}>3</div>
-            <div className="text-xs text-muted mt-1 tracking-wide">{s.stats.tiers[lang]}</div>
-          </div>
-          <div className="w-px h-10 bg-neutral-200 dark:bg-[#2A2A2A]" />
-          <div className="text-center">
-            <div className="font-display text-3xl sm:text-4xl" style={{ color: '#F59E0B' }}>5</div>
-            <div className="text-xs text-muted mt-1 tracking-wide">{s.stats.dims[lang]}</div>
-          </div>
+        {/* amber stats bar — 4 metrics */}
+        <div className="flex flex-wrap justify-center items-center gap-6 sm:gap-10 mt-10 sm:mt-12 animate-fade-rise-delay-2">
+          {s.stats.map((stat: any, i: number) => (
+            <div key={i} className="text-center">
+              <div className="font-display text-3xl sm:text-4xl" style={{ color: '#F59E0B' }}>{stat[lang]}</div>
+              <div className="text-xs text-muted mt-1 tracking-wide">{(s.statsNotes as any)?.[i]?.[lang]}</div>
+            </div>
+          ))}
         </div>
       </div>
 

@@ -1,0 +1,125 @@
+{
+  "tasks": [
+    {
+      "id": "E1",
+      "description": "Add type annotations to utility functions",
+      "correctTier": "Tier-Exec",
+      "experimentTier": "Tier-Mid",
+      "errorType": "over-routing",
+      "costCorrect": 0.001,
+      "costExperiment": 0.01,
+      "costDelta": 0.009000000000000001,
+      "costDeltaPct": 900,
+      "overRoutingWaste": 0.009000000000000001
+    },
+    {
+      "id": "E2",
+      "description": "Update environment variables in CI pipeline",
+      "correctTier": "Tier-Exec",
+      "experimentTier": "Tier-Mid",
+      "errorType": "over-routing",
+      "costCorrect": 0.001,
+      "costExperiment": 0.01,
+      "costDelta": 0.009000000000000001,
+      "costDeltaPct": 900,
+      "overRoutingWaste": 0.009000000000000001
+    },
+    {
+      "id": "E3",
+      "description": "Add database index for frequently queried field",
+      "correctTier": "Tier-Exec",
+      "experimentTier": "Tier-Mid",
+      "errorType": "over-routing",
+      "costCorrect": 0.001,
+      "costExperiment": 0.01,
+      "costDelta": 0.009000000000000001,
+      "costDeltaPct": 900,
+      "overRoutingWaste": 0.009000000000000001
+    },
+    {
+      "id": "M1",
+      "description": "Refactor auth middleware to use JWT",
+      "correctTier": "Tier-Mid",
+      "experimentTier": "Tier-A",
+      "errorType": "over-routing",
+      "costCorrect": 0.01,
+      "costExperiment": 0.06,
+      "costDelta": 0.049999999999999996,
+      "costDeltaPct": 500,
+      "overRoutingWaste": 0.049999999999999996
+    },
+    {
+      "id": "M2",
+      "description": "Add pagination to user list API",
+      "correctTier": "Tier-Mid",
+      "experimentTier": "Tier-A",
+      "errorType": "over-routing",
+      "costCorrect": 0.01,
+      "costExperiment": 0.06,
+      "costDelta": 0.049999999999999996,
+      "costDeltaPct": 500,
+      "overRoutingWaste": 0.049999999999999996
+    },
+    {
+      "id": "M3",
+      "description": "Write integration tests for payment service",
+      "correctTier": "Tier-Mid",
+      "experimentTier": "Tier-Exec",
+      "errorType": "under-routing",
+      "costCorrect": 0.01,
+      "costExperiment": 0.001,
+      "costDelta": -0.009000000000000001,
+      "costDeltaPct": -90,
+      "underRoutingNotes": "Potential quality risk: task requires Tier-Mid but was sent to Tier-Exec"
+    },
+    {
+      "id": "A1",
+      "description": "Design database sharding strategy",
+      "correctTier": "Tier-A",
+      "experimentTier": "Tier-Mid",
+      "errorType": "under-routing",
+      "costCorrect": 0.06,
+      "costExperiment": 0.01,
+      "costDelta": -0.049999999999999996,
+      "costDeltaPct": -83,
+      "underRoutingNotes": "Potential quality risk: task requires Tier-A but was sent to Tier-Mid"
+    },
+    {
+      "id": "A2",
+      "description": "Plan OAuth2 + SSO integration architecture",
+      "correctTier": "Tier-A",
+      "experimentTier": "Tier-Mid",
+      "errorType": "under-routing",
+      "costCorrect": 0.06,
+      "costExperiment": 0.01,
+      "costDelta": -0.049999999999999996,
+      "costDeltaPct": -83,
+      "underRoutingNotes": "Potential quality risk: task requires Tier-A but was sent to Tier-Mid"
+    },
+    {
+      "id": "A3",
+      "description": "Evaluate and recommend caching strategy",
+      "correctTier": "Tier-A",
+      "experimentTier": "Tier-Mid",
+      "errorType": "under-routing",
+      "costCorrect": 0.06,
+      "costExperiment": 0.01,
+      "costDelta": -0.049999999999999996,
+      "costDeltaPct": -83,
+      "underRoutingNotes": "Potential quality risk: task requires Tier-A but was sent to Tier-Mid"
+    }
+  ],
+  "summary": {
+    "totalTasks": 9,
+    "overRoutingTasks": 5,
+    "underRoutingTasks": 4,
+    "avgOverRoutingCostIncrease": "+2540% vs correct",
+    "avgUnderRoutingSaving": "-66% vs correct",
+    "breakEvenAnalysis": {
+      "description": "Is conservative routing (always escalate on J=3 or R=3) worth it?",
+      "overRoutingCostPenalty": "+900% per Exec→Mid escalation",
+      "underRoutingQualityRisk": "Quality degradation on Tier-A tasks sent to Tier-Mid",
+      "recommendation": "Conservative routing expensive — evaluate case-by-case"
+    }
+  }
+}
