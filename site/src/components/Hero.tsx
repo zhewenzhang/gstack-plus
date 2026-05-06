@@ -71,7 +71,7 @@ export default function Hero() {
         <HeroDemo lang={lang} />
         <p className="text-center text-xs text-muted mt-3 tracking-wide">
           {lang === 'zh'
-            ? <>gstack<sup>+</sup> 路由器 — 即時演示</>
+            ? <>gstack<sup>+</sup> — 即時演示</>
             : <>gstack<sup>+</sup> router — live demo</>}
         </p>
       </div>

@@ -197,12 +197,12 @@ export default function Results() {
         </div>
         <h1 className="font-display text-4xl sm:text-5xl md:text-6xl text-ink leading-tight mb-5" style={{ letterSpacing: '-0.03em' }}>
           {zh
-            ? <>路由真的有效嗎？<br /><span style={{ color: '#6F6F6F' }}>數據給出答案。</span></>
+            ? <>gstack+ 真的有效嗎？<br /><span style={{ color: '#6F6F6F' }}>數據給出答案。</span></>
             : <>Does tier routing work?<br /><span style={{ color: '#6F6F6F' }}>The data says yes.</span></>}
         </h1>
         <p className="text-base sm:text-lg text-muted max-w-2xl mx-auto leading-relaxed">
           {zh
-            ? '八個系列的受控實驗，從成本效益、品質保留、路由準確性、維度敏感性到路由錯誤代價，對框架進行了全面量化驗證。'
+            ? '八個系列的受控實驗，從成本效益、品質保留、gstack+ 準確性、維度敏感性到路由錯誤代價，對框架進行了全面量化驗證。'
             : 'Eight controlled experiment series quantify the framework end-to-end: cost savings, quality retention, routing accuracy, dimension sensitivity, and the asymmetric cost of routing errors.'}
         </p>
       </section>
@@ -233,7 +233,7 @@ export default function Results() {
           </h2>
           <p className="text-muted text-sm max-w-2xl leading-relaxed">
             {zh
-              ? '將三個不同複雜度的真實任務，分別送給 All-Opus（基線）和 gstack-plus 路由（實驗組），對比成本與品質。'
+              ? '將三個不同複雜度的真實任務，分別送給 All-Opus（基線）和 gstack+（實驗組），對比成本與品質。'
               : 'Three real tasks at different complexity levels, sent to All-Opus (baseline) vs gstack-plus routing (experimental), comparing cost and quality.'}
           </p>
         </div>
@@ -268,7 +268,7 @@ export default function Results() {
                     </div>
                     <div>
                       <div className="flex justify-between text-xs mb-1">
-                        <span className="text-muted">{t.modelB} ({zh ? '路由' : 'routed'})</span>
+                        <span className="text-muted">{t.modelB} ({zh ? 'gstack+' : 'gstack+'})</span>
                         <span className="font-mono font-semibold" style={{ color: t.tierColor }}>{t.costB}</span>
                       </div>
                       <CostBar pct={t.costSave === 0 ? 100 : 100 - t.costSave} color={t.tierColor} />
@@ -313,7 +313,7 @@ export default function Results() {
           </div>
           <div className="text-sm text-amber-800 dark:text-amber-300">
             {zh
-              ? 'Tier-Mid 任務（T2）中，Sonnet 以 Opus 85% 更低的成本獲得了更高的品質分（5/5 vs 4/5）。路由不只省錢，在這個場景中反而提升了品質。'
+              ? 'Tier-Mid 任務（T2）中，Sonnet 以 Opus 85% 更低的成本獲得了更高的品質分（5/5 vs 4/5）。gstack+ 不只省錢，在這個場景中反而提升了品質。'
               : 'On the Tier-Mid task (T2), Sonnet achieved higher quality (5/5 vs 4/5) at 85% lower cost than Opus. Routing didn\'t just save money — it improved quality in this case.'}
           </div>
         </div>
@@ -973,7 +973,7 @@ export default function Results() {
           </h2>
           <p className="text-muted text-sm mb-8 max-w-md mx-auto">
             {zh
-              ? '在試玩場輸入你的任務，用 5 維評分看看系統會給出什麼路由決定。'
+              ? '在試玩場輸入你的任務，用 5 維評分看看 gstack+ 會給出什麼路由決定。'
               : 'Enter your task in the Playground, score it on 5 dimensions, and see what tier the system routes it to.'}
           </p>
           <div className="flex flex-wrap gap-3 justify-center">
