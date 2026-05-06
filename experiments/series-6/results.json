@@ -1,0 +1,943 @@
+{
+  "sensitivity": [
+    {
+      "dim": "r",
+      "name": "R（風險權重）",
+      "totalPerturbations": 18,
+      "tierChanges": 6,
+      "sensitivityRate": 0.3333333333333333,
+      "positiveChanges": 5,
+      "negativeChanges": 1
+    },
+    {
+      "dim": "j",
+      "name": "J（判斷強度）",
+      "totalPerturbations": 19,
+      "tierChanges": 6,
+      "sensitivityRate": 0.3157894736842105,
+      "positiveChanges": 5,
+      "negativeChanges": 1
+    },
+    {
+      "dim": "c",
+      "name": "C（上下文寬度）",
+      "totalPerturbations": 19,
+      "tierChanges": 3,
+      "sensitivityRate": 0.15789473684210525,
+      "positiveChanges": 1,
+      "negativeChanges": 2
+    },
+    {
+      "dim": "cr",
+      "name": "Cr（創意密度）",
+      "totalPerturbations": 15,
+      "tierChanges": 2,
+      "sensitivityRate": 0.13333333333333333,
+      "positiveChanges": 2,
+      "negativeChanges": 0
+    },
+    {
+      "dim": "v",
+      "name": "V（可驗證性）",
+      "totalPerturbations": 18,
+      "tierChanges": 2,
+      "sensitivityRate": 0.1111111111111111,
+      "positiveChanges": 1,
+      "negativeChanges": 1
+    }
+  ],
+  "allResults": [
+    {
+      "taskId": "S1",
+      "dim": "j",
+      "direction": "+1",
+      "originalScore": 2,
+      "perturbedScore": 3,
+      "originalTier": "Tier-Exec",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": true
+    },
+    {
+      "taskId": "S1",
+      "dim": "j",
+      "direction": "-1",
+      "originalScore": 2,
+      "perturbedScore": 1,
+      "originalTier": "Tier-Exec",
+      "perturbedTier": "Tier-Exec",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S1",
+      "dim": "c",
+      "direction": "+1",
+      "originalScore": 2,
+      "perturbedScore": 3,
+      "originalTier": "Tier-Exec",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": true
+    },
+    {
+      "taskId": "S1",
+      "dim": "c",
+      "direction": "-1",
+      "originalScore": 2,
+      "perturbedScore": 1,
+      "originalTier": "Tier-Exec",
+      "perturbedTier": "Tier-Exec",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S1",
+      "dim": "r",
+      "direction": "+1",
+      "originalScore": 2,
+      "perturbedScore": 3,
+      "originalTier": "Tier-Exec",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": true
+    },
+    {
+      "taskId": "S1",
+      "dim": "r",
+      "direction": "-1",
+      "originalScore": 2,
+      "perturbedScore": 1,
+      "originalTier": "Tier-Exec",
+      "perturbedTier": "Tier-Exec",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S1",
+      "dim": "v",
+      "direction": "+1",
+      "originalScore": 4,
+      "perturbedScore": 5,
+      "originalTier": "Tier-Exec",
+      "perturbedTier": "Tier-Exec",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S1",
+      "dim": "v",
+      "direction": "-1",
+      "originalScore": 4,
+      "perturbedScore": 3,
+      "originalTier": "Tier-Exec",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": true
+    },
+    {
+      "taskId": "S1",
+      "dim": "cr",
+      "direction": "+1",
+      "originalScore": 1,
+      "perturbedScore": 2,
+      "originalTier": "Tier-Exec",
+      "perturbedTier": "Tier-Exec",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S2",
+      "dim": "j",
+      "direction": "+1",
+      "originalScore": 3,
+      "perturbedScore": 4,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-A",
+      "tierChanged": true
+    },
+    {
+      "taskId": "S2",
+      "dim": "j",
+      "direction": "-1",
+      "originalScore": 3,
+      "perturbedScore": 2,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S2",
+      "dim": "c",
+      "direction": "+1",
+      "originalScore": 3,
+      "perturbedScore": 4,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S2",
+      "dim": "c",
+      "direction": "-1",
+      "originalScore": 3,
+      "perturbedScore": 2,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S2",
+      "dim": "r",
+      "direction": "+1",
+      "originalScore": 3,
+      "perturbedScore": 4,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-A",
+      "tierChanged": true
+    },
+    {
+      "taskId": "S2",
+      "dim": "r",
+      "direction": "-1",
+      "originalScore": 3,
+      "perturbedScore": 2,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S2",
+      "dim": "v",
+      "direction": "+1",
+      "originalScore": 3,
+      "perturbedScore": 4,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S2",
+      "dim": "v",
+      "direction": "-1",
+      "originalScore": 3,
+      "perturbedScore": 2,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S2",
+      "dim": "cr",
+      "direction": "+1",
+      "originalScore": 3,
+      "perturbedScore": 4,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-A",
+      "tierChanged": true
+    },
+    {
+      "taskId": "S2",
+      "dim": "cr",
+      "direction": "-1",
+      "originalScore": 3,
+      "perturbedScore": 2,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S3",
+      "dim": "j",
+      "direction": "+1",
+      "originalScore": 3,
+      "perturbedScore": 4,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-A",
+      "tierChanged": true
+    },
+    {
+      "taskId": "S3",
+      "dim": "j",
+      "direction": "-1",
+      "originalScore": 3,
+      "perturbedScore": 2,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S3",
+      "dim": "c",
+      "direction": "+1",
+      "originalScore": 2,
+      "perturbedScore": 3,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S3",
+      "dim": "c",
+      "direction": "-1",
+      "originalScore": 2,
+      "perturbedScore": 1,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S3",
+      "dim": "r",
+      "direction": "+1",
+      "originalScore": 3,
+      "perturbedScore": 4,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-A",
+      "tierChanged": true
+    },
+    {
+      "taskId": "S3",
+      "dim": "r",
+      "direction": "-1",
+      "originalScore": 3,
+      "perturbedScore": 2,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S3",
+      "dim": "v",
+      "direction": "+1",
+      "originalScore": 4,
+      "perturbedScore": 5,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S3",
+      "dim": "v",
+      "direction": "-1",
+      "originalScore": 4,
+      "perturbedScore": 3,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S3",
+      "dim": "cr",
+      "direction": "+1",
+      "originalScore": 2,
+      "perturbedScore": 3,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S3",
+      "dim": "cr",
+      "direction": "-1",
+      "originalScore": 2,
+      "perturbedScore": 1,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S4",
+      "dim": "j",
+      "direction": "+1",
+      "originalScore": 3,
+      "perturbedScore": 4,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-A",
+      "tierChanged": true
+    },
+    {
+      "taskId": "S4",
+      "dim": "j",
+      "direction": "-1",
+      "originalScore": 3,
+      "perturbedScore": 2,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S4",
+      "dim": "c",
+      "direction": "+1",
+      "originalScore": 2,
+      "perturbedScore": 3,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S4",
+      "dim": "c",
+      "direction": "-1",
+      "originalScore": 2,
+      "perturbedScore": 1,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S4",
+      "dim": "r",
+      "direction": "+1",
+      "originalScore": 3,
+      "perturbedScore": 4,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-A",
+      "tierChanged": true
+    },
+    {
+      "taskId": "S4",
+      "dim": "r",
+      "direction": "-1",
+      "originalScore": 3,
+      "perturbedScore": 2,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S4",
+      "dim": "v",
+      "direction": "+1",
+      "originalScore": 4,
+      "perturbedScore": 5,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S4",
+      "dim": "v",
+      "direction": "-1",
+      "originalScore": 4,
+      "perturbedScore": 3,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S4",
+      "dim": "cr",
+      "direction": "+1",
+      "originalScore": 1,
+      "perturbedScore": 2,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S5",
+      "dim": "j",
+      "direction": "+1",
+      "originalScore": 3,
+      "perturbedScore": 4,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-A",
+      "tierChanged": true
+    },
+    {
+      "taskId": "S5",
+      "dim": "j",
+      "direction": "-1",
+      "originalScore": 3,
+      "perturbedScore": 2,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S5",
+      "dim": "c",
+      "direction": "+1",
+      "originalScore": 2,
+      "perturbedScore": 3,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S5",
+      "dim": "c",
+      "direction": "-1",
+      "originalScore": 2,
+      "perturbedScore": 1,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S5",
+      "dim": "r",
+      "direction": "+1",
+      "originalScore": 1,
+      "perturbedScore": 2,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S5",
+      "dim": "v",
+      "direction": "+1",
+      "originalScore": 3,
+      "perturbedScore": 4,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S5",
+      "dim": "v",
+      "direction": "-1",
+      "originalScore": 3,
+      "perturbedScore": 2,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S5",
+      "dim": "cr",
+      "direction": "+1",
+      "originalScore": 3,
+      "perturbedScore": 4,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-A",
+      "tierChanged": true
+    },
+    {
+      "taskId": "S5",
+      "dim": "cr",
+      "direction": "-1",
+      "originalScore": 3,
+      "perturbedScore": 2,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S6",
+      "dim": "j",
+      "direction": "+1",
+      "originalScore": 2,
+      "perturbedScore": 3,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S6",
+      "dim": "j",
+      "direction": "-1",
+      "originalScore": 2,
+      "perturbedScore": 1,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S6",
+      "dim": "c",
+      "direction": "+1",
+      "originalScore": 2,
+      "perturbedScore": 3,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S6",
+      "dim": "c",
+      "direction": "-1",
+      "originalScore": 2,
+      "perturbedScore": 1,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S6",
+      "dim": "r",
+      "direction": "+1",
+      "originalScore": 2,
+      "perturbedScore": 3,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S6",
+      "dim": "r",
+      "direction": "-1",
+      "originalScore": 2,
+      "perturbedScore": 1,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S6",
+      "dim": "v",
+      "direction": "+1",
+      "originalScore": 3,
+      "perturbedScore": 4,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Exec",
+      "tierChanged": true
+    },
+    {
+      "taskId": "S6",
+      "dim": "v",
+      "direction": "-1",
+      "originalScore": 3,
+      "perturbedScore": 2,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S6",
+      "dim": "cr",
+      "direction": "+1",
+      "originalScore": 1,
+      "perturbedScore": 2,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S7",
+      "dim": "j",
+      "direction": "+1",
+      "originalScore": 2,
+      "perturbedScore": 3,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S7",
+      "dim": "j",
+      "direction": "-1",
+      "originalScore": 2,
+      "perturbedScore": 1,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S7",
+      "dim": "c",
+      "direction": "+1",
+      "originalScore": 3,
+      "perturbedScore": 4,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S7",
+      "dim": "c",
+      "direction": "-1",
+      "originalScore": 3,
+      "perturbedScore": 2,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Exec",
+      "tierChanged": true
+    },
+    {
+      "taskId": "S7",
+      "dim": "r",
+      "direction": "+1",
+      "originalScore": 1,
+      "perturbedScore": 2,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S7",
+      "dim": "v",
+      "direction": "-1",
+      "originalScore": 5,
+      "perturbedScore": 4,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S7",
+      "dim": "cr",
+      "direction": "+1",
+      "originalScore": 1,
+      "perturbedScore": 2,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S8",
+      "dim": "j",
+      "direction": "+1",
+      "originalScore": 1,
+      "perturbedScore": 2,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S8",
+      "dim": "c",
+      "direction": "+1",
+      "originalScore": 1,
+      "perturbedScore": 2,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S8",
+      "dim": "r",
+      "direction": "+1",
+      "originalScore": 3,
+      "perturbedScore": 4,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-A",
+      "tierChanged": true
+    },
+    {
+      "taskId": "S8",
+      "dim": "r",
+      "direction": "-1",
+      "originalScore": 3,
+      "perturbedScore": 2,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Exec",
+      "tierChanged": true
+    },
+    {
+      "taskId": "S8",
+      "dim": "v",
+      "direction": "-1",
+      "originalScore": 5,
+      "perturbedScore": 4,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S8",
+      "dim": "cr",
+      "direction": "+1",
+      "originalScore": 1,
+      "perturbedScore": 2,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S9",
+      "dim": "j",
+      "direction": "+1",
+      "originalScore": 2,
+      "perturbedScore": 3,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S9",
+      "dim": "j",
+      "direction": "-1",
+      "originalScore": 2,
+      "perturbedScore": 1,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S9",
+      "dim": "c",
+      "direction": "+1",
+      "originalScore": 3,
+      "perturbedScore": 4,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S9",
+      "dim": "c",
+      "direction": "-1",
+      "originalScore": 3,
+      "perturbedScore": 2,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Exec",
+      "tierChanged": true
+    },
+    {
+      "taskId": "S9",
+      "dim": "r",
+      "direction": "+1",
+      "originalScore": 2,
+      "perturbedScore": 3,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S9",
+      "dim": "r",
+      "direction": "-1",
+      "originalScore": 2,
+      "perturbedScore": 1,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S9",
+      "dim": "v",
+      "direction": "+1",
+      "originalScore": 4,
+      "perturbedScore": 5,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S9",
+      "dim": "v",
+      "direction": "-1",
+      "originalScore": 4,
+      "perturbedScore": 3,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S9",
+      "dim": "cr",
+      "direction": "+1",
+      "originalScore": 2,
+      "perturbedScore": 3,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S9",
+      "dim": "cr",
+      "direction": "-1",
+      "originalScore": 2,
+      "perturbedScore": 1,
+      "originalTier": "Tier-Mid",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S10",
+      "dim": "j",
+      "direction": "+1",
+      "originalScore": 4,
+      "perturbedScore": 5,
+      "originalTier": "Tier-A",
+      "perturbedTier": "Tier-A",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S10",
+      "dim": "j",
+      "direction": "-1",
+      "originalScore": 4,
+      "perturbedScore": 3,
+      "originalTier": "Tier-A",
+      "perturbedTier": "Tier-Mid",
+      "tierChanged": true
+    },
+    {
+      "taskId": "S10",
+      "dim": "c",
+      "direction": "+1",
+      "originalScore": 2,
+      "perturbedScore": 3,
+      "originalTier": "Tier-A",
+      "perturbedTier": "Tier-A",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S10",
+      "dim": "c",
+      "direction": "-1",
+      "originalScore": 2,
+      "perturbedScore": 1,
+      "originalTier": "Tier-A",
+      "perturbedTier": "Tier-A",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S10",
+      "dim": "r",
+      "direction": "+1",
+      "originalScore": 3,
+      "perturbedScore": 4,
+      "originalTier": "Tier-A",
+      "perturbedTier": "Tier-A",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S10",
+      "dim": "r",
+      "direction": "-1",
+      "originalScore": 3,
+      "perturbedScore": 2,
+      "originalTier": "Tier-A",
+      "perturbedTier": "Tier-A",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S10",
+      "dim": "v",
+      "direction": "+1",
+      "originalScore": 4,
+      "perturbedScore": 5,
+      "originalTier": "Tier-A",
+      "perturbedTier": "Tier-A",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S10",
+      "dim": "v",
+      "direction": "-1",
+      "originalScore": 4,
+      "perturbedScore": 3,
+      "originalTier": "Tier-A",
+      "perturbedTier": "Tier-A",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S10",
+      "dim": "cr",
+      "direction": "+1",
+      "originalScore": 2,
+      "perturbedScore": 3,
+      "originalTier": "Tier-A",
+      "perturbedTier": "Tier-A",
+      "tierChanged": false
+    },
+    {
+      "taskId": "S10",
+      "dim": "cr",
+      "direction": "-1",
+      "originalScore": 2,
+      "perturbedScore": 1,
+      "originalTier": "Tier-A",
+      "perturbedTier": "Tier-A",
+      "tierChanged": false
+    }
+  ],
+  "totalPerturbations": 89,
+  "totalChanges": 19
+}

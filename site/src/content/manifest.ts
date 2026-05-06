@@ -290,6 +290,13 @@ export const NAV: Section[] = [
         sourceEn: 'docs/experiment-series-5-en.md',
         description: '3 任務 × 3 模型（Haiku/Sonnet/Opus）品質對比，Haiku 在 Tier-Exec/Mid 足夠強大，Opus 風險意識領先',
         descriptionEn: '3 tasks × 3 models (Haiku/Sonnet/Opus) quality comparison — Haiku strong on Exec/Mid, Opus leads in risk awareness' },
+      { order: 705, slug: 'experiment-series-6',
+        title: '實驗 Series 6：評分維度敏感性分析',
+        titleEn: 'Experiment Series 6: Scoring Dimension Sensitivity',
+        source: 'docs/experiment-series-6.md',
+        sourceEn: 'docs/experiment-series-6-en.md',
+        description: '10 個邊界任務 × 5 維度 × ±1 擾動 — R（33%）和 J（32%）為最敏感維度',
+        descriptionEn: '10 boundary tasks × 5 dimensions × ±1 perturbation — R (33%) and J (32%) most sensitive dimensions' },
     ],
   },
 ];
