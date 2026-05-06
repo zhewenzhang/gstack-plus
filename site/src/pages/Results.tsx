@@ -89,6 +89,14 @@ const S5_MATRIX = [
     noteEn: 'SSO+MFA design: Haiku -2pts, Opus leads on risk awareness (3/3)' },
 ];
 
+const S6_DIMS = [
+  { dimZh: 'R（風險權重）',  dimEn: 'R (Risk)',         rate: 33, changes: 6, perturbs: 18, color: '#EF4444', noteZh: 'Mid→A 最敏感，S8 雙向跳轉', noteEn: 'Most sensitive at Mid→A; S8 flips both ways' },
+  { dimZh: 'J（判斷強度）',  dimEn: 'J (Judgment)',      rate: 32, changes: 6, perturbs: 19, color: '#F59E0B', noteZh: '與 Series 2 結果完全一致（32%）', noteEn: 'Exactly matches Series 2 finding (32%)' },
+  { dimZh: 'C（上下文寬度）',dimEn: 'C (Context)',       rate: 16, changes: 3, perturbs: 19, color: '#06B6D4', noteZh: '僅影響 Exec/Mid 邊界', noteEn: 'Only affects Exec/Mid boundary' },
+  { dimZh: 'Cr（創意密度）', dimEn: 'Cr (Creativity)',   rate: 13, changes: 2, perturbs: 15, color: '#D946EF', noteZh: '僅通過 Tier-A 觸發條件影響', noteEn: 'Only affects Mid→A via Tier-A trigger' },
+  { dimZh: 'V（可驗證性）',  dimEn: 'V (Verifiability)', rate: 11, changes: 2, perturbs: 18, color: '#10B981', noteZh: '僅通過 Exec 條件影響，影響最小', noteEn: 'Least sensitive — only via Exec condition' },
+];
+
 // ── 子元件 ──────────────────────────────────────────────────────────────────
 
 function ScoreDots({ score, max = 5 }: { score: number; max?: number }) {
@@ -576,6 +584,79 @@ export default function Results() {
             {zh
               ? 'Haiku 在 Tier-Exec 和 Tier-Mid 任務上的表現超出預期（14/15），說明路由到廉價模型的節省空間比預計更大。Opus 唯一的系統性優勢在於「風險意識」維度（2.7 vs Haiku 2.0），這在 Tier-A 架構設計任務中最為關鍵。max_tokens 截斷是本次實驗的主要干擾因素，建議未來實驗將限制提升至 2048+。'
               : 'Haiku performs better than expected on Tier-Exec and Tier-Mid tasks (14/15), suggesting greater cost-saving potential when routing to cheaper models. Opus\'s only systematic advantage is in "Risk Awareness" (2.7 vs Haiku 2.0), which matters most for Tier-A architecture tasks. Token truncation was the key confound — future experiments should raise max_tokens to 2048+.'}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Series 6 ── */}
+      <section className="max-w-5xl mx-auto px-5 sm:px-8 pb-24 border-t border-neutral-200 dark:border-[#2A2A2A] pt-16">
+        <div className="mb-10">
+          <div className="text-xs uppercase tracking-widest text-muted mb-2">{zh ? '系列六 · 2026-05-06' : 'Series 6 · 2026-05-06'}</div>
+          <h2 className="font-display text-2xl sm:text-3xl text-ink mb-3">
+            {zh ? '評分維度敏感性：R 與 J 並列最關鍵' : 'Dimension Sensitivity: R and J Are the Critical Ones'}
+          </h2>
+          <p className="text-muted text-sm max-w-2xl leading-relaxed">
+            {zh
+              ? '延伸 Series 2 的 J 發現，對 10 個邊界任務的全部 5 個評分維度施加 ±1 擾動（89 次有效擾動），揭示哪個維度的評分誤差最容易導致路由層級錯誤。'
+              : 'Extending the Series 2 J-sensitivity finding to all 5 dimensions: 89 valid ±1 perturbations on 10 boundary tasks reveal which dimension\'s scoring error most easily causes routing mistakes.'}
+          </p>
+        </div>
+
+        {/* Sensitivity bars */}
+        <div className="space-y-3 mb-8">
+          {S6_DIMS.map((d, i) => (
+            <div key={d.dimEn} className="rounded-xl border border-neutral-200 dark:border-[#2A2A2A] bg-surface p-4">
+              <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-[11px] font-mono text-muted w-4">#{i + 1}</span>
+                  <span className="text-sm font-medium text-ink">{zh ? d.dimZh : d.dimEn}</span>
+                </div>
+                <div className="flex items-center gap-4 text-xs">
+                  <span className="text-muted font-mono">{d.changes}/{d.perturbs} {zh ? '次變化' : 'flips'}</span>
+                  <span className="font-display text-lg font-semibold" style={{ color: d.color }}>{d.rate}%</span>
+                </div>
+              </div>
+              <div className="w-full h-1.5 bg-neutral-100 dark:bg-[#2A2A2A] rounded-full overflow-hidden mb-1.5">
+                <div className="h-full rounded-full" style={{ width: `${d.rate}%`, background: d.color }} />
+              </div>
+              <div className="text-[11px] text-muted">{zh ? d.noteZh : d.noteEn}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Practical guidance */}
+        <div className="grid sm:grid-cols-2 gap-4 mb-8">
+          <div className="rounded-xl border border-red-200 dark:border-red-900 bg-red-50 dark:bg-red-950/20 p-4">
+            <div className="text-xs font-semibold text-red-700 dark:text-red-400 mb-2">
+              {zh ? '⚠️ 高敏感：保守路由' : '⚠️ High sensitivity: use conservative routing'}
+            </div>
+            <div className="text-sm text-red-800 dark:text-red-300">
+              {zh
+                ? 'R = 3 或 J = 3 時，若有任何疑問直接升 Tier-A。這兩個維度的 ±1 誤差各自引發 ~33% 路由錯誤。'
+                : 'When R = 3 or J = 3, route up to Tier-A if in doubt. These two dimensions each cause ~33% routing errors on ±1 misjudgment.'}
+            </div>
+          </div>
+          <div className="rounded-xl border border-neutral-200 dark:border-[#2A2A2A] bg-surface p-4">
+            <div className="text-xs font-semibold text-muted mb-2">
+              {zh ? '✓ 低敏感：可寬鬆評分' : '✓ Low sensitivity: scoring tolerance is higher'}
+            </div>
+            <div className="text-sm text-muted">
+              {zh
+                ? 'V（11%）和 Cr（13%）的評分誤差影響最小。V 只影響 Exec/Mid 邊界，Cr 只通過 Tier-A 觸發。'
+                : 'V (11%) and Cr (13%) have the smallest routing impact. V only affects the Exec/Mid boundary; Cr only triggers via the Tier-A condition.'}
+            </div>
+          </div>
+        </div>
+
+        {/* Series 6 insight */}
+        <div className="px-5 py-4 rounded-xl border border-orange-200 dark:border-orange-900 bg-orange-50 dark:bg-orange-950/30">
+          <div className="text-xs font-semibold text-orange-700 dark:text-orange-400 mb-1">
+            {zh ? '關鍵發現' : 'Key finding'}
+          </div>
+          <div className="text-sm text-orange-800 dark:text-orange-300">
+            {zh
+              ? 'R（風險權重）和 J（判斷強度）並列最敏感（33% / 32%）。J 的 32% 與 Series 2 的 30 任務結果完全一致——跨越兩個獨立實驗的一致性，強烈說明這不是統計偶然。邊界任務中 21% 的 ±1 擾動引發路由改變，使用者評分時應對這兩個維度保持最高謹慎。'
+              : 'R (Risk) and J (Judgment) are co-equal in sensitivity (33% / 32%). J\'s 32% exactly matches the Series 2 finding on 30 different tasks — cross-experiment consistency this tight is not statistical coincidence. With 21% of boundary tasks flipping on a ±1 perturbation, scorers must be most careful with these two dimensions.'}
           </div>
         </div>
       </section>
