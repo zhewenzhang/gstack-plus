@@ -193,7 +193,7 @@ export default function Results() {
       <section className="max-w-5xl mx-auto px-5 sm:px-8 pt-12 pb-16 sm:pt-20 sm:pb-24 text-center">
         <div className="inline-flex items-center gap-2 px-3 py-1 mb-6 rounded-full border border-neutral-200 dark:border-[#2A2A2A] text-[11px] uppercase tracking-wider text-muted">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-          {zh ? '三個系列 · 共 62 項測試' : '3 series · 62 experiments total'}
+          {zh ? '八個系列 · 110+ 項測試' : '8 series · 110+ experiments'}
         </div>
         <h1 className="font-display text-4xl sm:text-5xl md:text-6xl text-ink leading-tight mb-5" style={{ letterSpacing: '-0.03em' }}>
           {zh
@@ -202,8 +202,8 @@ export default function Results() {
         </h1>
         <p className="text-base sm:text-lg text-muted max-w-2xl mx-auto leading-relaxed">
           {zh
-            ? '我們通過三個系列的受控實驗，驗證了 gstack-plus 的路由準確性、成本節省效果，以及 S1 提示詞策略的品質提升。'
-            : 'Three controlled experiment series validated gstack-plus routing accuracy, cost savings, and the quality lift from the S1 prompt strategy.'}
+            ? '八個系列的受控實驗，從成本效益、品質保留、路由準確性、維度敏感性到路由錯誤代價，對框架進行了全面量化驗證。'
+            : 'Eight controlled experiment series quantify the framework end-to-end: cost savings, quality retention, routing accuracy, dimension sensitivity, and the asymmetric cost of routing errors.'}
         </p>
       </section>
 
