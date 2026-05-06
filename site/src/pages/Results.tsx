@@ -67,6 +67,13 @@ const S3_STRATEGIES = [
   { nameZh: 'Opus 基準',           nameEn: 'Opus baseline',           score: 12.7, costPer: '$0.045', model: 'Opus',   barPct: 85 },
 ];
 
+const S4_DOMAINS = [
+  { nameZh: '前端', nameEn: 'Frontend',         correct: 5, total: 5, tasks: ['Tier-Exec ×2', 'Tier-Mid ×1', 'Tier-A ×2'] },
+  { nameZh: '後端', nameEn: 'Backend',           correct: 5, total: 5, tasks: ['Tier-Exec ×2', 'Tier-Mid ×1', 'Tier-A ×2'] },
+  { nameZh: '數據工程', nameEn: 'Data Eng.',     correct: 5, total: 5, tasks: ['Tier-Exec ×2', 'Tier-Mid ×1', 'Tier-A ×2'] },
+  { nameZh: 'DevOps', nameEn: 'DevOps',          correct: 5, total: 5, tasks: ['Tier-Exec ×2', 'Tier-Mid ×1', 'Tier-A ×2'] },
+];
+
 // ── 子元件 ──────────────────────────────────────────────────────────────────
 
 function ScoreDots({ score, max = 5 }: { score: number; max?: number }) {
@@ -397,6 +404,66 @@ export default function Results() {
             {zh
               ? 'S1 提示詞（角色 + 深度思考指令）讓 Sonnet 達到 15.0/15，超越 Opus 的 12.7/15，成本卻只有 Opus 的 13.3%。這說明模型能力的上限，很大程度取決於提示詞質量，而非模型本身的大小。'
               : 'The S1 prompt (role identity + depth instruction) lets Sonnet reach 15.0/15, beating Opus at 12.7/15, at just 13.3% of Opus\'s cost. Model ceiling is largely determined by prompt quality, not model size alone.'}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Series 4 ── */}
+      <section className="max-w-5xl mx-auto px-5 sm:px-8 pb-24 border-t border-neutral-200 dark:border-[#2A2A2A] pt-16">
+        <div className="mb-10">
+          <div className="text-xs uppercase tracking-widest text-muted mb-2">{zh ? '系列四 · 2026-05-06' : 'Series 4 · 2026-05-06'}</div>
+          <h2 className="font-display text-2xl sm:text-3xl text-ink mb-3">
+            {zh ? '5 維度框架：跨領域 100% 適用' : '5-Dimension Framework: 100% Cross-Domain Accuracy'}
+          </h2>
+          <p className="text-muted text-sm max-w-2xl leading-relaxed">
+            {zh
+              ? '20 個任務跨前端 / 後端 / 數據工程 / DevOps，由 AI 代理使用評分指南獨立評分後路由，每個領域準確率均為 100%，5 個評分維度的平均偏差均為 0。'
+              : '20 tasks across Frontend, Backend, Data Engineering, and DevOps — independently scored by an AI agent using the scoring guide. 100% routing accuracy in every domain, with zero average deviation across all 5 dimensions.'}
+          </p>
+        </div>
+
+        {/* Domain accuracy grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+          {S4_DOMAINS.map((d) => (
+            <div key={d.nameEn} className="rounded-xl border border-emerald-200 dark:border-emerald-900 bg-emerald-50 dark:bg-emerald-950/20 p-4 text-center">
+              <div className="font-display text-3xl mb-1" style={{ color: '#10B981' }}>5/5</div>
+              <div className="text-sm font-medium text-ink mb-2">{zh ? d.nameZh : d.nameEn}</div>
+              <div className="space-y-0.5">
+                {d.tasks.map((t) => (
+                  <div key={t} className="text-[11px] text-muted">{t}</div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Score deviation */}
+        <div className="rounded-xl border border-neutral-200 dark:border-[#2A2A2A] bg-surface p-5 mb-8">
+          <div className="text-xs text-muted uppercase tracking-wider mb-4">
+            {zh ? 'AI 獨立評分 vs 基準評分：各維度平均偏差' : 'AI independent scoring vs baseline — avg deviation per dimension'}
+          </div>
+          <div className="grid grid-cols-5 gap-3 text-center">
+            {(['J 判斷', 'C 上下文', 'R 風險', 'V 可驗證', 'Cr 創意'] as const).map((dim) => (
+              <div key={dim}>
+                <div className="font-mono text-lg font-semibold" style={{ color: '#10B981' }}>0.00</div>
+                <div className="text-[11px] text-muted mt-0.5">{zh ? dim : dim.split(' ')[0]}</div>
+              </div>
+            ))}
+          </div>
+          <div className="text-xs text-center text-muted mt-3">
+            {zh ? '完全一致 — 評分框架的定義清晰且跨領域通用' : 'Perfect agreement — scoring rubric is clear and domain-agnostic'}
+          </div>
+        </div>
+
+        {/* Series 4 insight */}
+        <div className="px-5 py-4 rounded-xl border border-emerald-200 dark:border-emerald-900 bg-emerald-50 dark:bg-emerald-950/30">
+          <div className="text-xs font-semibold text-emerald-700 dark:text-emerald-400 mb-1">
+            {zh ? '關鍵發現' : 'Key finding'}
+          </div>
+          <div className="text-sm text-emerald-800 dark:text-emerald-300">
+            {zh
+              ? 'gstack-plus 5 維度評分框架在前端、後端、數據工程、DevOps 四個技術領域 20/20 = 100% 路由準確。AI 代理獨立評分與人工基準完全一致（Δ = 0），證明框架定義足夠清晰，可在無需領域特殊訓練的情況下跨域通用。'
+              : 'The gstack-plus 5-dimension scoring framework achieves 20/20 = 100% routing accuracy across Frontend, Backend, Data Engineering, and DevOps. AI agent scores matched the human baseline exactly (Δ = 0), proving the framework is clear enough to be applied cross-domain without domain-specific training.'}
           </div>
         </div>
       </section>
