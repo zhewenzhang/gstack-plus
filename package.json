@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "description": "Multi-tier AI workflow orchestration. Add a model dispatch layer on top of role-based skill libraries.",
-  "workspaces": ["site", "cli"],
+  "workspaces": [
+    "site",
+    "cli"
+  ],
   "scripts": {
     "site:dev": "npm run dev --workspace site",
     "site:build": "npm run build --workspace site",
@@ -20,5 +23,8 @@
     "eslint": "^10.3.0",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.59.1"
+  },
+  "dependencies": {
+    "openai": "^6.36.0"
   }
 }

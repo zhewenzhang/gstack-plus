@@ -283,6 +283,13 @@ export const NAV: Section[] = [
         sourceEn: 'docs/experiment-series-4-en.md',
         description: '20 個跨領域任務（前端/後端/數據工程/DevOps）驗證 5 維度評分框架的通用性 — 100% 路由準確率',
         descriptionEn: '20 tasks across 4 domains validate universality of the 5-dimension scoring — 100% routing accuracy' },
+      { order: 704, slug: 'experiment-series-5',
+        title: '實驗 Series 5：多模型品質矩陣',
+        titleEn: 'Experiment Series 5: Multi-Model Quality Matrix',
+        source: 'docs/experiment-series-5.md',
+        sourceEn: 'docs/experiment-series-5-en.md',
+        description: '3 任務 × 3 模型（Haiku/Sonnet/Opus）品質對比，Haiku 在 Tier-Exec/Mid 足夠強大，Opus 風險意識領先',
+        descriptionEn: '3 tasks × 3 models (Haiku/Sonnet/Opus) quality comparison — Haiku strong on Exec/Mid, Opus leads in risk awareness' },
     ],
   },
 ];

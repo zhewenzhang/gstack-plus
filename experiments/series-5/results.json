@@ -1,0 +1,155 @@
+[
+  {
+    "taskId": "T1-Exec",
+    "tier": "Tier-Exec",
+    "model": "anthropic/claude-3.5-haiku",
+    "modelLabel": "Haiku 3.5",
+    "response": "Here's the precise ESLint configuration to ban console.log while allowing console.warn and console.error:\n\nFor .eslintrc.js:\n```javascript\nmodule.exports = {\n  rules: {\n    'no-console': ['error', { \n      allow: ['warn', 'error'] \n    }]\n  }\n}\n```\n\nFor eslint.config.js (flat config):\n```javascript\nexport default [{\n  rules: {\n    'no-console': ['error', { \n      allow: ['warn', 'error'] \n    }]\n  }\n}]\n```\n\nKey points:\n- 'error' level prevents console.log from being committed\n- `allow` array permits console.warn and console.error\n- Easy to modify allowed console methods if needed\n\nPotential risks:\n- Developers might use commented-out console.log or find workarounds\n- May need to update linter config if logging requirements change",
+    "scores": {
+      "correctness": 3,
+      "completeness": 3,
+      "clarity": 3,
+      "risk_awareness": 2,
+      "practical_value": 3,
+      "total": 14,
+      "one_line_verdict": "Accurate, complete config for both ESLint formats with clear examples; risk section is thin but adequate."
+    },
+    "latencyMs": 5089
+  },
+  {
+    "taskId": "T1-Exec",
+    "tier": "Tier-Exec",
+    "model": "anthropic/claude-sonnet-4-6",
+    "modelLabel": "Sonnet 4.6",
+    "response": "## ESLint `no-console` Configuration\n\n### For `eslint.config.js` (ESLint v9+ flat config)\n\n```js\n// eslint.config.js\nimport js from \"@eslint/js\";\n\nexport default [\n  js.configs.recommended,\n  {\n    rules: {\n      \"no-console\": [\"error\", { allow: [\"warn\", \"error\"] }],\n    },\n  },\n];\n```\n\n### For `.eslintrc.js` (ESLint v8 and below)\n\n```js\n// .eslintrc.js\nmodule.exports = {\n  rules: {\n    \"no-console\": [\"error\", { allow: [\"warn\", \"error\"] }],\n  },\n};\n```\n\n---\n\n### Behavior\n\n| Call | Result |\n|---|---|\n| `console.log(\"x\")` | ❌ ESLint error |\n| `console.warn(\"x\")` | ✅ Allowed |\n| `console.error(\"x\")` | ✅ Allowed |\n| `console.info(\"x\")` | ❌ ESLint error |\n| `console.debug(\"x\")` | ❌ ESLint error |\n\n---\n\n### Non-Obvious Risks\n\n**1. Third-party libraries calling `console.log`**\nThis rule only lints *your* source files. Library code is unaffected.\n\n**2. CI/pre-commit enforcement**\nThe rule only matters if ESLint runs in CI. Add it explicitly:\n```json\n// package.json\n\"scripts\": {\n  \"lint\": \"eslint .\",\n  \"prepare\": \"husky install\"  // pair with lint-staged for pre-commit\n}\n```\n\n**3. `no-console` doesn't strip logs from production builds**\nESLint errors won't remove logs at runtime. Use a bundler plugin for that:\n```js\n// vite.config.js / rollup\nesbuild: { drop: [\"console\"] }  // Vite example - removes ALL console calls at build time\n```\nBe careful: `drop: [\"console\"]` ignores your `warn`/`error` allowlist — it drops everything.\n\n**4. Disabling inline with `// eslint-disable`**\nTeams often bypass rules ad hoc. Consider enforcing `--no-inline-config` in stricter codebases.",
+    "scores": {
+      "correctness": 3,
+      "completeness": 3,
+      "clarity": 3,
+      "risk_awareness": 3,
+      "practical_value": 3,
+      "total": 15,
+      "one_line_verdict": "Covers both config formats precisely, adds behavior table, and flags non-obvious risks like build-time stripping and inline disables."
+    },
+    "latencyMs": 10071
+  },
+  {
+    "taskId": "T1-Exec",
+    "tier": "Tier-Exec",
+    "model": "anthropic/claude-opus-4-7",
+    "modelLabel": "Opus 4.7",
+    "response": "## ESLint config change\n\n### Flat config (`eslint.config.js`, ESLint 9+)\n\n```js\nexport default [\n  {\n    rules: {\n      'no-console': ['error', { allow: ['warn', 'error'] }],\n    },\n  },\n];\n```\n\n### Legacy config (`.eslintrc.js`)\n\n```js\nmodule.exports = {\n  rules: {\n    'no-console': ['error', { allow: ['warn', 'error'] }],\n  },\n};\n```\n\n## Notes / non-obvious risks\n\n- **`allow` is exact-match on method names.** `console.info`, `console.debug`, `console.table`, `console.trace`, etc. will all error. Decide intentionally whether to add them (`allow: ['warn', 'error', 'info']`) rather than discovering them as CI failures.\n- **Test files often need `console.log`.** Add an override:\n  ```js\n  // flat config\n  {\n    files: ['**/*.test.{js,ts}', '**/__tests__/**'],\n    rules: { 'no-console': 'off' },\n  }\n  ```\n- **CLI scripts / tooling** (e.g., `scripts/`, `bin/`) legitimately write to stdout. Either override those paths or use `process.stdout.write` instead — `no-console` does not catch that, which is the intended escape hatch.\n- **`console.error` writes to stderr**, which is fine for errors but wrong if you're using it just to bypass the lint rule for normal output. Watch for this misuse in code review.\n- **Existing violations**: run `eslint . --rule '{\"no-console\":[\"error\",{\"allow\":[\"warn\",\"error\"]}]}'` before merging to gauge blast radius; consider `warn` first, then promote to `error` after cleanup if the count is large.\n- **Browser vs Node**: rule applies identically in both; no env-specific tuning needed.",
+    "scores": {
+      "correctness": 3,
+      "completeness": 3,
+      "clarity": 3,
+      "risk_awareness": 3,
+      "practical_value": 3,
+      "total": 15,
+      "one_line_verdict": "Provides both config formats with exact syntax, plus thoughtful risks (overrides for tests/scripts, migration strategy, allow semantics)."
+    },
+    "latencyMs": 6782
+  },
+  {
+    "taskId": "T2-Mid",
+    "tier": "Tier-Mid",
+    "model": "anthropic/claude-3.5-haiku",
+    "modelLabel": "Haiku 3.5",
+    "response": "Here's a strategic refactoring approach for adding Google OAuth to the existing authentication middleware:\n\n```javascript\nconst passport = require('passport');\nconst GoogleStrategy = require('passport-google-oauth20').Strategy;\nconst LocalStrategy = require('passport-local').Strategy;\nconst session = require('express-session');\n\n// Configure session middleware (before passport)\napp.use(session({\n  secret: process.env.SESSION_SECRET,\n  resave: false,\n  saveUninitialized: true,\n  cookie: { secure: process.env.NODE_ENV === 'production' }\n}));\n\n// Initialize passport\napp.use(passport.initialize());\napp.use(passport.session());\n\n// Existing local strategy (preserve current auth)\npassport.use(new LocalStrategy(\n  async (username, password, done) => {\n    const user = await User.findOne({ username });\n    if (!user || !await bcrypt.compare(password, user.password)) {\n      return done(null, false);\n    }\n    return done(null, user);\n  }\n));\n\n// Google OAuth strategy\npassport.use(new GoogleStrategy({\n    clientID: process.env.GOOGLE_CLIENT_ID,\n    clientSecret: process.env.GOOGLE_CLIENT_SECRET,\n    callbackURL: \"/auth/google/callback\"\n  },\n  async (accessToken, refreshToken, profile, done) => {\n    let user = await User.findOne({ googleId: profile.id });\n    \n    if (!user) {\n      user = new User({\n        googleId: profile.id,\n        email: profile.emails[0].value,\n        name: profile.displayName\n      });\n      await user.save();\n    }\n    \n    return done(null, user);\n  }\n));\n\n// Serialization for session management\npassport.serializeUser((user, done) => {\n  done(null, user.id);\n});\n\npassport.deserializeUser(async (id, done) => {\n  const user = await User.findById(id);\n  done(null, user);\n});\n\n// OAuth routes\napp.get('/auth/google',\n  passport.authenticate('google', { scope: ['profile', 'email'] })\n);\n\napp.get('/auth/google/callback', \n  passport.authenticate('google', { \n    failureRedirect: '/login',\n    successRedirect: '/dashboard'\n  })\n);\n\n// Middleware to check authentication\nfunction ensureAuthenticated(req, res, next) {\n  if (req.isAuthenticated()) {\n    return next();\n  }\n  res.redirect('/login');\n}\n```\n\nKey Considerations:\n- Preserves existing local strategy\n- Adds Google OAuth with passport.js\n- Implements session-based authentication\n- Handles user creation/lookup for Google accounts\n- Provides authentication middleware\n\nPotential Risks:\n- Ensure secure session management\n- Handle potential email conflicts\n- Properly manage environment-specific configurations\n- Implement additional security checks (e.g., email verification)\n\nRecommended Next Steps:\n- Add error handling for OAuth flow\n- Implement logout mechanism\n- Create robust user merge strategy for existing accounts",
+    "scores": {
+      "correctness": 3,
+      "completeness": 3,
+      "clarity": 3,
+      "risk_awareness": 2,
+      "practical_value": 3,
+      "total": 14,
+      "one_line_verdict": "Comprehensive, correct refactoring with clear code and preserved local auth; risk coverage mentioned but lacks depth on account linking and CSRF/session hardening details."
+    },
+    "latencyMs": 11090
+  },
+  {
+    "taskId": "T2-Mid",
+    "tier": "Tier-Mid",
+    "model": "anthropic/claude-sonnet-4-6",
+    "modelLabel": "Sonnet 4.6",
+    "response": "# Refactoring Express.js Auth to Support Google OAuth 2.0\n\n## Key Dependencies\n\n```json\n{\n  \"passport\": \"^0.6.0\",\n  \"passport-google-oauth20\": \"^2.0.0\",\n  \"passport-local\": \"^1.0.0\",\n  \"express-session\": \"^1.17.3\",\n  \"connect-pg-simple\": \"^9.0.0\"\n}\n```\n\n## Core Architecture Changes\n\n### 1. Passport Configuration (`config/passport.js`)\n\n```javascript\nconst passport = require('passport');\nconst { Strategy: LocalStrategy } = require('passport-local');\nconst { Strategy: GoogleStrategy } = require('passport-google-oauth20');\nconst bcrypt = require('bcrypt');\nconst { findUserById, findUserByEmail, findOrCreateOAuthUser } = require('../models/user');\n\n// Serialize/deserialize — critical for session management\npassport.serializeUser((user, done) => done(null, user.id));\npassport.deserializeUser(async (id, done) => {\n  try {\n    const user = await findUserById(id);\n    done(null, user);\n  } catch (err) {\n    done(err);\n  }\n});\n\n// ── Keep existing local strategy ──────────────────────────────────────────────\npassport.use(new LocalStrategy(\n  { usernameField: 'email' },\n  async (email, password, done) => {\n    try {\n      const user = await findUserByEmail(email);\n      if (!user) return done(null, false, { message: 'User not found' });\n      \n      const match = await bcrypt.compare(password, user.password_hash);\n      if (!match) return done(null, false, { message: 'Invalid password' });\n      \n      return done(null, user);\n    } catch (err) {\n      return done(err);\n    }\n  }\n));\n\n// ── New Google OAuth strategy ─────────────────────────────────────────────────\npassport.use(new GoogleStrategy(\n  {\n    clientID: process.env.GOOGLE_CLIENT_ID,\n    clientSecret: process.env.GOOGLE_CLIENT_SECRET,\n    callbackURL: '/auth/google/callback',\n    scope: ['profile', 'email'],\n  },\n  async (accessToken, refreshToken, profile, done) => {\n    try {\n      // Key: find existing user OR create new one (no password for OAuth users)\n      const user = await findOrCreateOAuthUser({\n        googleId: profile.id,\n        email: profile.emails[0].value,\n        displayName: profile.displayName,\n        provider: 'google',\n      });\n      return done(null, user);\n    } catch (err) {\n      return done(err);\n    }\n  }\n));\n\nmodule.exports = passport;\n```\n\n### 2. Session Middleware (`app.js`)\n\n```javascript\nconst session = require('express-session');\nconst connectPg = require('connect-pg-simple');\nconst passport = require('./config/passport');\n\nconst PgStore = connectPg(session);\n\n// ⚠️ Order matters: session → passport.initialize → passport.session\napp.use(session({\n  store: new PgStore({ pool: dbPool }),  // Persist sessions in DB, not memory\n  secret: process.env.SESSION_SECRET,\n  resave: false,\n  saveUninitialized: false,\n  cookie: {\n    secure: process.env.NODE_ENV === 'production',  // HTTPS only in prod\n    httpOnly: true,\n    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days\n    sameSite: 'lax',  // CSRF protection; use 'none' only if cross-site needed\n  },\n}));\n\napp.use(passport.initialize());\napp.use(passport.session());  // Restores auth state from session via deserializeUser\n```\n\n### 3. Auth Routes (`routes/auth.js`)\n\n```javascript\nconst router = require('express').Router();\nconst passport = require('../config/passport');\n\n// ── Local (unchanged interface) ───────────────────",
+    "scores": {
+      "correctness": 3,
+      "completeness": 2,
+      "clarity": 3,
+      "risk_awareness": 3,
+      "practical_value": 2,
+      "total": 13,
+      "one_line_verdict": "Excellent technical depth with solid security/session considerations, but response appears truncated mid-route definition, leaving OAuth callback handling incomplete."
+    },
+    "latencyMs": 16881
+  },
+  {
+    "taskId": "T2-Mid",
+    "tier": "Tier-Mid",
+    "model": "anthropic/claude-opus-4-7",
+    "modelLabel": "Opus 4.7",
+    "response": "# Refactor: Add Google OAuth 2.0 to Express Auth\n\n## Approach\n\nKeep bcrypt/local auth as one Passport **strategy**, add Google OAuth as another. Passport handles both uniformly via `req.user` and session serialization. The existing middleware becomes a thin wrapper around `passport.authenticate()`.\n\n## Key Decisions & Risks\n\n- **Account linking**: When a Google user's email matches an existing local account, do you merge? I recommend requiring explicit linking post-login — auto-merge is a common account-takeover vector if the OAuth provider doesn't guarantee verified emails. Google does verify, but codify this check (`profile.emails[0].verified`).\n- **Session store**: Default `MemoryStore` leaks and doesn't scale. Use Redis/Postgres-backed store before production.\n- **Schema change**: Users table needs `provider` + `providerId` columns, and `password` must become nullable for OAuth-only users.\n- **CSRF on callback**: Passport handles OAuth `state` param, but ensure `session` middleware runs *before* `passport.session()`.\n- **Secrets**: `GOOGLE_CLIENT_SECRET` and `SESSION_SECRET` must come from env/secret manager, never code.\n\n## Dependencies\n\n```bash\nnpm i passport passport-local passport-google-oauth20 express-session connect-redis redis\n```\n\n## Schema change\n\n```sql\nALTER TABLE users ADD COLUMN provider VARCHAR(20) DEFAULT 'local';\nALTER TABLE users ADD COLUMN provider_id VARCHAR(255);\nALTER TABLE users ALTER COLUMN password DROP NOT NULL;\nCREATE UNIQUE INDEX ON users(provider, provider_id);\n```\n\n## Passport config (`auth/passport.js`)\n\n```js\nconst passport = require('passport');\nconst LocalStrategy = require('passport-local').Strategy;\nconst GoogleStrategy = require('passport-google-oauth20').Strategy;\nconst bcrypt = require('bcrypt');\n\n// Existing local strategy — preserved\npassport.use(new LocalStrategy(async (username, password, done) => {\n  const user = await User.findByUsername(username);\n  if (!user || !user.password) return done(null, false); // OAuth-only accts\n  const ok = await bcrypt.compare(password, user.password);\n  return ok ? done(null, user) : done(null, false);\n}));\n\n// New Google strategy\npassport.use(new GoogleStrategy({\n  clientID: process.env.GOOGLE_CLIENT_ID,\n  clientSecret: process.env.GOOGLE_CLIENT_SECRET,\n  callbackURL: '/auth/google/callback',\n}, async (accessToken, refreshToken, profile, done) => {\n  try {\n    const email = profile.emails?.[0];\n    if (!email?.verified) return done(null, false, { message: 'Unverified email' });\n\n    let user = await User.findOne({ provider: 'google', providerId:",
+    "scores": {
+      "correctness": 3,
+      "completeness": 2,
+      "clarity": 3,
+      "risk_awareness": 3,
+      "practical_value": 2,
+      "total": 13,
+      "one_line_verdict": "Excellent risk analysis and clean approach, but response is truncated mid-code and misses callback route and serialize/deserialize setup."
+    },
+    "latencyMs": 9014
+  },
+  {
+    "taskId": "T3-A",
+    "tier": "Tier-A",
+    "model": "anthropic/claude-3.5-haiku",
+    "modelLabel": "Haiku 3.5",
+    "response": "# Authentication Architecture Decision Record\n\n## Context\nCurrent fragmented authentication across services creates security and usability risks for growing SaaS platform.\n\n## Proposed Architecture\n\n### Components\n1. Centralized Identity Provider (IdP)\n   - Keycloak (Open-source, extensible)\n   - Handles authentication, authorization, user management\n\n2. API Gateway\n   - Kong or Ambassador\n   - Token validation, rate limiting, routing\n\n3. Distributed Session Management\n   - Redis Cluster\n   - Shared session state, token revocation\n\n### Authentication Flow\n```\nUser → API Gateway → Identity Provider → Service Resources\n     (validate JWT)   (authenticate, MFA)\n```\n\n### Technology Choices\n\n#### Identity Provider\n- Keycloak\n  - Pros: \n    - OIDC/SAML native support\n    - Extensible authentication flows\n    - Open-source\n  - Cons: \n    - Higher operational complexity\n\n#### MFA Methods\n- TOTP: Google Authenticator\n- SMS: Twilio Verify\n- Hardware Keys: WebAuthn/FIDO2 standard\n\n#### Token Management\n- JWT with short-lived access tokens\n- Refresh tokens stored server-side\n- Redis for distributed token tracking\n\n## Security Considerations\n\n### Threat Model\n- Potential Risks:\n  1. Token hijacking\n  2. Credential stuffing\n  3. MFA bypass attempts\n\n### Mitigations\n- Implement:\n  - Token rotation\n  - IP/geolocation tracking\n  - Adaptive authentication\n  - Rate limiting\n  - Comprehensive audit logging\n\n## Migration Strategy\n1. Implement IdP in parallel\n2. Gradual service migration\n3. Maintain backward compatibility\n4. Phased rollout (20% increments)\n\n## Compliance\n- SOC2 controls implemented via:\n  - Centralized audit logging\n  - Access controls\n  - Multi-factor authentication\n- GDPR compliance through data minimization, consent tracking\n\n## Trade-offs\n- Complexity vs. Security\n- Performance overhead of centralized auth\n- Increased operational complexity\n\n## Open Questions\n- Performance at scale (100k+ concurrent users)\n- Precise latency requirements for auth flow\n\n## Recommendation\nProceed with architecture, conduct thorough performance testing, implement robust monitoring.\n\n---\n\nEstimated Implementation Time: 3-4 sprints\nEstimated Cost: $50-75k for initial implementation",
+    "scores": {
+      "correctness": 2,
+      "completeness": 2,
+      "clarity": 2,
+      "risk_awareness": 2,
+      "practical_value": 2,
+      "total": 10,
+      "one_line_verdict": "Covers the right components and technologies at a high level but lacks depth in session invalidation mechanics, detailed threat modeling (STRIDE), concrete migration steps, and specifics on token refresh/revocation flows."
+    },
+    "latencyMs": 11974
+  },
+  {
+    "taskId": "T3-A",
+    "tier": "Tier-A",
+    "model": "anthropic/claude-sonnet-4-6",
+    "modelLabel": "Sonnet 4.6",
+    "response": "# ADR-001: Unified SSO + MFA Authentication Architecture\n\n**Status:** Proposed  \n**Date:** 2025  \n**Deciders:** Platform Engineering, Security, Compliance  \n\n---\n\n## Context and Problem Statement\n\n100k+ users authenticate independently against N services. This creates credential sprawl, inconsistent MFA enforcement, no centralized audit trail, and multiplies the blast radius of any credential compromise. We need a unified identity plane that supports enterprise federation (SAML/OIDC), internal service auth (JWT), and strong MFA — while remaining compliant with SOC2 Type II and GDPR.\n\n---\n\n## Component Architecture\n\n```\n┌─────────────────────────────────────────────────────────────────┐\n│                        EDGE LAYER                               │\n│  ┌──────────────┐    ┌──────────────┐    ┌──────────────────┐  │\n│  │  API Gateway  │    │  CDN / WAF   │    │  Rate Limiter    │  │\n│  │ (Kong/Envoy) │    │ (Cloudflare) │    │  (Redis-backed)  │  │\n│  └──────┬───────┘    └──────────────┘    └──────────────────┘  │\n│         │ Bearer JWT validation (public key, no IdP call)       │\n└─────────┼───────────────────────────────────────────────────────┘\n          │\n┌─────────▼───────────────────────────────────────────────────────┐\n│                   IDENTITY PROVIDER (IdP)                        │\n│                                                                  │\n│  ┌─────────────────────────────────────────────────────────┐    │\n│  │                    Keycloak Cluster                      │    │\n│  │  ┌─────────────┐  ┌──────────────┐  ┌───────────────┐  │    │\n│  │  │ SAML 2.0    │  │ OIDC / OAuth │  │ Internal JWT  │  │    │\n│  │  │ SP/IdP      │  │ 2.1 Provider │  │ Issuer        │  │    │\n│  │  └─────────────┘  └──────────────┘  └───────────────┘  │    │\n│  │                                                          │    │\n│  │  ┌─────────────────────────────────────────────────┐    │    │\n│  │  │              MFA Orchestrator                    │    │    │\n│  │  │  ┌──────────┐  ┌──────────┐  ┌──────────────┐  │    │    │\n│  │  │  │  TOTP    │  │   SMS    │  │  FIDO2/WebAuthn│ │    │    │\n│  │  │  │ (HOTP)   │  │ (Twilio) │  │  (YubiKey)   │  │    │    │\n│  │  │  └──────────┘  └──────────┘  └──────────────┘  │    │    │\n│  │  └─────────────────────────────────────────────────┘    │    │\n│  └─────────────────────────────────────────────────────────┘    │\n│                                                                  │\n│  ┌──────────────────┐    ┌───────────────────────────────────┐  │\n│  │  Session Store   │    │      Token Registry               │  │\n│  │  (Redis Cluster) │    │  (active refresh tokens + JTI)    │  │\n│  │  TTL-bound       │    │  (Redis + Postgres for audit)     │  │\n│  └──────────────────┘    └───────────────────────────────────┘  │\n└──────────────────────────────────────────────────────────────────┘\n          │\n          │  Internal JWT (short-lived, RS256)\n          ▼",
+    "scores": {
+      "correctness": 3,
+      "completeness": 2,
+      "clarity": 3,
+      "risk_awareness": 2,
+      "practical_value": 2,
+      "total": 12,
+      "one_line_verdict": "Strong start with solid component architecture and tech choices, but response appears truncated mid-diagram, missing full threat model, migration path, and compliance detail sections required by the prompt."
+    },
+    "latencyMs": 15949
+  },
+  {
+    "taskId": "T3-A",
+    "tier": "Tier-A",
+    "model": "anthropic/claude-opus-4-7",
+    "modelLabel": "Opus 4.7",
+    "response": "# ADR-001: Unified SSO + MFA Authentication Architecture\n\n**Status:** Proposed\n**Date:** 2025\n**Deciders:** Platform Security, Infra, Product Eng\n\n---\n\n## 1. Context\n\nCurrent state: N services, each with independent auth stores, inconsistent session handling, no central audit trail. This blocks SOC2 Type II (CC6.1, CC6.6, CC7.2) and complicates GDPR data subject requests (identity data scattered).\n\nTarget: single IdP issuing federated tokens (SAML for enterprise SSO, OIDC for modern apps/partners, internal JWT for service-to-service and first-party clients), with adaptive MFA and centralized session/audit control.\n\n---\n\n## 2. Decision\n\n### 2.1 Core Technology Choices\n\n| Concern | Choice | Justification |\n|---|---|---|\n| **IdP** | **Keycloak** (self-hosted on K8s) OR **Auth0/Okta** (managed) | Keycloak: full protocol support (SAML+OIDC+OAuth2), FIDO2 native, no per-MAU cost at 100k+, extensible SPIs. Managed wins if team lacks ops maturity — recommend **Keycloak** given scale economics; fallback Okta for faster SOC2 inheritance. |\n| **Token format** | OIDC ID token + short-lived access JWT (RS256, 5–15 min) + opaque refresh token (rotating, 30 days) | Refresh token rotation enables revocation; short JWT TTL bounds blast radius of stolen tokens without session lookup on every call. |\n| **Session store** | **Redis Cluster** (session state, token revocation list, device binding) | Sub-ms lookup; supports TTL-based cleanup; replicated for HA. |\n| **MFA** | TOTP (RFC 6238), SMS via Twilio Verify, FIDO2/WebAuthn (YubiKey, platform authenticators) | FIDO2 required for admins/privileged (SOC2 CC6.1); SMS flagged as **fallback only** (NIST SP 800-63B restricted — document risk). |\n| **Audit** | Structured events → Kafka → S3 (immutable, 7yr) + OpenSearch for query | Append-only, hash-chained for tamper-evidence; satisfies SOC2 CC7.2 + GDPR Art. 30. |\n| **Secrets** | HashiCorp Vault or AWS KMS for signing keys; auto-rotation every 90d with JWKS endpoint | Prevents single-key compromise; clients fetch public keys via `/.well-known/jwks.json` with caching. |\n| **Policy** | OPA sidecar at API gateway for authZ; IdP handles authN only | Separation of concerns; policy-as-code auditable. |\n\n### 2.2 Component Architecture (described)\n\n```\n                 ┌──────────────────────────────────────┐\n End users ───▶  │  Edge: CDN + WAF + API Gateway       │\n Enterprise IdP  ",
+    "scores": {
+      "correctness": 3,
+      "completeness": 2,
+      "clarity": 3,
+      "risk_awareness": 2,
+      "practical_value": 2,
+      "total": 12,
+      "one_line_verdict": "Strong technical foundations and well-justified choices, but truncated mid-diagram — missing threat model, migration path, and full component architecture required by the prompt."
+    },
+    "latencyMs": 12704
+  }
+]
