@@ -112,7 +112,7 @@ export default function Playground() {
   const [promptCopied, setPromptCopied] = useState(false);
   const [enhanced, setEnhanced] = useState(false);
   const [openHint, setOpenHint] = useState<string | null>(null);
-  const [conservativeWarningDismissed, setConservativeWarningDismissed] = useState(false);
+  const [dismissedHash, setDismissedHash] = useState<string | null>(null);
 
   // ─── Cost Calculator state ───
   const [costTaskCount, setCostTaskCount] = useState(100);
@@ -358,19 +358,19 @@ export default function Playground() {
               const higherTierLabel = tierLabel(higherTier, lang);
               
               const hash = `${j},${r},${scoring.context},${scoring.verifiability},${scoring.creativity}`;
-              
-              if (conservativeWarningDismissed) return null;
-              
+
+              if (dismissedHash === hash) return null;
+
               const handleDismiss = () => {
                 try {
                   localStorage.setItem('dismissedConservativeWarning', hash);
                 } catch {}
-                setConservativeWarningDismissed(true);
+                setDismissedHash(hash);
               };
               
               const handleUpgrade = () => {
                 if (j === 3) updateScore('judgment', 4);
-                else if (r === 3) updateScore('risk', 4);
+                if (r === 3) updateScore('risk', 4);
               };
               
               return (
@@ -379,9 +379,15 @@ export default function Playground() {
                     {lang === 'zh' ? '⚠️ 保守路由建議' : '⚠️ Conservative Routing Suggested'}
                   </div>
                   <div className="text-xs text-amber-900 dark:text-amber-200 leading-relaxed">
-                    {lang === 'zh'
-                      ? `J = ${j} 或 R = ${r} 處於邊界值。Series 6 實驗顯示，這兩個維度的 ±1 誤差各有 32–33% 概率引發路由層級錯誤。若任務影響生產環境，建議直接升至 ${higherTierLabel}。`
-                      : `J = ${j} or R = ${r} is a boundary value. Series 6 experiments show ±1 scoring errors on these dimensions cause routing mistakes 32–33% of the time. If this task affects production, consider routing up to ${higherTierLabel}.`}
+                    {(() => {
+                      const dims: string[] = [];
+                      if (j === 3) dims.push('J = 3');
+                      if (r === 3) dims.push('R = 3');
+                      const dimStr = dims.join(lang === 'zh' ? ' 且 ' : ' and ');
+                      return lang === 'zh'
+                        ? `${dimStr} 處於邊界值。Series 6 實驗顯示，這兩個維度的 ±1 誤差各有 32–33% 概率引發路由層級錯誤。若任務影響生產環境，建議直接升至 ${higherTierLabel}。`
+                        : `${dimStr} is a boundary value. Series 6 experiments show ±1 scoring errors on these dimensions cause routing mistakes 32–33% of the time. If this task affects production, consider routing up to ${higherTierLabel}.`;
+                    })()}
                   </div>
                   <div className="flex flex-wrap gap-2">
                     <button
