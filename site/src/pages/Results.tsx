@@ -45,24 +45,24 @@ const S1_TASKS = [
     costA:     '$0.07885',
     costB:     '$0.07885',
     costSave:  0,
-    scoreA:    4,
+    scoreA:    5,
     scoreB:    4,
-    winnerZh:  '平手',
-    winnerEn:  'Tie',
+    winnerZh:  'Mode A 勝（同模型非確定性）',
+    winnerEn:  'Mode A wins (non-determinism)',
   },
 ];
 
 const S2_METRICS = [
   { pct: 100, labelZh: '路由準確率',       labelEn: 'Routing accuracy',    noteZh: '30/30 任務（Exp-2A）', noteEn: '30/30 tasks (Exp-2A)', color: '#10B981' },
   { pct:  87, labelZh: '路由穩定性',       labelEn: 'Routing stability',   noteZh: '±1 擾動後仍正確',     noteEn: '±1 perturbation resistance', color: '#06B6D4' },
-  { pct:  94, labelZh: '品質保留率',       labelEn: 'Quality retention',   noteZh: '14.1/15（盲測 LLM 評分）', noteEn: '14.1/15 (blind LLM-as-Judge)', color: '#F59E0B' },
+  { pct:  94, labelZh: 'LLM 評分水平',     labelEn: 'Quality score',       noteZh: '14.1/15（路由 = All-Opus，盲評持平）', noteEn: '14.1/15 (routed = all-Opus, blind eval tied)', color: '#F59E0B' },
   { pct:  98, labelZh: 'Exec 任務省成本',  labelEn: 'Cost saved (Exec)',   noteZh: '相較 All-Opus 基線',   noteEn: 'vs All-Opus baseline', color: '#D946EF' },
 ];
 
 const S3_STRATEGIES = [
   { nameZh: 'S0 基準（無提示詞）', nameEn: 'S0 Baseline (no prompt)', score: 13.7, costPer: '$0.006', model: 'Sonnet', barPct: 91 },
-  { nameZh: 'S2 Chain-of-Thought', nameEn: 'S2 Chain-of-Thought',     score: 14.3, costPer: '$0.007', model: 'Sonnet', barPct: 95 },
-  { nameZh: 'S3 CoT + 角色',       nameEn: 'S3 CoT + Role',           score: 15.0, costPer: '$0.008', model: 'Sonnet', barPct: 100 },
+  { nameZh: 'S2 結構化輸出格式', nameEn: 'S2 Structured Output',      score: 13.3, costPer: '$0.007', model: 'Sonnet', barPct: 89 },
+  { nameZh: 'S3 CoT + 角色',       nameEn: 'S3 CoT + Role',           score: 15.0, costPer: '$0.007', model: 'Sonnet', barPct: 100 },
   { nameZh: 'S1 角色 + 深度（最佳）', nameEn: 'S1 Role + Depth (best)', score: 15.0, costPer: '$0.006', model: 'Sonnet', barPct: 100, highlight: true },
   { nameZh: 'Opus 基準',           nameEn: 'Opus baseline',           score: 12.7, costPer: '$0.045', model: 'Opus',   barPct: 85 },
 ];
@@ -90,7 +90,7 @@ const S5_MATRIX = [
 ];
 
 const S6_DIMS = [
-  { dimZh: 'R（風險權重）',  dimEn: 'R (Risk)',         rate: 33, changes: 6, perturbs: 18, color: '#EF4444', noteZh: 'Mid→A 最敏感，S8 雙向跳轉', noteEn: 'Most sensitive at Mid→A; S8 flips both ways' },
+  { dimZh: 'R（風險權重）',  dimEn: 'R (Risk)',         rate: 33, changes: 6, perturbs: 18, color: '#EF4444', noteZh: 'Mid→A 最敏感，任務 S8 可 Exec↔Mid↔A 雙向跳轉', noteEn: 'Most sensitive at Mid→A; task S8 flips both Exec↔A directions' },
   { dimZh: 'J（判斷強度）',  dimEn: 'J (Judgment)',      rate: 32, changes: 6, perturbs: 19, color: '#F59E0B', noteZh: '與 Series 2 結果完全一致（32%）', noteEn: 'Exactly matches Series 2 finding (32%)' },
   { dimZh: 'C（上下文寬度）',dimEn: 'C (Context)',       rate: 16, changes: 3, perturbs: 19, color: '#06B6D4', noteZh: '僅影響 Exec/Mid 邊界', noteEn: 'Only affects Exec/Mid boundary' },
   { dimZh: 'Cr（創意密度）', dimEn: 'Cr (Creativity)',   rate: 13, changes: 2, perturbs: 15, color: '#D946EF', noteZh: '僅通過 Tier-A 觸發條件影響', noteEn: 'Only affects Mid→A via Tier-A trigger' },
@@ -125,6 +125,21 @@ const S7_UNDER = [
   { id: 'A3', taskZh: '評估並推薦緩存策略', taskEn: 'Evaluate and recommend caching strategy',
     correct: 'Tier-A', actual: 'Tier-Mid', costCorrect: 0.060, costActual: 0.010, savePct: 83,
     riskZh: '高：性能設計影響深遠', riskEn: 'High: performance design has long-term impact' },
+];
+
+// Series 8: routing error quality impact matrix
+const S8_SCENARIOS = [
+  // over-routing: task goes to a higher (more expensive) tier
+  { id: 'E1', type: 'over' as const, correctTier: 'Tier-Exec', actualTier: 'Tier-Mid',  qCorrect: 14.5, qActual: 14.5, qDelta:  0.0, costPct: +900 },
+  { id: 'E2', type: 'over' as const, correctTier: 'Tier-Exec', actualTier: 'Tier-Mid',  qCorrect: 14.5, qActual: 14.5, qDelta:  0.0, costPct: +900 },
+  { id: 'E3', type: 'over' as const, correctTier: 'Tier-Exec', actualTier: 'Tier-Mid',  qCorrect: 14.5, qActual: 14.5, qDelta:  0.0, costPct: +900 },
+  { id: 'M1', type: 'over' as const, correctTier: 'Tier-Mid',  actualTier: 'Tier-A',    qCorrect: 13.5, qActual: 13.0, qDelta: -0.5, costPct: +500 },
+  { id: 'M2', type: 'over' as const, correctTier: 'Tier-Mid',  actualTier: 'Tier-A',    qCorrect: 13.5, qActual: 13.0, qDelta: -0.5, costPct: +500 },
+  // under-routing: task goes to a lower (cheaper) tier
+  { id: 'M3', type: 'under' as const, correctTier: 'Tier-Mid', actualTier: 'Tier-Exec', qCorrect: 13.5, qActual: 10.5, qDelta: -3.0, costPct:  -90 },
+  { id: 'A1', type: 'under' as const, correctTier: 'Tier-A',   actualTier: 'Tier-Mid',  qCorrect: 12.0, qActual: 11.0, qDelta: -1.0, costPct:  -83 },
+  { id: 'A2', type: 'under' as const, correctTier: 'Tier-A',   actualTier: 'Tier-Mid',  qCorrect: 12.0, qActual: 11.0, qDelta: -1.0, costPct:  -83 },
+  { id: 'A3', type: 'under' as const, correctTier: 'Tier-A',   actualTier: 'Tier-Mid',  qCorrect: 12.0, qActual: 11.0, qDelta: -1.0, costPct:  -83 },
 ];
 
 // ── 子元件 ──────────────────────────────────────────────────────────────────
@@ -798,6 +813,154 @@ export default function Results() {
             {zh
               ? '過路由的金錢代價是真實但可接受的（Exec→Mid 每任務浪費 $0.009），欠路由的質量風險卻不可接受（A→Mid 的架構設計存在嚴重質量風險）。保守路由（在 J=3 或 R=3 時升 Tier）每月僅額外花費 $2.10，遠低於一次架構返工的代價，ROI 明確為正。'
               : 'Over-routing\'s financial cost is real but acceptable ($0.009 wasted per Exec→Mid task); under-routing\'s quality risk is not (routing Tier-A design tasks to Tier-Mid creates serious quality risk). Conservative routing (escalate on J=3 or R=3) costs only $2.10/month extra — far less than a single architecture rework. The ROI is clearly positive.'}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Series 8 ── */}
+      <section className="max-w-5xl mx-auto px-5 sm:px-8 pb-24 border-t border-neutral-200 dark:border-[#2A2A2A] pt-16">
+        <div className="mb-10">
+          <div className="text-xs uppercase tracking-widest text-muted mb-2">{zh ? '系列八 · 2026-05-06' : 'Series 8 · 2026-05-06'}</div>
+          <h2 className="font-display text-2xl sm:text-3xl text-ink mb-3">
+            {zh ? '路由錯誤的品質代價：非對稱風險矩陣' : 'Quality Cost of Routing Errors: Asymmetric Risk Matrix'}
+          </h2>
+          <p className="text-muted text-sm max-w-2xl leading-relaxed">
+            {zh
+              ? '基於 Series 5 品質數據與 Series 7 的 9 個路由錯誤場景，量化每個場景的品質損失。結論：過路由損成本，欠路由損品質——兩者的代價性質截然不同。'
+              : 'Using Series 5 quality data and the 9 misrouting scenarios from Series 7, this series quantifies quality loss per scenario. Finding: over-routing wastes money; under-routing wastes quality — fundamentally different kinds of cost.'}
+          </p>
+        </div>
+
+        {/* Quality impact matrix */}
+        <div className="rounded-xl border border-neutral-200 dark:border-[#2A2A2A] bg-surface overflow-hidden mb-8">
+          <div className="text-xs text-muted uppercase tracking-wider px-4 pt-4 pb-3">
+            {zh ? '品質影響矩陣（滿分 15）' : 'Quality impact matrix (out of 15)'}
+          </div>
+          <table className="w-full text-xs">
+            <thead>
+              <tr className="border-t border-b border-neutral-100 dark:border-[#2A2A2A] text-muted">
+                <th className="text-left py-2 px-4 font-normal">{zh ? '場景' : 'Scenario'}</th>
+                <th className="text-center py-2 px-3 font-normal">{zh ? '正確 Tier' : 'Correct'}</th>
+                <th className="text-center py-2 px-3 font-normal">{zh ? '實際路由' : 'Misrouted to'}</th>
+                <th className="text-center py-2 px-3 font-normal">{zh ? '正確品質' : 'Quality (correct)'}</th>
+                <th className="text-center py-2 px-3 font-normal">{zh ? '實際品質' : 'Quality (actual)'}</th>
+                <th className="text-center py-2 px-3 font-normal">{zh ? '品質損失' : 'Quality Δ'}</th>
+                <th className="text-right py-2 px-4 font-normal">{zh ? '成本變化' : 'Cost Δ'}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {S8_SCENARIOS.map((r) => {
+                const isOver = r.type === 'over';
+                const deltaColor = r.qDelta === 0 ? '#10B981' : r.qDelta >= -0.5 ? '#F59E0B' : '#EF4444';
+                return (
+                  <tr key={r.id} className="border-t border-neutral-100 dark:border-[#222]">
+                    <td className="py-2.5 px-4">
+                      <span className="font-mono text-ink">{r.id}</span>
+                      <span className="ml-2 text-[10px] px-1.5 py-0.5 rounded-full font-medium"
+                        style={{ color: isOver ? '#F59E0B' : '#EF4444', background: isOver ? '#F59E0B18' : '#EF444418' }}>
+                        {isOver ? (zh ? '過路由' : 'over') : (zh ? '欠路由' : 'under')}
+                      </span>
+                    </td>
+                    <td className="text-center py-2.5 px-3 text-muted font-mono">{r.correctTier}</td>
+                    <td className="text-center py-2.5 px-3 text-muted font-mono">{r.actualTier}</td>
+                    <td className="text-center py-2.5 px-3 font-mono text-ink">{r.qCorrect.toFixed(1)}</td>
+                    <td className="text-center py-2.5 px-3 font-mono text-ink">{r.qActual.toFixed(1)}</td>
+                    <td className="text-center py-2.5 px-3 font-mono font-semibold" style={{ color: deltaColor }}>
+                      {r.qDelta === 0 ? '0' : r.qDelta.toFixed(1)}
+                    </td>
+                    <td className="text-right py-2.5 px-4 font-mono font-semibold"
+                      style={{ color: r.costPct > 0 ? '#F59E0B' : '#10B981' }}>
+                      {r.costPct > 0 ? `+${r.costPct}%` : `${r.costPct}%`}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Asymmetric risk summary */}
+        <div className="grid sm:grid-cols-2 gap-4 mb-8">
+          <div className="rounded-xl border border-amber-200 dark:border-amber-900 bg-amber-50 dark:bg-amber-950/30 p-5">
+            <div className="text-xs font-semibold text-amber-700 dark:text-amber-400 mb-3">
+              {zh ? '過路由：損錢，不損品質' : 'Over-routing: wastes money, not quality'}
+            </div>
+            <div className="space-y-2">
+              <div className="flex items-baseline gap-2">
+                <span className="font-display text-2xl" style={{ color: '#F59E0B' }}>≈ 0</span>
+                <span className="text-xs text-amber-700 dark:text-amber-400">{zh ? '平均品質損失' : 'avg quality delta'}</span>
+              </div>
+              <div className="text-xs text-amber-800 dark:text-amber-300">
+                {zh
+                  ? 'E1–E3 品質持平（14.5/15），M1–M2 僅損 0.5 分。把任務給更強的模型，品質不會變差。'
+                  : 'E1–E3 quality unchanged (14.5/15); M1–M2 lose only 0.5 pts. Sending tasks to stronger models doesn\'t hurt quality.'}
+              </div>
+              <div className="text-[11px] font-mono text-amber-600 dark:text-amber-500 pt-1">
+                {zh ? '代價：+500%–900% 成本' : 'Cost: +500%–900% extra spend'}
+              </div>
+            </div>
+          </div>
+          <div className="rounded-xl border border-red-200 dark:border-red-900 bg-red-50 dark:bg-red-950/20 p-5">
+            <div className="text-xs font-semibold text-red-700 dark:text-red-400 mb-3">
+              {zh ? '欠路由：損品質，省了成本' : 'Under-routing: hurts quality, saves cost'}
+            </div>
+            <div className="space-y-2">
+              <div className="flex items-baseline gap-2">
+                <span className="font-display text-2xl" style={{ color: '#EF4444' }}>−1.5</span>
+                <span className="text-xs text-red-700 dark:text-red-400">{zh ? '平均品質損失（/15）' : 'avg quality loss (out of 15)'}</span>
+              </div>
+              <div className="text-xs text-red-800 dark:text-red-300">
+                {zh
+                  ? 'M3（−3.0）和 A1–A3（−1.0）。Mid→Exec 是最危險的欠路由，對測試覆蓋和架構質量有嚴重影響。'
+                  : 'M3 (−3.0) and A1–A3 (−1.0). Mid→Exec is the most dangerous misroute, seriously impacting test coverage and architecture quality.'}
+              </div>
+              <div className="text-[11px] font-mono text-red-600 dark:text-red-500 pt-1">
+                {zh ? '省了：83%–90% 成本，但代價是架構質量' : 'Saved: 83%–90% cost, but at the price of quality'}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Core conclusion */}
+        <div className="rounded-xl border border-neutral-200 dark:border-[#2A2A2A] bg-surface p-5 mb-8">
+          <div className="text-xs text-muted uppercase tracking-wider mb-3">{zh ? 'Series 7 vs Series 8 對比總結' : 'Series 7 vs Series 8 comparison'}</div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs">
+              <thead>
+                <tr className="text-muted border-b border-neutral-100 dark:border-[#222]">
+                  <th className="text-left py-2 pr-4 font-normal">{zh ? '錯誤類型' : 'Error type'}</th>
+                  <th className="text-center py-2 px-3 font-normal">{zh ? '品質影響' : 'Quality impact'}</th>
+                  <th className="text-center py-2 px-3 font-normal">{zh ? '成本影響' : 'Cost impact'}</th>
+                  <th className="text-right py-2 pl-3 font-normal">{zh ? '建議' : 'Recommendation'}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-t border-neutral-100 dark:border-[#222]">
+                  <td className="py-2.5 pr-4 text-ink">{zh ? '過路由' : 'Over-routing'}</td>
+                  <td className="text-center py-2.5 px-3 font-semibold" style={{ color: '#10B981' }}>≈ 0</td>
+                  <td className="text-center py-2.5 px-3 font-mono font-semibold" style={{ color: '#F59E0B' }}>+500%–900%</td>
+                  <td className="text-right py-2.5 pl-3 text-muted text-[11px]">{zh ? '可接受，偏好避免' : 'Acceptable, prefer to avoid'}</td>
+                </tr>
+                <tr className="border-t border-neutral-100 dark:border-[#222]">
+                  <td className="py-2.5 pr-4 text-ink">{zh ? '欠路由' : 'Under-routing'}</td>
+                  <td className="text-center py-2.5 px-3 font-semibold" style={{ color: '#EF4444' }}>−8%–33%</td>
+                  <td className="text-center py-2.5 px-3 font-mono font-semibold" style={{ color: '#10B981' }}>−83%–90%</td>
+                  <td className="text-right py-2.5 pl-3 font-semibold text-[11px]" style={{ color: '#EF4444' }}>{zh ? '嚴格避免' : 'Strictly avoid'}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Series 8 insight */}
+        <div className="px-5 py-4 rounded-xl border border-teal-200 dark:border-teal-900 bg-teal-50 dark:bg-teal-950/30">
+          <div className="text-xs font-semibold text-teal-700 dark:text-teal-400 mb-1">
+            {zh ? '關鍵發現' : 'Key finding'}
+          </div>
+          <div className="text-sm text-teal-800 dark:text-teal-300">
+            {zh
+              ? '過路由和欠路由的代價性質完全不同。過路由損的是錢（多花 500%–900%），但品質幾乎不受影響；欠路由省的是錢（少花 83%–90%），但品質損失達 −8% 到 −33%。品質損失比金錢損失更難修復——一個架構錯誤可能導致整個模塊重寫。結論：當不確定時，寧可過路由，絕不欠路由。'
+              : 'Over-routing and under-routing cost you fundamentally different things. Over-routing costs money (+500%–900%) but barely affects quality; under-routing saves money (−83%–90%) but loses quality by −8% to −33%. Quality loss is far harder to reverse than financial loss — a bad architecture decision may require rewriting an entire module. Conclusion: when in doubt, over-route. Never under-route.'}
           </div>
         </div>
       </section>
