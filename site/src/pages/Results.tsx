@@ -521,6 +521,11 @@ export default function Results() {
           <div className="text-xs text-center text-muted mt-3">
             {zh ? '完全一致 — 評分框架的定義清晰且跨領域通用' : 'Perfect agreement — scoring rubric is clear and domain-agnostic'}
           </div>
+          <div className="text-xs text-center mt-2 px-4 py-2 rounded-lg bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-200/60 dark:border-emerald-800/40" style={{ color: '#059669' }}>
+            {zh
+              ? '💡 這意味著什麼？AI 代理（Claude）僅憑評分指南獨立對 20 個任務評分，結果與人工基準完全一致（偏差 0.00）。說明 5 維評分框架（J判斷、C上下文、R風險、V可驗證、Cr創意）定義足夠清晰，任何人或 AI 按指南評分都能得到相同結果，不需要領域專家經驗。'
+              : '💡 What does this mean? The AI agent (Claude) scored all 20 tasks independently using only the scoring guide, and matched the human baseline exactly (0.00 deviation). This means the 5-dimension rubric is so clearly defined that anyone — human or AI — can apply it consistently without needing domain expertise.'}
+          </div>
         </div>
 
         {/* Series 4 insight */}
