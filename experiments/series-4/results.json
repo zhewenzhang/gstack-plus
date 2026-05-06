@@ -1,0 +1,586 @@
+{
+  "results": [
+    {
+      "id": "F1",
+      "domain": "Frontend",
+      "descEn": "Fix typo in button label",
+      "groundTruth": {
+        "j": 1,
+        "c": 1,
+        "r": 1,
+        "v": 5,
+        "cr": 1
+      },
+      "expectedTier": "Tier-Exec",
+      "actualScores": {
+        "j": 1,
+        "c": 1,
+        "r": 1,
+        "v": 5,
+        "cr": 1
+      },
+      "actualTier": "Tier-Exec",
+      "tierMatch": true,
+      "scoreDelta": {
+        "j": 0,
+        "c": 0,
+        "r": 0,
+        "v": 0,
+        "cr": 0
+      }
+    },
+    {
+      "id": "F2",
+      "domain": "Frontend",
+      "descEn": "Add skeleton loading animation to all pages",
+      "groundTruth": {
+        "j": 2,
+        "c": 2,
+        "r": 1,
+        "v": 4,
+        "cr": 2
+      },
+      "expectedTier": "Tier-Exec",
+      "actualScores": {
+        "j": 2,
+        "c": 2,
+        "r": 1,
+        "v": 4,
+        "cr": 2
+      },
+      "actualTier": "Tier-Exec",
+      "tierMatch": true,
+      "scoreDelta": {
+        "j": 0,
+        "c": 0,
+        "r": 0,
+        "v": 0,
+        "cr": 0
+      }
+    },
+    {
+      "id": "F3",
+      "domain": "Frontend",
+      "descEn": "Design component library Design System from scratch",
+      "groundTruth": {
+        "j": 4,
+        "c": 3,
+        "r": 2,
+        "v": 2,
+        "cr": 5
+      },
+      "expectedTier": "Tier-A",
+      "actualScores": {
+        "j": 4,
+        "c": 3,
+        "r": 2,
+        "v": 2,
+        "cr": 5
+      },
+      "actualTier": "Tier-A",
+      "tierMatch": true,
+      "scoreDelta": {
+        "j": 0,
+        "c": 0,
+        "r": 0,
+        "v": 0,
+        "cr": 0
+      }
+    },
+    {
+      "id": "F4",
+      "domain": "Frontend",
+      "descEn": "Migrate entire codebase from React class components to Hooks",
+      "groundTruth": {
+        "j": 3,
+        "c": 4,
+        "r": 3,
+        "v": 3,
+        "cr": 2
+      },
+      "expectedTier": "Tier-Mid",
+      "actualScores": {
+        "j": 3,
+        "c": 4,
+        "r": 3,
+        "v": 3,
+        "cr": 2
+      },
+      "actualTier": "Tier-Mid",
+      "tierMatch": true,
+      "scoreDelta": {
+        "j": 0,
+        "c": 0,
+        "r": 0,
+        "v": 0,
+        "cr": 0
+      }
+    },
+    {
+      "id": "F5",
+      "domain": "Frontend",
+      "descEn": "Implement real-time collaborative editing",
+      "groundTruth": {
+        "j": 5,
+        "c": 4,
+        "r": 4,
+        "v": 2,
+        "cr": 4
+      },
+      "expectedTier": "Tier-A",
+      "actualScores": {
+        "j": 5,
+        "c": 4,
+        "r": 4,
+        "v": 2,
+        "cr": 4
+      },
+      "actualTier": "Tier-A",
+      "tierMatch": true,
+      "scoreDelta": {
+        "j": 0,
+        "c": 0,
+        "r": 0,
+        "v": 0,
+        "cr": 0
+      }
+    },
+    {
+      "id": "B1",
+      "domain": "Backend",
+      "descEn": "Add /health heartbeat endpoint",
+      "groundTruth": {
+        "j": 1,
+        "c": 1,
+        "r": 1,
+        "v": 5,
+        "cr": 1
+      },
+      "expectedTier": "Tier-Exec",
+      "actualScores": {
+        "j": 1,
+        "c": 1,
+        "r": 1,
+        "v": 5,
+        "cr": 1
+      },
+      "actualTier": "Tier-Exec",
+      "tierMatch": true,
+      "scoreDelta": {
+        "j": 0,
+        "c": 0,
+        "r": 0,
+        "v": 0,
+        "cr": 0
+      }
+    },
+    {
+      "id": "B2",
+      "domain": "Backend",
+      "descEn": "Add index on users.created_at column",
+      "groundTruth": {
+        "j": 1,
+        "c": 1,
+        "r": 2,
+        "v": 5,
+        "cr": 1
+      },
+      "expectedTier": "Tier-Exec",
+      "actualScores": {
+        "j": 1,
+        "c": 1,
+        "r": 2,
+        "v": 5,
+        "cr": 1
+      },
+      "actualTier": "Tier-Exec",
+      "tierMatch": true,
+      "scoreDelta": {
+        "j": 0,
+        "c": 0,
+        "r": 0,
+        "v": 0,
+        "cr": 0
+      }
+    },
+    {
+      "id": "B3",
+      "domain": "Backend",
+      "descEn": "Refactor auth middleware to support OAuth 2.0",
+      "groundTruth": {
+        "j": 3,
+        "c": 3,
+        "r": 3,
+        "v": 3,
+        "cr": 2
+      },
+      "expectedTier": "Tier-Mid",
+      "actualScores": {
+        "j": 3,
+        "c": 3,
+        "r": 3,
+        "v": 3,
+        "cr": 2
+      },
+      "actualTier": "Tier-Mid",
+      "tierMatch": true,
+      "scoreDelta": {
+        "j": 0,
+        "c": 0,
+        "r": 0,
+        "v": 0,
+        "cr": 0
+      }
+    },
+    {
+      "id": "B4",
+      "domain": "Backend",
+      "descEn": "Add rate limiting to all API endpoints",
+      "groundTruth": {
+        "j": 4,
+        "c": 3,
+        "r": 4,
+        "v": 3,
+        "cr": 2
+      },
+      "expectedTier": "Tier-A",
+      "actualScores": {
+        "j": 4,
+        "c": 3,
+        "r": 4,
+        "v": 3,
+        "cr": 2
+      },
+      "actualTier": "Tier-A",
+      "tierMatch": true,
+      "scoreDelta": {
+        "j": 0,
+        "c": 0,
+        "r": 0,
+        "v": 0,
+        "cr": 0
+      }
+    },
+    {
+      "id": "B5",
+      "domain": "Backend",
+      "descEn": "Design microservices split architecture for the entire platform",
+      "groundTruth": {
+        "j": 5,
+        "c": 5,
+        "r": 4,
+        "v": 1,
+        "cr": 3
+      },
+      "expectedTier": "Tier-A",
+      "actualScores": {
+        "j": 5,
+        "c": 5,
+        "r": 4,
+        "v": 1,
+        "cr": 3
+      },
+      "actualTier": "Tier-A",
+      "tierMatch": true,
+      "scoreDelta": {
+        "j": 0,
+        "c": 0,
+        "r": 0,
+        "v": 0,
+        "cr": 0
+      }
+    },
+    {
+      "id": "D1",
+      "domain": "DataEng",
+      "descEn": "Batch import CSV files into PostgreSQL",
+      "groundTruth": {
+        "j": 1,
+        "c": 1,
+        "r": 2,
+        "v": 5,
+        "cr": 1
+      },
+      "expectedTier": "Tier-Exec",
+      "actualScores": {
+        "j": 1,
+        "c": 1,
+        "r": 2,
+        "v": 5,
+        "cr": 1
+      },
+      "actualTier": "Tier-Exec",
+      "tierMatch": true,
+      "scoreDelta": {
+        "j": 0,
+        "c": 0,
+        "r": 0,
+        "v": 0,
+        "cr": 0
+      }
+    },
+    {
+      "id": "D2",
+      "domain": "DataEng",
+      "descEn": "Deduplicate records in ETL pipeline",
+      "groundTruth": {
+        "j": 2,
+        "c": 2,
+        "r": 2,
+        "v": 4,
+        "cr": 1
+      },
+      "expectedTier": "Tier-Exec",
+      "actualScores": {
+        "j": 2,
+        "c": 2,
+        "r": 2,
+        "v": 4,
+        "cr": 1
+      },
+      "actualTier": "Tier-Exec",
+      "tierMatch": true,
+      "scoreDelta": {
+        "j": 0,
+        "c": 0,
+        "r": 0,
+        "v": 0,
+        "cr": 0
+      }
+    },
+    {
+      "id": "D3",
+      "domain": "DataEng",
+      "descEn": "Optimize slow SQL query using EXPLAIN ANALYZE",
+      "groundTruth": {
+        "j": 3,
+        "c": 3,
+        "r": 3,
+        "v": 4,
+        "cr": 2
+      },
+      "expectedTier": "Tier-Mid",
+      "actualScores": {
+        "j": 3,
+        "c": 3,
+        "r": 3,
+        "v": 4,
+        "cr": 2
+      },
+      "actualTier": "Tier-Mid",
+      "tierMatch": true,
+      "scoreDelta": {
+        "j": 0,
+        "c": 0,
+        "r": 0,
+        "v": 0,
+        "cr": 0
+      }
+    },
+    {
+      "id": "D4",
+      "domain": "DataEng",
+      "descEn": "Design real-time stream processing architecture with Kafka + Flink",
+      "groundTruth": {
+        "j": 5,
+        "c": 4,
+        "r": 4,
+        "v": 2,
+        "cr": 3
+      },
+      "expectedTier": "Tier-A",
+      "actualScores": {
+        "j": 5,
+        "c": 4,
+        "r": 4,
+        "v": 2,
+        "cr": 3
+      },
+      "actualTier": "Tier-A",
+      "tierMatch": true,
+      "scoreDelta": {
+        "j": 0,
+        "c": 0,
+        "r": 0,
+        "v": 0,
+        "cr": 0
+      }
+    },
+    {
+      "id": "D5",
+      "domain": "DataEng",
+      "descEn": "Design cross-datacenter data synchronization strategy",
+      "groundTruth": {
+        "j": 5,
+        "c": 4,
+        "r": 5,
+        "v": 2,
+        "cr": 3
+      },
+      "expectedTier": "Tier-A",
+      "actualScores": {
+        "j": 5,
+        "c": 4,
+        "r": 5,
+        "v": 2,
+        "cr": 3
+      },
+      "actualTier": "Tier-A",
+      "tierMatch": true,
+      "scoreDelta": {
+        "j": 0,
+        "c": 0,
+        "r": 0,
+        "v": 0,
+        "cr": 0
+      }
+    },
+    {
+      "id": "O1",
+      "domain": "DevOps",
+      "descEn": "Update Node.js version in GitHub Actions workflow",
+      "groundTruth": {
+        "j": 1,
+        "c": 1,
+        "r": 2,
+        "v": 5,
+        "cr": 1
+      },
+      "expectedTier": "Tier-Exec",
+      "actualScores": {
+        "j": 1,
+        "c": 1,
+        "r": 2,
+        "v": 5,
+        "cr": 1
+      },
+      "actualTier": "Tier-Exec",
+      "tierMatch": true,
+      "scoreDelta": {
+        "j": 0,
+        "c": 0,
+        "r": 0,
+        "v": 0,
+        "cr": 0
+      }
+    },
+    {
+      "id": "O2",
+      "domain": "DevOps",
+      "descEn": "Add Docker healthcheck configuration",
+      "groundTruth": {
+        "j": 2,
+        "c": 2,
+        "r": 2,
+        "v": 4,
+        "cr": 1
+      },
+      "expectedTier": "Tier-Exec",
+      "actualScores": {
+        "j": 2,
+        "c": 2,
+        "r": 2,
+        "v": 4,
+        "cr": 1
+      },
+      "actualTier": "Tier-Exec",
+      "tierMatch": true,
+      "scoreDelta": {
+        "j": 0,
+        "c": 0,
+        "r": 0,
+        "v": 0,
+        "cr": 0
+      }
+    },
+    {
+      "id": "O3",
+      "domain": "DevOps",
+      "descEn": "Investigate intermittent memory leak in production",
+      "groundTruth": {
+        "j": 3,
+        "c": 4,
+        "r": 3,
+        "v": 2,
+        "cr": 2
+      },
+      "expectedTier": "Tier-Mid",
+      "actualScores": {
+        "j": 3,
+        "c": 4,
+        "r": 3,
+        "v": 2,
+        "cr": 2
+      },
+      "actualTier": "Tier-Mid",
+      "tierMatch": true,
+      "scoreDelta": {
+        "j": 0,
+        "c": 0,
+        "r": 0,
+        "v": 0,
+        "cr": 0
+      }
+    },
+    {
+      "id": "O4",
+      "domain": "DevOps",
+      "descEn": "Configure K8s cluster HPA autoscaling",
+      "groundTruth": {
+        "j": 4,
+        "c": 3,
+        "r": 4,
+        "v": 3,
+        "cr": 2
+      },
+      "expectedTier": "Tier-A",
+      "actualScores": {
+        "j": 4,
+        "c": 3,
+        "r": 4,
+        "v": 3,
+        "cr": 2
+      },
+      "actualTier": "Tier-A",
+      "tierMatch": true,
+      "scoreDelta": {
+        "j": 0,
+        "c": 0,
+        "r": 0,
+        "v": 0,
+        "cr": 0
+      }
+    },
+    {
+      "id": "O5",
+      "domain": "DevOps",
+      "descEn": "Design zero-downtime blue-green deployment strategy",
+      "groundTruth": {
+        "j": 4,
+        "c": 4,
+        "r": 5,
+        "v": 2,
+        "cr": 3
+      },
+      "expectedTier": "Tier-A",
+      "actualScores": {
+        "j": 4,
+        "c": 4,
+        "r": 5,
+        "v": 2,
+        "cr": 3
+      },
+      "actualTier": "Tier-A",
+      "tierMatch": true,
+      "scoreDelta": {
+        "j": 0,
+        "c": 0,
+        "r": 0,
+        "v": 0,
+        "cr": 0
+      }
+    }
+  ],
+  "totalCorrect": 20,
+  "accuracy": 1
+}

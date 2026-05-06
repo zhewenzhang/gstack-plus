@@ -276,6 +276,13 @@ export const NAV: Section[] = [
         sourceEn: 'docs/experiment-series-3-en.md',
         description: '4 種 Prompt 策略讓 Sonnet 反超 Opus（15.0 vs 12.7/15，省 86% 成本）+ 20 個真實任務路由 100% 準確',
         descriptionEn: 'S1 prompt strategy lets Sonnet beat Opus (15.0 vs 12.7/15, 86% cost saving) + 100% routing accuracy on 20 real tasks' },
+      { order: 703, slug: 'experiment-series-4',
+        title: '實驗 Series 4：領域適用性測試',
+        titleEn: 'Experiment Series 4: Domain Applicability Test',
+        source: 'docs/experiment-series-4.md',
+        sourceEn: 'docs/experiment-series-4-en.md',
+        description: '20 個跨領域任務（前端/後端/數據工程/DevOps）驗證 5 維度評分框架的通用性 — 100% 路由準確率',
+        descriptionEn: '20 tasks across 4 domains validate universality of the 5-dimension scoring — 100% routing accuracy' },
     ],
   },
 ];
