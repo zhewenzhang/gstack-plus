@@ -97,6 +97,36 @@ const S6_DIMS = [
   { dimZh: 'V（可驗證性）',  dimEn: 'V (Verifiability)', rate: 11, changes: 2, perturbs: 18, color: '#10B981', noteZh: '僅通過 Exec 條件影響，影響最小', noteEn: 'Least sensitive — only via Exec condition' },
 ];
 
+// over-routing: sending a cheaper task to a more expensive tier
+const S7_OVER = [
+  { id: 'E1', taskZh: '為工具函數加類型標注', taskEn: 'Add type annotations to utility functions',
+    correct: 'Tier-Exec', actual: 'Tier-Mid', costCorrect: 0.001, costActual: 0.010, deltaPct: 900 },
+  { id: 'E2', taskZh: '更新 CI 環境變量', taskEn: 'Update environment variables in CI pipeline',
+    correct: 'Tier-Exec', actual: 'Tier-Mid', costCorrect: 0.001, costActual: 0.010, deltaPct: 900 },
+  { id: 'E3', taskZh: '為高頻查詢欄位加資料庫索引', taskEn: 'Add database index for frequently queried field',
+    correct: 'Tier-Exec', actual: 'Tier-Mid', costCorrect: 0.001, costActual: 0.010, deltaPct: 900 },
+  { id: 'M1', taskZh: '重構 auth 中間件使用 JWT', taskEn: 'Refactor auth middleware to use JWT',
+    correct: 'Tier-Mid', actual: 'Tier-A', costCorrect: 0.010, costActual: 0.060, deltaPct: 500 },
+  { id: 'M2', taskZh: '為用戶列表 API 加分頁', taskEn: 'Add pagination to user list API',
+    correct: 'Tier-Mid', actual: 'Tier-A', costCorrect: 0.010, costActual: 0.060, deltaPct: 500 },
+];
+
+// under-routing: sending a complex task to a cheaper tier (saves cost, but risks quality)
+const S7_UNDER = [
+  { id: 'M3', taskZh: '為支付服務編寫整合測試', taskEn: 'Write integration tests for payment service',
+    correct: 'Tier-Mid', actual: 'Tier-Exec', costCorrect: 0.010, costActual: 0.001, savePct: 90,
+    riskZh: '高：測試覆蓋不足', riskEn: 'High: insufficient test coverage' },
+  { id: 'A1', taskZh: '設計資料庫分片策略', taskEn: 'Design database sharding strategy',
+    correct: 'Tier-A', actual: 'Tier-Mid', costCorrect: 0.060, costActual: 0.010, savePct: 83,
+    riskZh: '極高：架構決策質量', riskEn: 'Critical: architecture decision quality' },
+  { id: 'A2', taskZh: '規劃 OAuth2 + SSO 整合架構', taskEn: 'Plan OAuth2 + SSO integration architecture',
+    correct: 'Tier-A', actual: 'Tier-Mid', costCorrect: 0.060, costActual: 0.010, savePct: 83,
+    riskZh: '極高：安全架構設計', riskEn: 'Critical: security architecture design' },
+  { id: 'A3', taskZh: '評估並推薦緩存策略', taskEn: 'Evaluate and recommend caching strategy',
+    correct: 'Tier-A', actual: 'Tier-Mid', costCorrect: 0.060, costActual: 0.010, savePct: 83,
+    riskZh: '高：性能設計影響深遠', riskEn: 'High: performance design has long-term impact' },
+];
+
 // ── 子元件 ──────────────────────────────────────────────────────────────────
 
 function ScoreDots({ score, max = 5 }: { score: number; max?: number }) {
@@ -657,6 +687,117 @@ export default function Results() {
             {zh
               ? 'R（風險權重）和 J（判斷強度）並列最敏感（33% / 32%）。J 的 32% 與 Series 2 的 30 任務結果完全一致——跨越兩個獨立實驗的一致性，強烈說明這不是統計偶然。邊界任務中 21% 的 ±1 擾動引發路由改變，使用者評分時應對這兩個維度保持最高謹慎。'
               : 'R (Risk) and J (Judgment) are co-equal in sensitivity (33% / 32%). J\'s 32% exactly matches the Series 2 finding on 30 different tasks — cross-experiment consistency this tight is not statistical coincidence. With 21% of boundary tasks flipping on a ±1 perturbation, scorers must be most careful with these two dimensions.'}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Series 7 ── */}
+      <section className="max-w-5xl mx-auto px-5 sm:px-8 pb-24 border-t border-neutral-200 dark:border-[#2A2A2A] pt-16">
+        <div className="mb-10">
+          <div className="text-xs uppercase tracking-widest text-muted mb-2">{zh ? '系列七 · 2026-05-06' : 'Series 7 · 2026-05-06'}</div>
+          <h2 className="font-display text-2xl sm:text-3xl text-ink mb-3">
+            {zh ? '路由錯誤的真實代價：過路由 vs 欠路由' : 'The Real Cost of Routing Errors: Over vs. Under-Routing'}
+          </h2>
+          <p className="text-muted text-sm max-w-2xl leading-relaxed">
+            {zh
+              ? '9 個任務刻意設計路由錯誤（5 個過路由，4 個欠路由），量化每種錯誤的成本代價和質量風險，計算保守路由策略的 ROI。'
+              : '9 tasks with deliberate misrouting (5 over-routed, 4 under-routed) — quantifying the cost penalty and quality risk of each error type, and computing the ROI of conservative routing.'}
+          </p>
+        </div>
+
+        {/* Over-routing table */}
+        <div className="mb-8">
+          <div className="text-xs text-muted uppercase tracking-wider mb-3">
+            {zh ? '過路由：把 Exec/Mid 任務升級到更貴的 Tier' : 'Over-routing: sending cheap tasks to expensive tiers'}
+          </div>
+          <div className="rounded-xl border border-neutral-200 dark:border-[#2A2A2A] bg-surface overflow-hidden">
+            <table className="w-full text-xs">
+              <thead>
+                <tr className="border-b border-neutral-100 dark:border-[#2A2A2A] text-muted">
+                  <th className="text-left py-2.5 px-4 font-normal">{zh ? '任務' : 'Task'}</th>
+                  <th className="text-center py-2.5 px-3 font-normal">{zh ? '正確 Tier' : 'Correct'}</th>
+                  <th className="text-center py-2.5 px-3 font-normal">{zh ? '錯誤路由' : 'Misrouted'}</th>
+                  <th className="text-right py-2.5 px-4 font-normal">{zh ? '額外浪費' : 'Extra cost'}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {S7_OVER.map((r) => (
+                  <tr key={r.id} className="border-t border-neutral-100 dark:border-[#222]">
+                    <td className="py-2.5 px-4 text-ink">{zh ? r.taskZh : r.taskEn}</td>
+                    <td className="text-center py-2.5 px-3 text-muted font-mono">{r.correct}</td>
+                    <td className="text-center py-2.5 px-3 text-muted font-mono">{r.actual}</td>
+                    <td className="text-right py-2.5 px-4 font-mono font-semibold" style={{ color: '#EF4444' }}>+{r.deltaPct}%</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="text-[11px] text-muted mt-1.5 px-1">
+            {zh
+              ? '過路由成本損失：Exec→Mid +900%（$0.009/任務），Mid→A +500%（$0.050/任務）'
+              : 'Over-routing penalty: Exec→Mid +900% ($0.009/task), Mid→A +500% ($0.050/task)'}
+          </div>
+        </div>
+
+        {/* Under-routing table */}
+        <div className="mb-8">
+          <div className="text-xs text-muted uppercase tracking-wider mb-3">
+            {zh ? '欠路由：把 Mid/A 任務降級到更便宜的 Tier（省錢但有質量風險）' : 'Under-routing: sending complex tasks to cheaper tiers (saves cost, risks quality)'}
+          </div>
+          <div className="rounded-xl border border-neutral-200 dark:border-[#2A2A2A] bg-surface overflow-hidden">
+            <table className="w-full text-xs">
+              <thead>
+                <tr className="border-b border-neutral-100 dark:border-[#2A2A2A] text-muted">
+                  <th className="text-left py-2.5 px-4 font-normal">{zh ? '任務' : 'Task'}</th>
+                  <th className="text-center py-2.5 px-3 font-normal">{zh ? '正確 Tier' : 'Correct'}</th>
+                  <th className="text-center py-2.5 px-3 font-normal">{zh ? '錯誤路由' : 'Misrouted'}</th>
+                  <th className="text-center py-2.5 px-3 font-normal">{zh ? '省成本' : 'Cost saved'}</th>
+                  <th className="text-right py-2.5 px-4 font-normal">{zh ? '質量風險' : 'Quality risk'}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {S7_UNDER.map((r) => (
+                  <tr key={r.id} className="border-t border-neutral-100 dark:border-[#222]">
+                    <td className="py-2.5 px-4 text-ink">{zh ? r.taskZh : r.taskEn}</td>
+                    <td className="text-center py-2.5 px-3 text-muted font-mono">{r.correct}</td>
+                    <td className="text-center py-2.5 px-3 text-muted font-mono">{r.actual}</td>
+                    <td className="text-center py-2.5 px-3 font-mono font-semibold" style={{ color: '#10B981' }}>−{r.savePct}%</td>
+                    <td className="text-right py-2.5 px-4 text-[11px]" style={{ color: '#F59E0B' }}>{zh ? r.riskZh : r.riskEn}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Break-even analysis */}
+        <div className="grid sm:grid-cols-3 gap-4 mb-8">
+          <div className="rounded-xl border border-neutral-200 dark:border-[#2A2A2A] bg-surface p-4 text-center">
+            <div className="font-display text-3xl mb-1" style={{ color: '#EF4444' }}>+900%</div>
+            <div className="text-xs text-ink font-medium mb-0.5">{zh ? 'Exec→Mid 過路由代價' : 'Exec→Mid over-routing cost'}</div>
+            <div className="text-[11px] text-muted">{zh ? '+$0.009/任務，月均 100 任務 = $0.90 浪費' : '+$0.009/task, 100 tasks/mo = $0.90 waste'}</div>
+          </div>
+          <div className="rounded-xl border border-neutral-200 dark:border-[#2A2A2A] bg-surface p-4 text-center">
+            <div className="font-display text-3xl mb-1" style={{ color: '#F59E0B' }}>$2.10</div>
+            <div className="text-xs text-ink font-medium mb-0.5">{zh ? '保守路由月均額外成本' : 'Conservative routing extra cost/mo'}</div>
+            <div className="text-[11px] text-muted">{zh ? '200 任務中 21% 觸發升 Tier（42 任務 × $0.050）' : '21% of 200 tasks escalated (42 × $0.050)'}</div>
+          </div>
+          <div className="rounded-xl border border-emerald-200 dark:border-emerald-900 bg-emerald-50 dark:bg-emerald-950/20 p-4 text-center">
+            <div className="font-display text-3xl mb-1" style={{ color: '#10B981' }}>ROI ✓</div>
+            <div className="text-xs text-ink font-medium mb-0.5">{zh ? '保守路由 ROI 正向' : 'Conservative routing ROI is positive'}</div>
+            <div className="text-[11px] text-muted">{zh ? '$2.10/月的升 Tier 成本 ＜ 防止 1 個架構錯誤的返工成本' : '$2.10/mo escalation cost < cost of 1 architecture rework'}</div>
+          </div>
+        </div>
+
+        {/* Series 7 insight */}
+        <div className="px-5 py-4 rounded-xl border border-sky-200 dark:border-sky-900 bg-sky-50 dark:bg-sky-950/30">
+          <div className="text-xs font-semibold text-sky-700 dark:text-sky-400 mb-1">
+            {zh ? '關鍵發現' : 'Key finding'}
+          </div>
+          <div className="text-sm text-sky-800 dark:text-sky-300">
+            {zh
+              ? '過路由的金錢代價是真實但可接受的（Exec→Mid 每任務浪費 $0.009），欠路由的質量風險卻不可接受（A→Mid 的架構設計存在嚴重質量風險）。保守路由（在 J=3 或 R=3 時升 Tier）每月僅額外花費 $2.10，遠低於一次架構返工的代價，ROI 明確為正。'
+              : 'Over-routing\'s financial cost is real but acceptable ($0.009 wasted per Exec→Mid task); under-routing\'s quality risk is not (routing Tier-A design tasks to Tier-Mid creates serious quality risk). Conservative routing (escalate on J=3 or R=3) costs only $2.10/month extra — far less than a single architecture rework. The ROI is clearly positive.'}
           </div>
         </div>
       </section>
