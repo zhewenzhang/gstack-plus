@@ -1,5 +1,7 @@
 # 實驗 Series 3：Prompt 優化 × 真實語料庫驗證
 
+> **快速導航**：[← 上一系列](experiment-series-2.md) · [→ 下一系列](experiment-series-4.md) · [全系列總結](experiment-summary.md) · [6 個核心發現](key-findings.md)
+
 > **狀態**：已完成 | **日期**：2026-05-05 | **前置**：Series 2
 
 ## 背景

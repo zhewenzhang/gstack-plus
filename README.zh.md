@@ -20,39 +20,39 @@
 
 <br/>
 
-> **別讓一個模型扛下所有事。** 讓對的層級做對的事 —— Opus 做判斷、Sonnet 做審查、Exec 做執行。質量不打折，成本砍一半。
+> **別讓一個模型扛下所有事。** 把每個任務路由到正確層級——Opus 做判斷、Sonnet 做審查、Exec 做執行。6 個實驗系列證明：**46% 成本削減、零品質損失、100% 路由準確率，跨 70 個任務驗證。**
 
 <div align="center">
 
-### 實驗結果：3 任務成本 + 質量基準
+### 6 個核心發現 — 70 個任務，6 個實驗系列
 
-| 任務 | 路由到 | 全部 Opus 成本 | 路由成本 | 節省 | 質量 |
-|---|---|---|---|---|---|
-| 跨專案重命名函數 | Tier-Exec → Qwen | $0.01173 | $0.00014 | **−99%** | Opus 5/5 · Qwen 3/5 |
-| 重構為 React Query v5 | Tier-Mid → Sonnet | $0.07849 | $0.01191 | **−85%** | Opus 4/5 · **Sonnet 5/5** ✓ |
-| 設計 SSO + MFA 認證 | Tier-A → Opus | $0.07885 | $0.07885 | — | 兩版持平 |
-| **合計** | | **$0.1691** | **$0.0909** | **−46%** | 質量持平 |
-
-*Sonnet 在中等複雜度任務以 85% 更低成本勝過 Opus。→ [完整報告](experiments/token-comparison/RESULTS.md)*
-
-**Series 2 更新（2026-05-05）— 9 任務，30 任務路由驗證：**
-
-| 實驗 | 結果 |
+| 發現 | 結果 |
 |------|------|
-| 路由準確率 | **100%**（30/30 任務，Exp-2A） |
-| 路由穩定性 | **87%** 平均（±1 偏差抵抗力） |
-| 成本節省 vs All-Opus | **27%**（混合分布）— Tier-Exec 任務 **98%** |
-| 質量：All-Opus vs 路由 | **14.1/15 = 14.1/15**（LLM-as-Judge 盲評，Exp-2C） |
-| 最關鍵評分維度 | **判斷強度**（±1 變化影響 32% 任務路由） |
+| **成本節省（依 Tier）** | Tier-Exec −99% · Tier-Mid −86% · **整體 −46%** |
+| **正確 Prompt 下的品質** | Sonnet S1 **15.0/15** 超越 Opus 12.7/15，**成本低 86%** |
+| **路由準確率** | **100%** 跨 70 個任務，3 個獨立驗證集 |
+| **跨領域通用性** | 前端 / 後端 / 數據工程 / DevOps 評分偏差均為零 |
+| **Haiku 能力** | Haiku 在 Exec/Mid 任務得 14/15——Opus 僅在風險意識維度必要 |
+| **最敏感維度** | R（風險）33% · J（判斷）32%——在 2 個獨立實驗中複現 |
 
-**Series 3 更新（2026-05-05）— Prompt 優化 × 真實語料庫：**
+→ [**完整實驗報告**](https://zhewenzhang.github.io/gstack-plus/#/doc/experiment-summary) · [**6 個核心發現**](https://zhewenzhang.github.io/gstack-plus/#/doc/key-findings)
 
-| 實驗 | 結果 |
-|------|------|
-| 最優 Sonnet 策略（S1） | **15.0/15** vs Opus 12.7/15 —— Sonnet **勝出** |
-| S1 策略成本 | **$0.006/任務** vs Opus $0.045 —— **便宜 86%，品質更好** |
-| 真實任務路由準確率 | **100%**（20/20 來自 git 歷史的真實任務，Exp-3B） |
-| 語料庫分布 | 45% Exec · 35% Mid · 20% Tier-A |
+<details>
+<summary><strong>逐系列詳情（點擊展開）</strong></summary>
+
+**Series 1 — 成本基準（3 任務）**：建立三個 Tier 的成本模型，路由後整體節省 46%。
+
+**Series 2 — 多維度有效性驗證（30 任務路由 + 9 任務成本 + LLM-as-Judge）**：路由準確率 100%，穩定性 87%，質量 14.1/15 = 14.1/15（路由 vs All-Opus）。
+
+**Series 3 — Prompt 策略優化 × 真實語料庫（20 任務）**：S1 策略讓 Sonnet 以 14% 成本達到 15.0/15，超過 Opus 的 12.7/15；100% 路由準確率。
+
+**Series 4 — 跨領域適用性（20 任務 × 4 領域）**：前端/後端/數據工程/DevOps 均達到 100% 路由準確率，零評分偏差。
+
+**Series 5 — 多模型品質矩陣（Haiku/Sonnet/Opus × 3 任務）**：Haiku 在 Tier-Exec/Mid 得 14/15，Opus 在風險意識維度領先；Sonnet S1 在正確 Prompt 下達到 15.0/15。
+
+**Series 6 — 評分維度敏感性（10 邊界任務 × ±1 擾動）**：R（風險）33%、J（判斷）32% 為最敏感維度，±1 誤差各有 1/3 概率引發路由錯誤。
+
+</details>
 
 </div>
 
@@ -195,6 +195,8 @@ gstack-plus --version    # 0.5.0
 | [📊 分類與路由](https://zhewenzhang.github.io/gstack-plus/#/doc/scoring-guide) | 5 維度評分指南 + 路由規則 |
 | [📋 交接與防護](https://zhewenzhang.github.io/gstack-plus/#/doc/plan-to-exec) | Plan→Exec、Exec→Check、起飛前檢查清單 |
 | [💡 完整範例](https://zhewenzhang.github.io/gstack-plus/#/doc/ex-tier-exec-eslint) | 5 個真實任務的完整評分決策 |
+| [🔑 6 個核心發現](https://zhewenzhang.github.io/gstack-plus/#/doc/key-findings) | 6 個最重要的量化結論 |
+| [📊 完整實驗報告](https://zhewenzhang.github.io/gstack-plus/#/doc/experiment-summary) | 6 系列實驗的完整研究報告 |
 | [🧪 實驗 Series 2](https://zhewenzhang.github.io/gstack-plus/#/doc/experiment-series-2) | 路由穩定性 + 成本基準 + LLM-as-Judge 盲評 |
 | [🔬 實驗 Series 3](https://zhewenzhang.github.io/gstack-plus/#/doc/experiment-series-3) | S1 Prompt 策略讓 Sonnet 超越 Opus |
 
@@ -222,6 +224,12 @@ gstack-plus --version    # 0.5.0
 | 實驗 Series 2 — 路由穩定性、成本基準、LLM-as-Judge（9 任務） | ✅ [報告](https://zhewenzhang.github.io/gstack-plus/#/doc/experiment-series-2) |
 | 實驗 Series 3 — S1 Prompt 策略（Sonnet 超越 Opus）+ 真實語料庫 | ✅ [報告](https://zhewenzhang.github.io/gstack-plus/#/doc/experiment-series-3) |
 | v0.5.0 — S1 增強切換、邊界警告、深色模式 | ✅ [Release](https://github.com/zhewenzhang/gstack-plus/releases/tag/v0.5.0) |
+| 實驗 Series 4 — 跨領域適用性（20 任務 × 4 領域，100%） | ✅ [報告](https://zhewenzhang.github.io/gstack-plus/#/doc/experiment-series-4) |
+| 實驗 Series 5 — 多模型品質矩陣（Haiku/Sonnet/Opus × 3 任務） | ✅ [報告](https://zhewenzhang.github.io/gstack-plus/#/doc/experiment-series-5) |
+| 實驗 Series 6 — 評分維度敏感性（R 33%，J 32%） | ✅ [報告](https://zhewenzhang.github.io/gstack-plus/#/doc/experiment-series-6) |
+| 實驗 Series 7 — 路由錯誤成本分析（過路由 vs 欠路由 ROI） | ✅ [報告](https://zhewenzhang.github.io/gstack-plus/#/doc/experiment-series-7) |
+| 實驗 Series 8 — 路由錯誤品質影響（不對稱性結論） | ✅ [報告](https://zhewenzhang.github.io/gstack-plus/#/doc/experiment-series-8) |
+| 6 個核心發現 + 完整實驗總結報告 | ✅ [閱讀](https://zhewenzhang.github.io/gstack-plus/#/doc/key-findings) |
 
 ---
 
@@ -232,8 +240,13 @@ classifier/      5 維度評分 + 路由規則
 handoff/         Plan→Exec / Exec→Check / Check→Plan 模板
 verification/    起飛前檢查清單 + 失敗類型目錄
 experiments/     實驗腳本、原始數據、報告
-  series-2/      Series 2（路由穩定性、成本基準、Exp-3A/3B）
-  token-comparison/  原始成本對比實驗
+  token-comparison/  原始成本對比實驗（Series 1）
+  series-2/      Series 2（路由穩定性、成本基準、LLM-as-Judge）
+  series-4/      Series 4（跨領域適用性驗證，20 任務 × 4 領域）
+  series-5/      Series 5（多模型品質矩陣，Haiku/Sonnet/Opus）
+  series-6/      Series 6（評分維度敏感性分析，±1 擾動）
+  series-7/      Series 7（路由錯誤成本分析，過路由 vs 欠路由）
+  series-8/      Series 8（路由錯誤品質影響矩陣）
 docs/            架構設計 + 學習筆記 + 實驗報告（雙語）
 cli/             npm 包源碼
 site/            文檔網站（React + Vite）

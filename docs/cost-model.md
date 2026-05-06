@@ -78,3 +78,11 @@ Series 3 真實 git commit 分佈：45% Exec + 35% Mid + 20% Tier-A
 Series 5 發現：使用 S1 提示詞策略（角色 + 深度思考指令），Sonnet 達到 15.0/15，超越 Opus 的 12.7/15，成本只有 Opus 的 13.3%。
 
 這意味著在 Tier-Mid 任務上，不僅路由本身節省 83%，正確使用提示詞策略還能進一步提升品質。
+
+---
+
+## 數據來源
+
+- [實驗 Series 1（token-comparison）](../experiments/token-comparison/RESULTS.md) — 3 任務基礎成本基準
+- [實驗 Series 7](experiment-series-7.md) — 路由錯誤場景的成本代價計算
+- [6 個核心發現](key-findings.md) — 各 Tier 節省率匯總

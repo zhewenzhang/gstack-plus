@@ -1,5 +1,7 @@
 # Experiment Series 7: Routing Error Cost Analysis
 
+> **Navigation**: [← Previous](experiment-series-6-en.md) · [→ Next](experiment-series-8-en.md) · [Full Report](experiment-summary-en.md) · [6 Key Findings](key-findings-en.md)
+
 > **Core question**: "If I route wrong, how much do I actually lose? Is it money or quality? Is conservative routing worth it?"
 >
 > **Method**: Deliberately misroute 9 tasks, comparing correct routing's cost and quality risk.

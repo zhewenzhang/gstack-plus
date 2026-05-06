@@ -78,3 +78,11 @@ Assume:
 Series 5 finding: Using the S1 prompt strategy (role identity + depth instruction), Sonnet reaches 15.0/15, beating Opus at 12.7/15, at just 13.3% of Opus's cost.
 
 This means for Tier-Mid tasks, not only does routing save 83%, using the right prompt strategy further improves quality.
+
+---
+
+## Data Sources
+
+- [Experiment Series 1 (token-comparison)](../experiments/token-comparison/RESULTS.md) — 3-task baseline cost
+- [Experiment Series 7](experiment-series-7-en.md) — Cost calculation for routing error scenarios
+- [6 Key Findings](key-findings-en.md) — Savings rate summary per Tier

@@ -1,0 +1,150 @@
+{
+  "scenarios": [
+    {
+      "id": "E1",
+      "descriptionZh": "為工具函數加類型標注",
+      "descriptionEn": "Add type annotations to utility functions",
+      "errorType": "over-routing",
+      "correctTier": "Tier-Exec",
+      "sentToTier": "Tier-Mid",
+      "qualityCorrect": 14.5,
+      "qualityActual": 14.5,
+      "qualityDelta": 0,
+      "qualityDeltaPct": 0,
+      "costCorrect": 0.001,
+      "costActual": 0.01,
+      "costDeltaPct": 900
+    },
+    {
+      "id": "E2",
+      "descriptionZh": "更新 CI 環境變量",
+      "descriptionEn": "Update environment variables in CI pipeline",
+      "errorType": "over-routing",
+      "correctTier": "Tier-Exec",
+      "sentToTier": "Tier-Mid",
+      "qualityCorrect": 14.5,
+      "qualityActual": 14.5,
+      "qualityDelta": 0,
+      "qualityDeltaPct": 0,
+      "costCorrect": 0.001,
+      "costActual": 0.01,
+      "costDeltaPct": 900
+    },
+    {
+      "id": "E3",
+      "descriptionZh": "為高頻查詢欄位加索引",
+      "descriptionEn": "Add database index for frequently queried field",
+      "errorType": "over-routing",
+      "correctTier": "Tier-Exec",
+      "sentToTier": "Tier-Mid",
+      "qualityCorrect": 14.5,
+      "qualityActual": 14.5,
+      "qualityDelta": 0,
+      "qualityDeltaPct": 0,
+      "costCorrect": 0.001,
+      "costActual": 0.01,
+      "costDeltaPct": 900
+    },
+    {
+      "id": "M1",
+      "descriptionZh": "重構 auth 中間件使用 JWT",
+      "descriptionEn": "Refactor auth middleware to use JWT",
+      "errorType": "over-routing",
+      "correctTier": "Tier-Mid",
+      "sentToTier": "Tier-A",
+      "qualityCorrect": 13.5,
+      "qualityActual": 13,
+      "qualityDelta": -0.5,
+      "qualityDeltaPct": -4,
+      "costCorrect": 0.01,
+      "costActual": 0.06,
+      "costDeltaPct": 500
+    },
+    {
+      "id": "M2",
+      "descriptionZh": "為用戶列表 API 加分頁",
+      "descriptionEn": "Add pagination to user list API",
+      "errorType": "over-routing",
+      "correctTier": "Tier-Mid",
+      "sentToTier": "Tier-A",
+      "qualityCorrect": 13.5,
+      "qualityActual": 13,
+      "qualityDelta": -0.5,
+      "qualityDeltaPct": -4,
+      "costCorrect": 0.01,
+      "costActual": 0.06,
+      "costDeltaPct": 500
+    },
+    {
+      "id": "M3",
+      "descriptionZh": "為支付服務編寫整合測試",
+      "descriptionEn": "Write integration tests for payment service",
+      "errorType": "under-routing",
+      "correctTier": "Tier-Mid",
+      "sentToTier": "Tier-Exec",
+      "qualityCorrect": 13.5,
+      "qualityActual": 10.5,
+      "qualityDelta": -3,
+      "qualityDeltaPct": -22,
+      "costCorrect": 0.01,
+      "costActual": 0.001,
+      "costDeltaPct": -90
+    },
+    {
+      "id": "A1",
+      "descriptionZh": "設計資料庫分片策略",
+      "descriptionEn": "Design database sharding strategy",
+      "errorType": "under-routing",
+      "correctTier": "Tier-A",
+      "sentToTier": "Tier-Mid",
+      "qualityCorrect": 12,
+      "qualityActual": 11,
+      "qualityDelta": -1,
+      "qualityDeltaPct": -8,
+      "costCorrect": 0.06,
+      "costActual": 0.01,
+      "costDeltaPct": -83
+    },
+    {
+      "id": "A2",
+      "descriptionZh": "規劃 OAuth2 + SSO 整合架構",
+      "descriptionEn": "Plan OAuth2 + SSO integration architecture",
+      "errorType": "under-routing",
+      "correctTier": "Tier-A",
+      "sentToTier": "Tier-Mid",
+      "qualityCorrect": 12,
+      "qualityActual": 11,
+      "qualityDelta": -1,
+      "qualityDeltaPct": -8,
+      "costCorrect": 0.06,
+      "costActual": 0.01,
+      "costDeltaPct": -83
+    },
+    {
+      "id": "A3",
+      "descriptionZh": "評估並推薦緩存策略",
+      "descriptionEn": "Evaluate and recommend caching strategy",
+      "errorType": "under-routing",
+      "correctTier": "Tier-A",
+      "sentToTier": "Tier-Mid",
+      "qualityCorrect": 12,
+      "qualityActual": 11,
+      "qualityDelta": -1,
+      "qualityDeltaPct": -8,
+      "costCorrect": 0.06,
+      "costActual": 0.01,
+      "costDeltaPct": -83
+    }
+  ],
+  "summary": {
+    "overRouting": {
+      "avgQualityDelta": -0.2,
+      "finding": "Over-routing has zero or positive quality impact — you waste money but quality stays the same or improves"
+    },
+    "underRouting": {
+      "avgQualityDelta": -1.5,
+      "finding": "Under-routing degrades quality by 1–4 points per task — most severe for Tier-A architecture tasks"
+    },
+    "keyConclusion": "Routing errors are asymmetric: over-routing wastes money but preserves quality; under-routing saves money but degrades quality. The risk is one-directional — always prefer conservative (over) routing."
+  }
+}

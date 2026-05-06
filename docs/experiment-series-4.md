@@ -1,5 +1,7 @@
 # 實驗 Series 4：領域適用性測試
 
+> **快速導航**：[← 上一系列](experiment-series-3.md) · [→ 下一系列](experiment-series-5.md) · [全系列總結](experiment-summary.md) · [6 個核心發現](key-findings.md)
+
 > **核心問題**：gstack-plus 5 維度評分框架能否跨技術領域普遍適用？
 >
 > **實驗設計**：20 個任務跨前端 / 後端 / 數據工程 / DevOps 四領域，

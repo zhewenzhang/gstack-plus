@@ -112,6 +112,13 @@ export default function Playground() {
   const [promptCopied, setPromptCopied] = useState(false);
   const [enhanced, setEnhanced] = useState(false);
   const [openHint, setOpenHint] = useState<string | null>(null);
+  const [conservativeWarningDismissed, setConservativeWarningDismissed] = useState(false);
+
+  // ─── Cost Calculator state ───
+  const [costTaskCount, setCostTaskCount] = useState(100);
+  const [costExecPct, setCostExecPct] = useState(45);
+  const [costMidPct, setCostMidPct] = useState(35);
+  const [costAPct, setCostAPct] = useState(20);
 
   // ─── URL state sync (HashRouter-safe) ───
   // HashRouter URL: https://.../#/playground?t=...&s=...
@@ -339,6 +346,69 @@ export default function Playground() {
               );
             })()}
 
+            {/* Conservative Routing Warning */}
+            {(() => {
+              const j = scoring.judgment;
+              const r = scoring.risk;
+              const showWarning = (j === 3 || r === 3) && decision.tier !== 'Tier-A';
+              
+              if (!showWarning) return null;
+              
+              const higherTier = decision.tier === 'Tier-Exec' ? 'Tier-Mid' : 'Tier-A';
+              const higherTierLabel = tierLabel(higherTier, lang);
+              
+              const hash = `${j},${r},${scoring.context},${scoring.verifiability},${scoring.creativity}`;
+              
+              if (conservativeWarningDismissed) return null;
+              
+              const handleDismiss = () => {
+                try {
+                  localStorage.setItem('dismissedConservativeWarning', hash);
+                } catch {}
+                setConservativeWarningDismissed(true);
+              };
+              
+              const handleUpgrade = () => {
+                if (j === 3) updateScore('judgment', 4);
+                else if (r === 3) updateScore('risk', 4);
+              };
+              
+              return (
+                <div className="mt-4 rounded-lg border-2 border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-950/30 p-4 space-y-3">
+                  <div className="text-sm font-medium text-amber-700 dark:text-amber-400">
+                    {lang === 'zh' ? '⚠️ 保守路由建議' : '⚠️ Conservative Routing Suggested'}
+                  </div>
+                  <div className="text-xs text-amber-900 dark:text-amber-200 leading-relaxed">
+                    {lang === 'zh'
+                      ? `J = ${j} 或 R = ${r} 處於邊界值。Series 6 實驗顯示，這兩個維度的 ±1 誤差各有 32–33% 概率引發路由層級錯誤。若任務影響生產環境，建議直接升至 ${higherTierLabel}。`
+                      : `J = ${j} or R = ${r} is a boundary value. Series 6 experiments show ±1 scoring errors on these dimensions cause routing mistakes 32–33% of the time. If this task affects production, consider routing up to ${higherTierLabel}.`}
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      onClick={handleDismiss}
+                      className="rounded-full px-3 py-1.5 text-xs border border-amber-300 dark:border-amber-700 text-amber-800 dark:text-amber-200 hover:bg-amber-100 dark:hover:bg-amber-900/50 transition-colors"
+                    >
+                      {lang === 'zh' ? '忽略，保持當前路由' : 'Dismiss, keep current routing'}
+                    </button>
+                    <button
+                      onClick={handleUpgrade}
+                      className="rounded-full px-3 py-1.5 text-xs bg-amber-600 hover:bg-amber-700 text-white transition-colors"
+                    >
+                      {lang === 'zh' ? `升至 ${higherTierLabel}` : `Route to ${higherTierLabel}`}
+                    </button>
+                  </div>
+                  <div className="pt-1">
+                    <a
+                      href="#/doc/routing-confidence-guide"
+                      className="text-[11px] text-amber-700 dark:text-amber-400 hover:underline"
+                    >
+                      {lang === 'zh' ? '了解更多 → 路由信心指南' : 'Learn more → Routing Confidence Guide'}
+                    </a>
+                  </div>
+                </div>
+              );
+            })()}
+
             <div className="mt-6 flex flex-wrap gap-3">
               <button
                 onClick={copyShareUrl}
@@ -516,6 +586,148 @@ else                                  → Tier-Mid`}
                 ? '💡 這是 System Prompt。配合「Download handoff doc」使用效果最好：handoff doc 作為 User 消息，這個作為 System 消息。'
                 : '💡 This is your System Prompt. Pair it with the handoff doc for best results: handoff doc as the User message, this as the System message.'}
             </p>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Cost Savings Estimator ───────────────────────────────── */}
+      <div className="max-w-6xl mx-auto px-5 sm:px-8 pb-16 pt-4">
+        <div className="border-t border-neutral-200 dark:border-[#2A2A2A] pt-12">
+          <div className="text-xs uppercase tracking-widest text-muted mb-2">
+            {lang === 'zh' ? '成本節省估算' : 'Cost Savings Estimator'}
+          </div>
+          <h2 className="font-display text-2xl sm:text-3xl text-ink mb-8">
+            {lang === 'zh' ? '💰 成本節省估算' : '💰 Cost Savings Estimator'}
+          </h2>
+
+          <div className="bg-neutral-50 dark:bg-neutral-900/50 rounded-xl p-6 space-y-6">
+            {/* Input Row */}
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {/* Task Count */}
+              <div>
+                <label className="block text-xs text-muted mb-2">
+                  {lang === 'zh' ? '每月 AI 任務總數' : 'Monthly AI Tasks'}
+                </label>
+                <input
+                  type="number"
+                  min={1}
+                  value={costTaskCount}
+                  onChange={e => setCostTaskCount(Math.max(1, parseInt(e.target.value) || 1))}
+                  className="w-full p-2 border border-neutral-300 dark:border-[#383838] rounded bg-background text-ink font-display text-lg focus:outline-none focus:border-ink"
+                />
+              </div>
+
+              {/* Exec % */}
+              <div>
+                <label className="block text-xs text-muted mb-2">
+                  {lang === 'zh' ? 'Exec %' : 'Exec %'}
+                </label>
+                <input
+                  type="number"
+                  min={0}
+                  max={100}
+                  value={costExecPct}
+                  onChange={e => setCostExecPct(Math.min(100, Math.max(0, parseInt(e.target.value) || 0)))}
+                  className="w-full p-2 border border-neutral-300 dark:border-[#383838] rounded bg-background text-ink font-display text-lg focus:outline-none focus:border-ink"
+                />
+              </div>
+
+              {/* Mid % */}
+              <div>
+                <label className="block text-xs text-muted mb-2">
+                  {lang === 'zh' ? 'Mid %' : 'Mid %'}
+                </label>
+                <input
+                  type="number"
+                  min={0}
+                  max={100}
+                  value={costMidPct}
+                  onChange={e => setCostMidPct(Math.min(100, Math.max(0, parseInt(e.target.value) || 0)))}
+                  className="w-full p-2 border border-neutral-300 dark:border-[#383838] rounded bg-background text-ink font-display text-lg focus:outline-none focus:border-ink"
+                />
+              </div>
+
+              {/* A % */}
+              <div>
+                <label className="block text-xs text-muted mb-2">
+                  {lang === 'zh' ? 'A %' : 'A %'}
+                </label>
+                <input
+                  type="number"
+                  min={0}
+                  max={100}
+                  value={costAPct}
+                  onChange={e => setCostAPct(Math.min(100, Math.max(0, parseInt(e.target.value) || 0)))}
+                  className="w-full p-2 border border-neutral-300 dark:border-[#383838] rounded bg-background text-ink font-display text-lg focus:outline-none focus:border-ink"
+                />
+              </div>
+            </div>
+
+            {/* Validation / Output */}
+            {(() => {
+              const totalPct = costExecPct + costMidPct + costAPct;
+              if (totalPct !== 100) {
+                return (
+                  <div className="text-sm text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950/30 rounded-lg p-3">
+                    {lang === 'zh'
+                      ? `❌ 三個 Tier 的比例之和必須為 100%（當前：${totalPct}%）`
+                      : `❌ Three tier percentages must sum to 100% (current: ${totalPct}%)`}
+                  </div>
+                );
+              }
+
+              const COST = { 'Tier-A': 0.060, 'Tier-Mid': 0.010, 'Tier-Exec': 0.001 };
+              const allOpusCost = costTaskCount * COST['Tier-A'];
+              const routedCost = costTaskCount * (costExecPct / 100 * COST['Tier-Exec'] + costMidPct / 100 * COST['Tier-Mid'] + costAPct / 100 * COST['Tier-A']);
+              const saving = allOpusCost - routedCost;
+              const savingPct = Math.round((saving / allOpusCost) * 100);
+              const yearlySaving = saving * 12;
+
+              return (
+                <div className="space-y-4">
+                  {/* Output Numbers */}
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div className="text-center p-4 bg-white dark:bg-neutral-800 rounded-lg border border-neutral-200 dark:border-[#2A2A2A]">
+                      <div className="text-[10px] uppercase tracking-wider text-muted mb-1">
+                        {lang === 'zh' ? '當前月均成本' : 'Current Monthly Cost'}
+                      </div>
+                      <div className="font-display text-3xl text-ink">${allOpusCost.toFixed(2)}</div>
+                      <div className="text-[10px] text-muted mt-1">
+                        {lang === 'zh' ? '（全部使用 Opus）' : '(All-Opus)'}
+                      </div>
+                    </div>
+                    <div className="text-center p-4 bg-white dark:bg-neutral-800 rounded-lg border border-neutral-200 dark:border-[#2A2A2A]">
+                      <div className="text-[10px] uppercase tracking-wider text-muted mb-1">
+                        {lang === 'zh' ? '路由後月均成本' : 'Routed Monthly Cost'}
+                      </div>
+                      <div className="font-display text-3xl text-ink">${routedCost.toFixed(2)}</div>
+                    </div>
+                    <div className="text-center p-4 bg-white dark:bg-neutral-800 rounded-lg border border-neutral-200 dark:border-[#2A2A2A]">
+                      <div className="text-[10px] uppercase tracking-wider text-muted mb-1">
+                        {lang === 'zh' ? '月均節省' : 'Monthly Savings'}
+                      </div>
+                      <div className="font-display text-3xl text-emerald-600 dark:text-emerald-400">${saving.toFixed(2)}</div>
+                      <div className="text-[10px] text-muted mt-1">
+                        {savingPct}% {lang === 'zh' ? '節省率' : 'savings'}
+                      </div>
+                    </div>
+                    <div className="text-center p-4 bg-white dark:bg-neutral-800 rounded-lg border border-neutral-200 dark:border-[#2A2A2A]">
+                      <div className="text-[10px] uppercase tracking-wider text-muted mb-1">
+                        {lang === 'zh' ? '年均節省' : 'Yearly Savings'}
+                      </div>
+                      <div className="font-display text-3xl text-emerald-600 dark:text-emerald-400">${yearlySaving.toFixed(2)}</div>
+                    </div>
+                  </div>
+
+                  {/* Source Attribution */}
+                  <div className="text-[10px] text-muted text-center pt-2">
+                    {lang === 'zh'
+                      ? '數據來源：Series 1 實驗（3 任務）+ Series 7 成本基準'
+                      : 'Based on Series 1 (3-task experiment) + Series 7 cost baseline'}
+                  </div>
+                </div>
+              );
+            })()}
           </div>
         </div>
       </div>

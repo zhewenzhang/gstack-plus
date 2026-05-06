@@ -1,5 +1,7 @@
 # Experiment Series 6: Scoring Dimension Sensitivity Analysis
 
+> **Navigation**: [← Previous](experiment-series-5-en.md) · [→ Next](experiment-series-7-en.md) · [Full Report](experiment-summary-en.md) · [6 Key Findings](key-findings-en.md)
+
 > **Background**: Series 2 Exp-2A found that "Judgment (J) ±1 affects 32% of routing decisions."
 > Series 6 extends this analysis to all 5 dimensions.
 >

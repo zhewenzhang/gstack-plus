@@ -1,5 +1,7 @@
 # Experiment Series 4: Domain Applicability Test
 
+> **Navigation**: [← Previous](experiment-series-3-en.md) · [→ Next](experiment-series-5-en.md) · [Full Report](experiment-summary-en.md) · [6 Key Findings](key-findings-en.md)
+
 > **Core question**: Is the gstack-plus 5-dimension scoring framework universally applicable across technical domains?
 >
 > **Design**: 20 tasks spanning Frontend / Backend / Data Engineering / DevOps,

@@ -1,5 +1,7 @@
 # Experiment Report: Series 2 — Multi-dimensional Validity
 
+> **Navigation**: [← Previous](#) · [→ Next](experiment-series-3-en.md) · [Full Report](experiment-summary-en.md) · [6 Key Findings](key-findings-en.md)
+
 > **Date:** 2026-05-05
 > **Scale:** 30 tasks (stability) + 9 tasks (cost) + 9 tasks (quality)
 > **Total API cost:** $0.50 (including LLM-as-Judge)

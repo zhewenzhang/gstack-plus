@@ -100,3 +100,13 @@
 1. **R 低估**：安全相關代碼的 R 往往被低估為 2，應為 4+
 2. **J 高估**：「我不確定怎麼做」不等於 J 高，是 C 高（需要更多上下文）
 3. **V 混淆**：「我可以手動測試」= V=2，「CI 腳本可以驗證」= V=4
+
+---
+
+## 相關閱讀
+
+- [評分指南](../classifier/scoring-guide.md) — 5 個維度的 1–5 分評分標準
+- [路由規則](../classifier/routing-rules.md) — 完整路由決策表
+- [實驗 Series 6](experiment-series-6.md) — 本指南的實驗依據：各維度敏感率數據
+- [實驗 Series 7](experiment-series-7.md) — 路由錯誤的成本代價
+- [實驗 Series 8](experiment-series-8.md) — 路由錯誤的品質代價

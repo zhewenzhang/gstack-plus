@@ -1,5 +1,7 @@
 # 實驗 Series 5：多模型品質矩陣
 
+> **快速導航**：[← 上一系列](experiment-series-4.md) · [→ 下一系列](experiment-series-6.md) · [全系列總結](experiment-summary.md) · [6 個核心發現](key-findings.md)
+
 > **核心問題**：不同 Claude 模型（Haiku / Sonnet / Opus）在不同難度任務上的品質差異，是否支持 gstack-plus 的路由決策？
 >
 > **實驗設計**：3 個基準任務（Tier-Exec / Mid / A）× 3 個 Claude 模型，LLM-as-Judge（Opus 4.7）統一評分，滿分 15。

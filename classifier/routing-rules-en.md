@@ -190,3 +190,9 @@ Ambiguous task → Tier-A clarifies → Re-score → Route
 **Long-term optimization:** As experience accumulates, scores for similar tasks will stabilize. When a task type has been successfully completed by Exec 5 times in a row, the score can be lowered by 1 point (from 3 to 2), making routing more aggressive.
 
 ---
+
+## Related Reading
+
+- [Routing Confidence Guide](../docs/routing-confidence-guide-en.md) — Boundary handling when R=3 or J=3, based on Series 6 findings
+- [Scoring Guide](scoring-guide-en.md) — 1–5 scoring standards for all 5 dimensions
+- [Experiment Series 6](../docs/experiment-series-6-en.md) — Quantifying how scoring errors affect routing per dimension

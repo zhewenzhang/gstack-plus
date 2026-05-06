@@ -1,5 +1,7 @@
 # Experiment Series 5: Multi-Model Quality Matrix
 
+> **Navigation**: [← Previous](experiment-series-4-en.md) · [→ Next](experiment-series-6-en.md) · [Full Report](experiment-summary-en.md) · [6 Key Findings](key-findings-en.md)
+
 > **Core question**: Does the quality difference between Claude models (Haiku / Sonnet / Opus) align with gstack-plus routing decisions — i.e., harder tasks benefit more from capable models?
 >
 > **Design**: 3 benchmark tasks (Tier-Exec / Mid / A) × 3 Claude models, LLM-as-Judge (Opus 4.7) unified scoring, max 15 points.

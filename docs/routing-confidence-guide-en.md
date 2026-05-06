@@ -100,3 +100,13 @@ Based on Series 6 findings:
 1. **R underestimation**: Security-related code's R is often underestimated as 2, should be 4+
 2. **J overestimation**: "I'm not sure how" ≠ high J, it's high C (need more context)
 3. **V confusion**: "I can manually test" = V=2, "CI script verifies" = V=4
+
+---
+
+## Related Reading
+
+- [Scoring Guide](../classifier/scoring-guide-en.md) — 1–5 scoring standards for all 5 dimensions
+- [Routing Rules](../classifier/routing-rules-en.md) — Full decision table
+- [Experiment Series 6](experiment-series-6-en.md) — Experimental basis: sensitivity per dimension
+- [Experiment Series 7](experiment-series-7-en.md) — Cost of routing errors
+- [Experiment Series 8](experiment-series-8-en.md) — Quality impact of routing errors

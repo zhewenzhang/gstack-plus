@@ -192,3 +192,11 @@
 ---
 
 *Phase 1 完成 2026-05-02*
+
+---
+
+## 相關閱讀
+
+- [路由信心指南](../docs/routing-confidence-guide.md) — R=3 或 J=3 時的邊界處理規則，基於 Series 6 實驗結論
+- [評分指南](scoring-guide.md) — 5 個維度的 1–5 分評分標準
+- [實驗 Series 6](../docs/experiment-series-6.md) — 量化各維度評分誤差對路由的影響

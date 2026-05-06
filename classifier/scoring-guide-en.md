@@ -335,3 +335,10 @@ If you score the same task differently twice, the dimension definitions aren't c
 1. **Check judgment criteria**: The "criteria" column in each dimension's table is key — does your score match the criteria?
 2. **Check quick checks**: Each dimension's "quick check" is a fast verification method — use them to confirm scores
 3. **Conservative principle**: When unsure whether to give 3 or 4, give 4 (overestimating is safer than underestimating)
+
+---
+
+## Related Reading
+
+- [Routing Confidence Guide](../docs/routing-confidence-guide-en.md) — Conservative routing decision trees for boundary scores (J=3 or R=3)
+- [Routing Rules](routing-rules-en.md) — Full decision table from 5 dimension scores to Tier assignment

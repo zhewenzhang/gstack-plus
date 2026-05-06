@@ -1,5 +1,7 @@
 # 實驗 Series 6：評分維度敏感性深度分析
 
+> **快速導航**：[← 上一系列](experiment-series-5.md) · [→ 下一系列](experiment-series-7.md) · [全系列總結](experiment-summary.md) · [6 個核心發現](key-findings.md)
+
 > **前提**：Series 2 Exp-2A 發現「判斷強度（J）±1 影響 32% 的路由決策」。
 > Series 6 將此分析擴展到全部 5 個維度。
 >

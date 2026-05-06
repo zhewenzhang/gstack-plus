@@ -327,6 +327,13 @@ export const NAV: Section[] = [
         source: 'docs/experiment-series-7.md', sourceEn: 'docs/experiment-series-7-en.md',
         description: '9 任務 × 故意錯誤路由 — 量化過路由浪費和欠路由風險，計算保守路由的 ROI',
         descriptionEn: '9 tasks × deliberate misrouting — quantify over-routing waste and under-routing risk, calculate conservative routing ROI' },
+      { order: 709, slug: 'experiment-series-8',
+        title: '實驗 Series 8：路由錯誤品質影響矩陣',
+        titleEn: 'Experiment Series 8: Routing Error Quality Impact Matrix',
+        source: 'docs/experiment-series-8.md',
+        sourceEn: 'docs/experiment-series-8-en.md',
+        description: '9 個場景 × 成本 + 品質雙維度 — 過路由損錢不損質量，欠路由損質量，結論：保守路由是理性選擇',
+        descriptionEn: '9 scenarios × cost + quality — over-routing wastes money but preserves quality; under-routing degrades quality; conservative routing is the rational choice' },
     ],
   },
 ];

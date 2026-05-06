@@ -1,5 +1,7 @@
 # Experiment Series 3: Prompt Optimization × Real-World Corpus Validation
 
+> **Navigation**: [← Previous](experiment-series-2-en.md) · [→ Next](experiment-series-4-en.md) · [Full Report](experiment-summary-en.md) · [6 Key Findings](key-findings-en.md)
+
 > **Status**: Complete | **Date**: 2026-05-05 | **Prerequisite**: Series 2
 
 ## Background
