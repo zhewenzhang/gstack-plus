@@ -85,8 +85,8 @@ const S5_MATRIX = [
     noteEn: 'OAuth refactor: Haiku leads (Sonnet/Opus truncated by token limit)' },
   { taskZh: 'T3 Tier-A',    taskEn: 'T3 Tier-A',    tierColor: '#D946EF',
     haiku: 10, sonnet: 12, opus: 12,
-    noteZh: 'SSO+MFA 架構設計：Haiku 落後 2 分，Opus 風險意識 3/3',
-    noteEn: 'SSO+MFA design: Haiku -2pts, Opus leads on risk awareness (3/3)' },
+    noteZh: 'SSO+MFA 架構設計：Haiku 落後 2 分（正確性/清晰度各 -1），三模型風險意識均為 2/3',
+    noteEn: 'SSO+MFA design: Haiku -2pts (correctness & clarity), all models risk awareness 2/3' },
 ];
 
 const S6_DIMS = [
@@ -211,7 +211,7 @@ export default function Results() {
       <section className="max-w-5xl mx-auto px-5 sm:px-8 pb-20">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
-            { num: '−46%',    labelZh: '首輪實驗成本節省',     labelEn: 'cost saved in Series 1',     noteZh: '品質幾乎不受影響',       noteEn: 'quality nearly unaffected', color: '#F59E0B' },
+            { num: '−46%',    labelZh: '首輪實驗成本節省',     labelEn: 'cost saved in Series 1',     noteZh: '3 任務中 2 個品質持平或提升',  noteEn: 'quality maintained or improved on 2 of 3 tasks', color: '#F59E0B' },
             { num: '100%',    labelZh: '路由準確率',           labelEn: 'routing accuracy',            noteZh: '30/30 任務正確路由',     noteEn: '30/30 tasks correctly routed', color: '#10B981' },
             { num: '15.0/15', labelZh: 'Sonnet S1 品質分數',  labelEn: 'Sonnet S1 quality score',    noteZh: '超越 Opus（12.7/15）',   noteEn: 'beats Opus at 12.7/15', color: '#D946EF' },
           ].map(({ num, labelZh, labelEn, noteZh, noteEn, color }) => (
@@ -355,8 +355,8 @@ export default function Results() {
           </div>
           <div className="text-sm text-cyan-800 dark:text-cyan-300">
             {zh
-              ? '「判斷力（Judgment）」維度最為關鍵 — 分數變動 ±1，就會改變 32% 任務的路由決定。評分時應謹慎對待這個維度。'
-              : 'The "Judgment" dimension is the most critical — a ±1 score change alters routing decisions for 32% of tasks. Take extra care when scoring this dimension.'}
+              ? '「判斷力（Judgment）」維度高度敏感 — 分數變動 ±1，就會改變 32% 任務的路由決定。風險（R）維度的敏感性更高（33%），詳見 Series 6。'
+              : 'The "Judgment" dimension is highly sensitive — a ±1 change alters routing decisions for 32% of tasks. Risk (R) is slightly more sensitive at 33% — see Series 6 for full analysis.'}
           </div>
         </div>
       </section>
