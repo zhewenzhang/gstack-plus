@@ -24,9 +24,9 @@ export default function DarkModeToggle({ className = '' }: { className?: string 
           <line x1="4.2" y1="11.8" x2="3.2" y2="12.8"/>
         </svg>
       ) : (
-        /* Moon — shown in light mode to switch to dark */
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <path d="M13 10A6 6 0 016 3a6.5 6.5 0 100 10A6 6 0 0113 10z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/>
+        /* Moon — shown in light mode to switch to dark (Heroicons, MIT) */
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"/>
         </svg>
       )}
     </button>
