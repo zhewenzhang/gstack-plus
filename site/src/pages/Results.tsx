@@ -189,6 +189,42 @@ export default function Results() {
     <div className="min-h-screen bg-background text-ink">
       <Nav />
 
+      {/* ── PAPER DOWNLOAD ── */}
+      <section className="max-w-5xl mx-auto px-5 sm:px-8 pt-8 pb-0">
+        <div className="border border-neutral-200 dark:border-[#2A2A2A] rounded-2xl px-6 py-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div>
+            <div className="text-sm font-medium text-ink mb-0.5">
+              {lang === 'zh' ? '📄 技術論文下載' : '📄 Technical Paper'}
+            </div>
+            <div className="text-xs text-muted">
+              {lang === 'zh'
+                ? '完整實驗方法論與系統設計報告（學術格式 PDF）'
+                : 'Full system design & experimental methodology report (academic PDF)'}
+            </div>
+          </div>
+          <div className="flex gap-2 flex-shrink-0">
+            <a
+              href="/gstack-plus/papers/gstack-plus-en.pdf"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs border border-neutral-300 dark:border-[#383838] hover:bg-neutral-100 dark:hover:bg-[#1A1A1A] transition-colors text-ink"
+            >
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 16l-5-5 1.41-1.41L11 13.17V4h2v9.17l2.59-2.58L17 11l-5 5zm-7 4v-2h14v2H5z"/></svg>
+              EN Paper
+            </a>
+            <a
+              href="/gstack-plus/papers/gstack-plus-zh.pdf"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs bg-ink text-white dark:text-black hover:opacity-90 transition-opacity"
+            >
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 16l-5-5 1.41-1.41L11 13.17V4h2v9.17l2.59-2.58L17 11l-5 5zm-7 4v-2h14v2H5z"/></svg>
+              中文論文
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* ── PAGE HERO ── */}
       <section className="max-w-5xl mx-auto px-5 sm:px-8 pt-12 pb-16 sm:pt-20 sm:pb-24 text-center">
         <div className="inline-flex items-center gap-2 px-3 py-1 mb-6 rounded-full border border-neutral-200 dark:border-[#2A2A2A] text-[11px] uppercase tracking-wider text-muted">
